@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Tabs from "./navigation/tabs";
-import InquiryForm from "./components/InquiryForm";
+import InquiryForm from "./screens/InquiryFormScreen";
 
 const Stack = createStackNavigator();
 

@@ -5,14 +5,17 @@ import {
   Text,
   Image,
   SafeAreaView,
-  TouchableOpacity,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import userAavatar from "../assets/images/avatar.png";
 import { useNavigation } from "@react-navigation/native";
+import CommonHeader from "../components/CommonHeader";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { moderateScale } from "react-native-size-matters";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
 
   const handleGoBack = () => {
     navigation.navigate("Home");
@@ -74,14 +77,17 @@ const ProfileScreen = () => {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleGoBack}>
-          <Feather name="arrow-left" style={styles.backIcon} />
-        </TouchableOpacity>
+    <SafeAreaView
+      style={{
+        paddingTop: insets.top,
+        padding:moderateScale(10),
 
-        <Text style={styles.profileText}>My Profile</Text>
-      </View>
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <CommonHeader heading="My Profile" isBackIcon={true} />
 
       <View style={styles.profileContainer}>
         <Image source={profile.image} style={styles.profileImage} />
@@ -111,8 +117,8 @@ const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#F9F9F9",
+    // flex: 1,
+    // backgroundColor: "#F9F9F9",
   },
   header: {
     flexDirection: "row",

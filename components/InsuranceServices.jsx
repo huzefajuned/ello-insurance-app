@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import SearchBar from "./SearchBar";
+import { moderateScale, scale } from "react-native-size-matters";
 
 const InsuranceServices = ({ InsuranceServicesData }) => {
   const [clicked, setClicked] = useState(false);
@@ -39,16 +40,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     // backgroundColor: "blue",
-    marginBottom: 50,
+    // marginBottom: 50,
   },
   content: {
-    paddingTop: 10,
+    paddingTop: moderateScale(10),
     paddingHorizontal: 10,
   },
   title: {
     fontSize: 14,
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: moderateScale(10),
+
+    paddingBottom: moderateScale(10),
   },
   servicesContainer: {
     flexDirection: "row",
@@ -56,8 +58,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   card: {
-    width: "30%",
-    height: 91,
+    width: scale(92),
+    height: scale(91),
     aspectRatio: 1,
     justifyContent: "center",
     alignItems: "center",

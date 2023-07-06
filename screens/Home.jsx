@@ -1,6 +1,9 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import InsuranceServices from "../components/InsuranceServices";
+
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 import Header from "../components/Header";
 import car from "../assets/images/car/car.jpg";
 import bike from "../assets/images/bike/bike.png";
@@ -11,8 +14,13 @@ import pension from "../assets/images/pension/pension.png";
 import property from "../assets/images/property/building.png";
 import rent from "../assets/images/rent/rent.png";
 import travel from "../assets/images/travel/airplane.png";
+import { moderateScale } from "react-native-size-matters";
+
+// import BaseUrl from "../@env";
 
 const Home = () => {
+  const insets = useSafeAreaInsets();
+
   const InsuranceServicesData = [
     {
       key: 1,
@@ -62,18 +70,23 @@ const Home = () => {
   ];
 
   return (
-    <View style={styles.container}>
-      <Header />
-      <InsuranceServices InsuranceServicesData={InsuranceServicesData} />
+    <View
+      style={{
+        paddingTop: insets.top,
+        padding: moderateScale(10),
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <View>
+        <Header />
+      </View>
+      <View style={{ flex: 1 }}>
+        <InsuranceServices InsuranceServicesData={InsuranceServicesData} />
+      </View>
     </View>
   );
 };
 
 export default Home;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingBottom: 0, // Remove bottom padding
-  },
-});

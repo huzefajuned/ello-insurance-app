@@ -6,9 +6,13 @@ import {
   Button,
   StyleSheet,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import InquiryHeader from "./InquiryHeader";
+// import InquiryHeader from "../components/InquiryHeader";
+import CommonHeader from "../components/CommonHeader";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { moderateScale } from "react-native-size-matters";
 
 const formFields = [
   { label: "Customer name", key: "name", keyboardType: "default" },
@@ -72,6 +76,8 @@ const formFields = [
 ];
 
 const InquiryForm = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
+
   const [formValues, setFormValues] = useState({});
   const [gender, setGender] = useState(""); // New state for gender
 
@@ -145,9 +151,22 @@ const InquiryForm = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        paddingTop: insets.top,
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        padding:moderateScale(10),
+
+      }}
+    >
       <View style={styles.headerContainer}>
-        <InquiryHeader />
+        <CommonHeader
+          heading="Add inquiry"
+          isBackIcon={true}
+          isCloseIcon={true}
+        />
       </View>
       <View style={styles.formContainer}>
         <View>
@@ -179,13 +198,14 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     height: "100%",
+    backgroundColor: "gray",
     width: "100%",
   },
   headerContainer: {
     height: "20%",
     width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
   formContainer: {
     marginTop: 5,
