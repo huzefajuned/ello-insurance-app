@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import SearchBar from "./SearchBar";
 import { moderateScale, scale } from "react-native-size-matters";
@@ -18,19 +18,19 @@ const InsuranceServices = ({ InsuranceServicesData }) => {
       <View style={styles.content}>
         <SearchBar setClicked={setClicked} clicked={clicked} />
         <Text style={styles.title}>Insurance Service</Text>
-        <View style={styles.servicesContainer}>
-          {InsuranceServicesData.map((service, index) => (
-            <TouchableOpacity
-              key={service.key}
-              style={styles.card}
-              onPress={handleCardPress}
-            >
-              <Image source={service.image} style={styles.image} />
-              <Text style={styles.serviceName}>{service.name}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
       </View>
+      <ScrollView contentContainerStyle={styles.servicesContainer}>
+        {InsuranceServicesData?.map((service, index) => (
+          <TouchableOpacity
+            key={index} // replace with  object key
+            style={styles.card}
+            onPress={handleCardPress}
+          >
+            <Image source={{ uri: service?.image }} style={styles.image} />
+            <Text style={styles.serviceName}>{service?.name}</Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -39,23 +39,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-end",
-    // backgroundColor: "blue",
-    // marginBottom: 50,
+    height: "100%",
+    // backgroundColor: "yellow",
+    // overflow: "hidden",
   },
   content: {
     paddingTop: moderateScale(10),
     paddingHorizontal: 10,
+    height: "30%",
   },
   title: {
     fontSize: 14,
     paddingTop: moderateScale(10),
-
     paddingBottom: moderateScale(10),
   },
   servicesContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
+    // backgroundColor: "green",
+    paddingBottom: 10,
   },
   card: {
     width: scale(92),

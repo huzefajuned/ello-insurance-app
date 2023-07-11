@@ -1,73 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import InsuranceServices from "../components/InsuranceServices";
-
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
 import Header from "../components/Header";
-import car from "../assets/images/car/car.jpg";
-import bike from "../assets/images/bike/bike.png";
-import health from "../assets/images/health/health.png";
-import home from "../assets/images/home/house.png";
-import life from "../assets/images/life/ecology.png";
-import pension from "../assets/images/pension/pension.png";
-import property from "../assets/images/property/building.png";
-import rent from "../assets/images/rent/rent.png";
-import travel from "../assets/images/travel/airplane.png";
 import { moderateScale } from "react-native-size-matters";
-
-// import BaseUrl from "../@env";
-
+import axios from "axios";
+import { BACKEND_BASE_URL } from "../CONSTANTS";
 const Home = () => {
   const insets = useSafeAreaInsets();
+  const [InsuranceServicesData, setInsuranceServicesData] = useState([]);
 
-  const InsuranceServicesData = [
-    {
-      key: 1,
-      name: "Car",
-      image: car,
-    },
-    {
-      key: 2,
-      name: "Life",
-      image: life,
-    },
-    {
-      key: 3,
-      name: "Health",
-      image: health,
-    },
-    {
-      key: 4,
-      name: "Travel",
-      image: travel,
-    },
-    {
-      key: 5,
-      name: "Rental",
-      image: rent,
-    },
-    {
-      key: 6,
-      name: "Bike",
-      image: bike,
-    },
-    {
-      key: 7,
-      name: "Property",
-      image: property,
-    },
-    {
-      key: 8,
-      name: "Home",
-      image: home,
-    },
-    {
-      key: 9,
-      name: "Pension",
-      image: pension,
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${BACKEND_BASE_URL}/api/v1/insurance-category/product-type`
+        );
+        // Handle the response data
+        const insuranceCategories = response.data?.data.map(
+          (item) => item.ins_category
+        );
+        setInsuranceServicesData((prevData) => [
+          ...prevData,
+          ...insuranceCategories,
+        ]);
+      } catch (error) {
+        // Handle the error
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <View
@@ -77,12 +41,28 @@ const Home = () => {
         flex: 1,
         display: "flex",
         flexDirection: "column",
+        gap: moderateScale(10),
+        // backgroundColor: "gray",
+        height: "100%",
       }}
     >
-      <View>
+      <View
+        style={{
+          // backgroundColor: "red",
+          height: "40%",
+          overflow: "hidden",
+        }}
+      >
         <Header />
       </View>
-      <View style={{ flex: 1 }}>
+      <View
+        style={{
+          flex: 1,
+          // backgroundColor: "blue",
+          // overflow: "scroll",
+          height: "60%",
+        }}
+      >
         <InsuranceServices InsuranceServicesData={InsuranceServicesData} />
       </View>
     </View>

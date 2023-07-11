@@ -7,7 +7,7 @@ const InquiryHeader = ({ heading, isBackIcon, isCloseIcon }) => {
   const navigation = useNavigation();
 
   const handleGoBack = () => {
-    navigation.navigate("Home");
+    navigation.navigate("Tabs");
   };
 
   const handleClose = () => {
@@ -42,7 +42,10 @@ const styles = {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
+    alignItems: "center",
+    justifyContent: "center",
     padding: 5,
+    // backgroundColor:"green"
   },
   iconContainer: {
     flexDirection: "row",

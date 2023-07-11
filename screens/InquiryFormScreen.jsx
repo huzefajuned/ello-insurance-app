@@ -13,67 +13,11 @@ import { Picker } from "@react-native-picker/picker";
 import CommonHeader from "../components/CommonHeader";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { moderateScale } from "react-native-size-matters";
-
-const formFields = [
-  { label: "Customer name", key: "name", keyboardType: "default" },
-  {
-    label: "Primary Email Address",
-    key: "email",
-    keyboardType: "email-address",
-  },
-  { label: "Mobile", key: "mobile", keyboardType: "phone-pad" },
-  {
-    label: "Brand",
-    key: "country",
-    picker: true,
-    options: ["Brand 1", "Brand 2", "Brand 3", "Brand 4", "Brand 5", "Brand 6"],
-  },
-  {
-    label: "Model",
-    key: "model",
-    picker: true,
-    options: ["Model 1", "Model 2", "Model 3", "Model 4", "Model 5", "Model 6"],
-  },
-  {
-    label: "Fuel Type",
-    key: "fuleType",
-    picker: true,
-    options: [
-      "fuleType 1",
-      "fuleType 2",
-      "fuleType 3",
-      "fuleType 4",
-      "fuleType 5",
-      "fuleType 6",
-    ],
-  },
-  {
-    label: "Manufacture Year",
-    key: "manufactureYear",
-    picker: true,
-    options: [
-      "manufactureYear 1",
-      "manufactureYear 2",
-      "manufactureYear 3",
-      "manufactureYear 4",
-      "manufactureYear 5",
-      "manufactureYear 6",
-    ],
-  },
-  {
-    label: "Varient",
-    key: "varient",
-    picker: true,
-    options: [
-      "Varient 1",
-      "Varient 2",
-      "Varient 3",
-      "Varient 4",
-      "Varient 5",
-      "Varient 6",
-    ],
-  },
-];
+import CommonDescription from "../components/CommonDescription";
+import CustomDropdown from "../components/CustomDropdown";
+import CustomTextInput from "../components/CustomTextInput";
+import ContactWithCountry from "../components/ContactWithCountry";
+import CustomRadioButton from "../components/CustomRadioButton";
 
 const InquiryForm = ({ navigation }) => {
   const insets = useSafeAreaInsets();
@@ -93,62 +37,44 @@ const InquiryForm = ({ navigation }) => {
     setGender(selectedGender);
   };
 
-  const renderFormField = (field) => {
-    if (field.picker) {
-      return (
-        <Picker
-          key={field.key}
-          style={styles.picker}
-          selectedValue={formValues[field.key]}
-          onValueChange={(itemValue) => handleChangeText(field.key, itemValue)}
-        >
-          <Picker.Item label={`Select ${field.label}`} value="" />
-          {field.options.map((option) => (
-            <Picker.Item key={option} label={option} value={option} />
-          ))}
-        </Picker>
-      );
-    } else if (field.key === "mobile") {
-      return (
-        <View key={field.key}>
-          <TextInput
-            style={styles.input}
-            placeholder={field.label}
-            value={formValues[field.key] || ""}
-            onChangeText={(text) => handleChangeText(field.key, text)}
-            keyboardType={field.keyboardType}
-          />
-          <View style={styles.radioContainer}>
-            <View style={styles.radioContainerInner}>
-              <Text style={styles.radioLabel}>Brand New Vehicle</Text>
-              <RadioButton
-                selected={gender === "Male"}
-                onPress={() => handleGenderChange("Male")}
-              />
-            </View>
-            <View style={styles.radioContainerInner}>
-              <Text style={styles.radioLabel}> Registered Vehicle</Text>
-              <RadioButton
-                selected={gender === "Female"}
-                onPress={() => handleGenderChange("Female")}
-              />
-            </View>
-          </View>
-        </View>
-      );
-    } else {
-      return (
-        <TextInput
-          key={field.key}
-          style={styles.input}
-          placeholder={field.label}
-          value={formValues[field.key] || ""}
-          onChangeText={(text) => handleChangeText(field.key, text)}
-          keyboardType={field.keyboardType}
-        />
-      );
-    }
-  };
+  const genderData = [
+    { label: "Male", value: "Male" },
+    { label: "Female", value: "Female" },
+  ];
+  const brandData = [
+    { label: "Brand A", value: "Brand A" },
+    { label: "Brand B", value: "Brand B" },
+    { label: "Brand C", value: "Brand C" },
+  ];
+
+  const modelData = [
+    { label: "Model A", value: "Model A" },
+    { label: "Model B", value: "Model B" },
+    { label: "Model C", value: "Model C" },
+  ];
+
+  const fuelTypeData = [
+    { label: "Fuel Type A", value: "Fuel Type A" },
+    { label: "Fuel Type B", value: "Fuel Type B" },
+    { label: "Fuel Type C", value: "Fuel Type C" },
+  ];
+
+  const manufactureYearData = [
+    { label: "2020", value: "2020" },
+    { label: "2021", value: "2021" },
+    { label: "2022", value: "2022" },
+  ];
+
+  const variantData = [
+    { label: "Variant A", value: "Variant A" },
+    { label: "Variant B", value: "Variant B" },
+    { label: "Variant C", value: "Variant C" },
+  ];
+  const registrationData = [
+    { label: "registration A", value: "registration A" },
+    { label: "registration B", value: "registration B" },
+    { label: "registration C", value: "registration C" },
+  ];
 
   return (
     <View
@@ -157,24 +83,67 @@ const InquiryForm = ({ navigation }) => {
         flex: 1,
         display: "flex",
         flexDirection: "column",
-        padding:moderateScale(10),
-
+        padding: moderateScale(10),
       }}
     >
-      <View style={styles.headerContainer}>
-        <CommonHeader
-          heading="Add inquiry"
-          isBackIcon={true}
-          isCloseIcon={true}
-        />
-      </View>
+      <CommonHeader
+        heading="Add inquiry"
+        isBackIcon={true}
+        isCloseIcon={true}
+      />
+      <CommonDescription description="To add a new Inquiry, enter the details of the Inquiry in the input field below." />
       <View style={styles.formContainer}>
         <View>
-          <Text style={{ color: "#000000", fontSize: 16, marginBottom: 5 }}>
+          <Text style={{ color: "#000000", fontSize: 14 }}>
             Customer Details
           </Text>
         </View>
-        {formFields.map((field) => renderFormField(field))}
+        <CustomTextInput
+          placeholder="Customer name"
+          inlineStyles={{ fontSize: 14, color: "#DCDCDC" }}
+        />
+        <CustomTextInput
+          placeholder="Primary Email Address"
+          inlineStyles={{ fontSize: 14, color: "#DCDCDC" }}
+        />
+        <CustomDropdown
+          placeholder="Gender"
+          data={genderData}
+          inlineStyle={{ fontSize: 14, color: "#DCDCDC" }}
+        />
+        <ContactWithCountry />
+        <CustomRadioButton />
+        <CustomTextInput
+          placeholder="Registration Number"
+          data={registrationData}
+        />
+        <CustomDropdown
+          placeholder="Brand"
+          data={brandData}
+          inlineStyle={{ fontSize: 14, color: "#DCDCDC" }}
+        />
+
+        <CustomDropdown
+          placeholder="Model"
+          data={modelData}
+          inlineStyle={{ fontSize: 14, color: "#DCDCDC" }}
+        />
+        <CustomDropdown
+          placeholder="Fuel Type"
+          data={fuelTypeData}
+          inlineStyle={{ fontSize: 14, color: "#DCDCDC" }}
+        />
+        <CustomDropdown
+          placeholder="Manufacture Year"
+          data={manufactureYearData}
+          inlineStyle={{ fontSize: 14, color: "#DCDCDC" }}
+        />
+        <CustomDropdown
+          placeholder="Varient"
+          data={variantData}
+          inlineStyle={{ fontSize: 14, color: "#DCDCDC" }}
+        />
+
         <Button
           color="#37CFEE"
           title="Save Details"
@@ -186,29 +155,27 @@ const InquiryForm = ({ navigation }) => {
   );
 };
 
-const RadioButton = ({ selected, onPress }) => (
-  <TouchableOpacity onPress={onPress}>
-    <View style={styles.radio}>
-      {selected && <View style={styles.radioDot} />}
-    </View>
-  </TouchableOpacity>
-);
-
 const styles = StyleSheet.create({
+  inlineStyles: {
+    placeholderFontSize: 14,
+    color: "#DCDCDC",
+  },
   container: {
     padding: 10,
     height: "100%",
-    backgroundColor: "gray",
+    // backgroundColor: "gray",
     width: "100%",
   },
   headerContainer: {
-    height: "20%",
+    // height: "20%",
     width: "100%",
+    backgroundColor: "red",
     // alignItems: "center",
     // justifyContent: "center",
   },
   formContainer: {
     marginTop: 5,
+    gap: 5,
     height: "80%",
     width: "100%",
     backgroundColor: "#FFFFFF",

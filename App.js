@@ -1,25 +1,16 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Tabs from "./navigation/tabs";
-import InquiryForm from "./screens/InquiryFormScreen";
+import Toast from "react-native-toast-message";
+import AuthStack from "./navigation/AuthStack";
 
-const Stack = createStackNavigator();
-
+import { AuthProvider } from "./context/AuthContext";
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Tabs"
-          component={Tabs}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="InquiryForm"
-          component={InquiryForm}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <AuthStack />
+        <Toast />
+      </NavigationContainer>
+    </AuthProvider>
   );
 }

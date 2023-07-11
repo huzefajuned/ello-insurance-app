@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignItems: "center",
     width: "100%",
-    // backgroundColor:"red"
+    // backgroundColor: "yellow",
   },
   container: {
     display: "flex",
@@ -103,20 +103,20 @@ const styles = StyleSheet.create({
   avatarContainer: {
     // backgroundColor: "blue",
     alignItems: "center",
-    padding: 10,
+    padding: moderateScale(10),
     flexDirection: "row",
     justifyContent: "space-between",
   },
   // earningContainer
   earningContainer: {
-    // backgroundColor: "blue",
+    // backgroundColor: "brown",
     width: "100%",
     display: "flex",
     margin: "auto",
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
-    gap: 5,
+    // gap: moderateScale(5),
   },
   earningContainerHeader: {
     width: "90%",
@@ -124,17 +124,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     height: moderateScale(63),
-    // backgroundColor: "yellow",
+    // backgroundColor: "pink",
   },
   earningContainerCard: {
     display: "flex",
     flexDirection: "column",
-    gap: 2,
+    gap: moderateScale(2),
     width: "90%",
     justifyContent: "center",
-    height: 91,
+    height: moderateScale(91),
     backgroundColor: "#FFFFFF",
-    padding: 14,
+    padding: moderateScale(14),
     shadowColor: "#DDDDDD8F",
     shadowOffset: {
       width: 4,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     backgroundColor: "#FFFFFF",
-    padding: 8,
+    padding: moderateScale(8),
     shadowColor: "#DDDDDD8F",
     shadowOffset: {
       width: 4,
