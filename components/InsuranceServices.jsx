@@ -1,8 +1,20 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import SearchBar from "./SearchBar";
 import { moderateScale, scale } from "react-native-size-matters";
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize,
+} from "react-native-responsive-dimensions";
 
 const InsuranceServices = ({ InsuranceServicesData }) => {
   const [clicked, setClicked] = useState(false);
@@ -37,37 +49,38 @@ const InsuranceServices = ({ InsuranceServicesData }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "flex-end",
     height: "100%",
+    marginTop: 1,
     // backgroundColor: "yellow",
-    // overflow: "hidden",
   },
   content: {
-    paddingTop: moderateScale(10),
-    paddingHorizontal: 10,
-    height: "30%",
+    paddingTop: responsiveFontSize(1),
+    paddingHorizontal: responsiveFontSize(1),
+    height: responsiveHeight(15),
+    // backgroundColor: "red",
   },
   title: {
-    fontSize: 14,
+    fontSize: responsiveFontSize(2),
     paddingTop: moderateScale(10),
     paddingBottom: moderateScale(10),
   },
   servicesContainer: {
+    display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    gap: responsiveFontSize(2),
+    justifyContent: "center",
     // backgroundColor: "green",
-    paddingBottom: 10,
+
   },
   card: {
-    width: scale(92),
-    height: scale(91),
+    width: responsiveWidth(25),
+    height: responsiveHeight(10),
     aspectRatio: 1,
     justifyContent: "center",
     alignItems: "center",
+    textAlign: "center",
     backgroundColor: "#FFFFFF",
-    padding: 1,
     shadowColor: "#0000002B",
     shadowOffset: {
       width: 0,
@@ -81,12 +94,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    width: 33,
-    height: 33,
-    resizeMode: "contain",
+    width: responsiveWidth(10),
+    height: responsiveWidth(10),
+    // resizeMode: "contain",
   },
   serviceName: {
-    marginTop: 5,
+    marginTop: responsiveFontSize(1),
   },
 });
 

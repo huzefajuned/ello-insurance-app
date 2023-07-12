@@ -42,13 +42,15 @@ const CustomForm = () => {
 
       setLoading(false);
       if (response.status === 200) {
+        console.log("response", JSON.stringify(response));
+
         const token = response.data["tokens"]["access_token"];
         AsyncStorage.setItem("access_token", token);
         setToken(token); // Save the access token in the context
 
         Toast.show({
           type: "success",
-          text1: response.data.message,
+          text1: "Logged In Successfully",
         });
         await navigation.navigate("Tabs");
       } else {

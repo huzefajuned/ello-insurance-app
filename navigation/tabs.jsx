@@ -5,6 +5,10 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import Home from "../screens/Home";
 import TrainingScreen from "../screens/TrainingScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from "react-native-responsive-dimensions";
 
 const Tab = createBottomTabNavigator();
 
@@ -44,7 +48,7 @@ const Tabs = () => {
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: "#F9F9F9",
-          height: 70,
+          height: responsiveHeight(10),
         },
       }}
     >

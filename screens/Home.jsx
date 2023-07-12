@@ -6,6 +6,13 @@ import Header from "../components/Header";
 import { moderateScale } from "react-native-size-matters";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../CONSTANTS";
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize,
+  responsiveScreenHeight,
+} from "react-native-responsive-dimensions";
+
 const Home = () => {
   const insets = useSafeAreaInsets();
   const [InsuranceServicesData, setInsuranceServicesData] = useState([]);
@@ -34,39 +41,22 @@ const Home = () => {
   }, []);
 
   return (
-    <View
-      style={{
-        paddingTop: insets.top,
-        padding: moderateScale(10),
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        gap: moderateScale(10),
-        // backgroundColor: "gray",
-        height: "100%",
-      }}
-    >
-      <View
-        style={{
-          // backgroundColor: "red",
-          height: "40%",
-          overflow: "hidden",
-        }}
-      >
-        <Header />
-      </View>
-      <View
-        style={{
-          flex: 1,
-          // backgroundColor: "blue",
-          // overflow: "scroll",
-          height: "60%",
-        }}
-      >
-        <InsuranceServices InsuranceServicesData={InsuranceServicesData} />
-      </View>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <Header />
+      <InsuranceServices InsuranceServicesData={InsuranceServicesData} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    padding: moderateScale(10),
+    display: "flex",
+    flexDirection: "column",
+    width: responsiveWidth(100),
+    height: responsiveHeight(100),
+    // backgroundColor: "red",
+  },
+});
 
 export default Home;

@@ -4,6 +4,12 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Logo from "../assets/images/logo.png";
 import { moderateScale } from "react-native-size-matters";
 import Menu from "./Menu";
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize,
+  responsiveScreenHeight,
+} from "react-native-responsive-dimensions";
 
 const Header = () => {
   const [clicked, setClicked] = useState(false);
@@ -79,21 +85,19 @@ const styles = StyleSheet.create({
     margin: "auto",
     textAlign: "center",
     alignItems: "center",
-    width: "100%",
+    width: responsiveWidth(100),
     // backgroundColor: "yellow",
   },
   container: {
     display: "flex",
     flexDirection: "row",
-    width: "90%",
+    width: responsiveWidth(90),
     margin: "auto",
     justifyContent: "space-between",
-    padding: moderateScale(2),
     // backgroundColor: "gray",
   },
   logoContainer: {
     // backgroundColor: "green",
-    // padding: 10,
     display: "flex",
     flexDirection: "column",
     textAlign: "center",
@@ -103,7 +107,7 @@ const styles = StyleSheet.create({
   avatarContainer: {
     // backgroundColor: "blue",
     alignItems: "center",
-    padding: moderateScale(10),
+    padding: responsiveFontSize(1),
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -123,18 +127,18 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    height: moderateScale(63),
+    height: moderateScale(40),
     // backgroundColor: "pink",
   },
   earningContainerCard: {
     display: "flex",
     flexDirection: "column",
-    gap: moderateScale(2),
-    width: "90%",
+    // gap: responsiveFontSize(1),
+    width: responsiveWidth(90),
     justifyContent: "center",
-    height: moderateScale(91),
+    height: responsiveHeight(14),
     backgroundColor: "#FFFFFF",
-    padding: moderateScale(14),
+    padding: responsiveFontSize(2),
     shadowColor: "#DDDDDD8F",
     shadowOffset: {
       width: 4,

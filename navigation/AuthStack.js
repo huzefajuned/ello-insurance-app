@@ -24,22 +24,34 @@ const AuthStack = () => {
       ) : (
         <>
           <Stack.Screen
-            name="Tabs"
-            component={Tabs}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="InquiryForm"
-            component={InquiryForm}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ChangePassword"
-            component={ChangePassword}
+            name="MainTabs"
+            component={MainTabs}
             options={{ headerShown: false }}
           />
         </>
       )}
+    </Stack.Navigator>
+  );
+};
+
+const MainTabs = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Tabs"
+        component={Tabs}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="InquiryForm"
+        component={InquiryForm}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ChangePassword"
+        component={ChangePassword}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

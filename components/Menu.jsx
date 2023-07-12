@@ -15,11 +15,11 @@ const Menu = () => {
     //   title: "Setting",
     //   icon: "settings",
     // },
-    {
-      key: 2,
-      title: "ChangePas",
-      icon: "settings",
-    },
+    // {
+    //   key: 2,
+    //   title: "ChangePas",
+    //   icon: "settings",
+    // },
     {
       key: 3,
       title: "Logout",
