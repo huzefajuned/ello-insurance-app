@@ -3,10 +3,12 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  StyleSheet,
 } from "react-native";
-import React from "react";
-import { moderateScale } from "react-native-size-matters";
+import React, { useContext } from "react";
 import { Feather } from "@expo/vector-icons";
+import { responsiveFontSize } from "react-native-responsive-dimensions";
+import { RegisterContext } from "../context/RegisterContext";
 
 const CustomTextInput = ({
   label,
@@ -14,50 +16,46 @@ const CustomTextInput = ({
   inputIcon,
   isVisible,
   placeholderFontSize,
+  placeholderTextColor,
   onVisiblePassword,
   inlineStyles,
+  value,
+  inputMode,
   ...props
 }) => {
+  const { isBlank, setIsBlank } = useContext(RegisterContext);
+
   return (
     <View>
-      {label && (
-        <Text
-          style={{
-            color: "#535353",
-            fontSize: 14,
-            fontWeight: "bold",
-            letterSpacing: 1,
-          }}
-        >
-          {label}
-        </Text>
+      {label && isBlank && value && (
+        <Text style={styles.labelStyle}>{label}</Text>
       )}
       <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          textAlign: "center",
-          alignContent: "center",
-          width: "100%",
-          alignContent: "center",
-        }}
+        style={[
+          inlineStyles,
+          {
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            textAlign: "center",
+            alignContent: "center",
+            alignContent: "center",
+          },
+        ]}
       >
         <TextInput
           style={[
-            inlineStyles,
             {
-              height: moderateScale(40),
-              borderBottomWidth: 1,
-              borderBottomColor: "#DFDFDF",
               flex: 1,
-              color: "#000000",
             },
           ]}
           placeholder={placeholder}
           {...props}
-          placeholderTextColor="#DCDCDC"
+          placeholderTextColor={placeholderTextColor}
+          value={value}
+          inputMode={inputMode}
         />
+
         <View
           style={{
             justifyContent: "center",
@@ -71,14 +69,39 @@ const CustomTextInput = ({
                 size={22}
                 style={{
                   textAlign: "center",
+                  color: "gray",
+                  marginRight: responsiveFontSize(1),
                 }}
               />
             </TouchableOpacity>
           )}
         </View>
       </View>
+
+      {isBlank && !value && (
+        <Text
+          style={
+            isBlank && !value ? [styles.labelErrorStyle] : [styles.labelStyle]
+          }
+        >
+          {label} is required
+        </Text>
+      )}
     </View>
   );
 };
 
 export default CustomTextInput;
+
+const styles = StyleSheet.create({
+  labelStyle: {
+    color: "#535353",
+    fontSize: responsiveFontSize(1.8),
+    fontWeight: "bold",
+    letterSpacing: 1,
+  },
+  labelErrorStyle: {
+    color: "red",
+    fontSize: responsiveFontSize(1.8),
+  },
+});

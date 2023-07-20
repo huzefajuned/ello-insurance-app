@@ -7,17 +7,20 @@ const InquiryHeader = ({ heading, isBackIcon, isCloseIcon }) => {
   const navigation = useNavigation();
 
   const handleGoBack = () => {
-    navigation.navigate("Tabs");
+    navigation.navigate("Home");
   };
 
   const handleClose = () => {
-    console.log("Close button pressed");
+    navigation.navigate("Home");
   };
 
   return (
     <View style={styles.container}>
       {isBackIcon && (
-        <TouchableOpacity onPress={handleGoBack} style={styles.iconContainer}>
+        <TouchableOpacity
+          onPress={() => handleGoBack()}
+          style={styles.iconContainer}
+        >
           <Feather name="arrow-left" style={styles.backAndCloseIcon} />
         </TouchableOpacity>
       )}

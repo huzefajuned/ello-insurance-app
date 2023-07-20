@@ -1,29 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Logo from "../assets/images/logo.png";
 import { moderateScale } from "react-native-size-matters";
-import Menu from "./Menu";
+import base64 from "react-native-base64";
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
   responsiveScreenHeight,
 } from "react-native-responsive-dimensions";
+import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../context/AuthContext";
+import { BACKEND_BASE_URL } from "../CONSTANTS";
+import axios from "axios";
 
 const Header = () => {
-  const [clicked, setClicked] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const navigation = useNavigation();
+  const [userProfle, setUserProfile] = useState({});
+  const { accessToken } = useContext(AuthContext);
+  const tokenParts = accessToken?.split(".");
+  const payload = tokenParts?.[1];
+  const decodedPayload = base64?.decode(payload);
+  const { id } = JSON?.parse(decodedPayload) || {};
 
-  const onPressHeaderIcon = () => {
-    setClicked(!clicked);
-    setModalOpen(!modalOpen);
+  const url = `${BACKEND_BASE_URL}/api/v1/pos/${id}`;
+  const handleProfile = async () => {
+    const headers = { Authorization: `${accessToken}` };
+    try {
+      const response = await axios.get(url, { headers });
+      setUserProfile(response?.data?.data);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
+
+  useEffect(() => {
+    handleProfile();
+  }, []);
+
   return (
     <View style={styles.main}>
       <View style={styles.container}>
         <View style={styles.logoContainer}>
-          <Image source={Logo} style={{ height: 27, width: 39 }} />
+          <Image
+            source={Logo}
+            style={{
+              height: responsiveHeight(4),
+              width: responsiveWidth(12),
+              resizeMode: "contain",
+            }}
+          />
           <Text
             style={{
               fontSize: 10,
@@ -33,43 +60,14 @@ const Header = () => {
             Insurance
           </Text>
         </View>
+
         <View style={styles.avatarContainer}>
-          <TouchableOpacity onPress={() => console.log("Avatar pressed")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
             <Image
-              source={require("../assets/images/avatar.png")}
+              source={{ uri: userProfle?.image }}
               style={{ width: 50, height: 50, borderRadius: 25 }}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => onPressHeaderIcon()}>
-            <MaterialIcons
-              name={clicked ? "keyboard-arrow-up" : "keyboard-arrow-down"}
-              size={35}
-              color="#26CBED"
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.earningContainer}>
-        <View style={styles.earningContainerHeader}>
-          <View>
-            <Text style={{ fontSize: 16 }}>
-              Hello,
-              <Text style={{ fontWeight: "bold" }}>Josh!</Text>
-            </Text>
-          </View>
-          {modalOpen && (
-            <View style={styles.modal}>
-              <Menu />
-            </View>
-          )}
-        </View>
-        <View style={styles.earningContainerCard}>
-          <Text style={{ color: "#000000", fontSize: 14 }}>My Earning</Text>
-          <Text style={{ color: "#000000", fontSize: 18 }}>₹ 38,000 </Text>
-          <Text style={{ color: "#707070", fontSize: 12 }}>
-            Last Month Earning: May 8, 2023{" "}
-          </Text>
         </View>
       </View>
     </View>
@@ -86,7 +84,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignItems: "center",
     width: responsiveWidth(100),
-    // backgroundColor: "yellow",
   },
   container: {
     display: "flex",
@@ -114,7 +111,7 @@ const styles = StyleSheet.create({
   // earningContainer
   earningContainer: {
     // backgroundColor: "brown",
-    width: "100%",
+    width: responsiveWidth(100),
     display: "flex",
     margin: "auto",
     flexDirection: "column",
@@ -123,20 +120,19 @@ const styles = StyleSheet.create({
     // gap: moderateScale(5),
   },
   earningContainerHeader: {
-    width: "90%",
+    width: responsiveWidth(95),
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     height: moderateScale(40),
-    // backgroundColor: "pink",
   },
   earningContainerCard: {
     display: "flex",
     flexDirection: "column",
-    // gap: responsiveFontSize(1),
+    gap: responsiveFontSize(0.5),
     width: responsiveWidth(90),
     justifyContent: "center",
-    height: responsiveHeight(14),
+    height: responsiveHeight(12),
     backgroundColor: "#FFFFFF",
     padding: responsiveFontSize(2),
     shadowColor: "#DDDDDD8F",
@@ -152,7 +148,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     backgroundColor: "#FFFFFF",
-    padding: moderateScale(8),
+    padding: moderateScale(0),
     shadowColor: "#DDDDDD8F",
     shadowOffset: {
       width: 4,
@@ -163,6 +159,7 @@ const styles = StyleSheet.create({
     borderColor: "#DDDDDD",
     borderWidth: 1,
     borderRadius: 6,
-    width: "40%",
+    width: "30%",
+    marginRight: "3%",
   },
 });

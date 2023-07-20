@@ -9,39 +9,60 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import SearchBar from "./SearchBar";
-import { moderateScale, scale } from "react-native-size-matters";
+import { moderateScale } from "react-native-size-matters";
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
+import { ActivityIndicator } from "react-native";
 
-const InsuranceServices = ({ InsuranceServicesData }) => {
+const InsuranceServices = ({
+  InsuranceServicesData,
+  inputText,
+  setInputText,
+}) => {
   const [clicked, setClicked] = useState(false);
+  // const [inputText, setInputText] = useState("");
   const navigation = useNavigation();
 
-  const handleCardPress = () => {
-    // Navigate to the form screen
-    navigation.navigate("InquiryForm");
+  const handleCardPress = (service) => {
+    // Navigate to the form screen with selected state value---
+    navigation.navigate("InquiryForm", { service });
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <SearchBar setClicked={setClicked} clicked={clicked} />
+        <SearchBar
+          setClicked={setClicked}
+          clicked={clicked}
+          inputText={inputText}
+          setInputText={setInputText}
+        />
         <Text style={styles.title}>Insurance Service</Text>
       </View>
       <ScrollView contentContainerStyle={styles.servicesContainer}>
-        {InsuranceServicesData?.map((service, index) => (
-          <TouchableOpacity
-            key={index} // replace with  object key
-            style={styles.card}
-            onPress={handleCardPress}
-          >
-            <Image source={{ uri: service?.image }} style={styles.image} />
-            <Text style={styles.serviceName}>{service?.name}</Text>
-          </TouchableOpacity>
-        ))}
+        {InsuranceServicesData?.length === 0 ? (
+          <View style={{}}>
+            <Text>
+              <ActivityIndicator size="large" color="#37CFEE" />
+            </Text>
+          </View>
+        ) : (
+          <>
+            {InsuranceServicesData?.map((service, index) => (
+              <TouchableOpacity
+                key={index} // replace with  object key
+                style={styles.card}
+                onPress={() => handleCardPress(service)}
+              >
+                <Image source={{ uri: service?.image }} style={styles.image} />
+                <Text style={styles.serviceName}>{service?.name}</Text>
+              </TouchableOpacity>
+            ))}
+          </>
+        )}
       </ScrollView>
     </View>
   );
@@ -49,15 +70,12 @@ const InsuranceServices = ({ InsuranceServicesData }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
-    marginTop: 1,
-    // backgroundColor: "yellow",
+    padding: 2,
   },
   content: {
     paddingTop: responsiveFontSize(1),
     paddingHorizontal: responsiveFontSize(1),
-    height: responsiveHeight(15),
-    // backgroundColor: "red",
+    height: responsiveHeight(12),
   },
   title: {
     fontSize: responsiveFontSize(2),
@@ -69,9 +87,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: responsiveFontSize(2),
+    paddingTop: responsiveFontSize(3),
     justifyContent: "center",
-    // backgroundColor: "green",
-
   },
   card: {
     width: responsiveWidth(25),
@@ -100,6 +117,7 @@ const styles = StyleSheet.create({
   },
   serviceName: {
     marginTop: responsiveFontSize(1),
+    fontSize: responsiveFontSize(1.6),
   },
 });
 

@@ -3,8 +3,14 @@ import { StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { moderateScale } from "react-native-size-matters";
 
-const CustomDropdown = ({ placeholder, data, inlineStyle }) => {
+const CustomDropdown = ({ placeholder, data, inlineStyle, onValueChange }) => {
   const [value, setValue] = useState(null);
+
+
+  const handleValueChange = (item) => {
+    setValue(item.value);
+    onValueChange(item.value); // Call the callback function with the selected value
+  };
 
   return (
     <View style={styles.container}>
@@ -22,9 +28,7 @@ const CustomDropdown = ({ placeholder, data, inlineStyle }) => {
         placeholder={placeholder}
         searchPlaceholder="Search..."
         value={value}
-        onChange={(item) => {
-          setValue(item.value);
-        }}
+        onChange={handleValueChange}
       />
     </View>
   );

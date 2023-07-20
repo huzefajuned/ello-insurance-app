@@ -3,9 +3,9 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Button,
   StyleSheet,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { moderateScale } from "react-native-size-matters";
 import { useNavigation } from "@react-navigation/native";
@@ -16,15 +16,26 @@ import CustomTextInput from "./CustomTextInput";
 import { AuthContext } from "../context/AuthContext";
 import { BACKEND_BASE_URL } from "../CONSTANTS";
 
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from "react-native-responsive-dimensions";
+import CustomModal from "./CustomModal";
+import { CustomModalContext } from "../context/CustomModalContext";
+import ForgetPassword from "./ForgetPassword";
+
 const CustomForm = () => {
   const url = `${BACKEND_BASE_URL}/api/v1/auth/user/login`;
   const navigation = useNavigation();
   const { setToken, isLoading } = useContext(AuthContext);
+  const { isModalVisible, setIsModalVisible } = useContext(CustomModalContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
+  // const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleAfterLogin = async () => {
     try {
@@ -59,7 +70,12 @@ const CustomForm = () => {
     } catch (error) {
       setLoading(false);
       if (error.response) {
-        console.log("Error status:", error.response.status);
+        if (error.response.status === 404) {
+          Toast.show({
+            type: "error",
+            text1: "404 Not Found",
+          });
+        }
         Toast.show({
           type: "error",
           text1:
@@ -76,63 +92,185 @@ const CustomForm = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <CustomTextInput
-        label="Email"
-        placeholder="Enter Your Email"
-        inputIcon={false}
-        value={email}
-        onChangeText={setEmail}
-      />
-      <CustomTextInput
-        label="Password"
-        placeholder="Enter Your Password"
-        inputIcon={true}
-        secureTextEntry={isVisible}
-        onVisiblePassword={() => setIsVisible(!isVisible)}
-        isVisible={isVisible}
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TouchableOpacity onPress={() => navigation.navigate("ChangePassword")}>
-        <Text style={{ color: "#37CFEE" }}>Change Password?</Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <View style={styles.button}>
-          {loading || isLoading ? (
-            <ActivityIndicator size="large" color="#37CFEE" />
-          ) : (
-            <Button title="Login" color="#37CFEE" onPress={handleAfterLogin} />
-          )}
+    <>
+      <View style={styles.container}>
+        <View
+          style={{
+            padding: 1,
+            alignSelf: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "row",
+            width: responsiveWidth(70),
+          }}
+        >
+          <Image
+            style={{
+              height: responsiveWidth(20),
+              width: responsiveWidth(20),
+              resizeMode: "cover",
+            }}
+            source={require("../assets/login-logo.png")}
+            resizeMethod="resize"
+          />
         </View>
-      </TouchableOpacity>
-    </View>
+
+        <View
+          style={{
+            width: responsiveWidth(70),
+            gap: responsiveFontSize(0.5),
+          }}
+        >
+          <Text
+            style={{
+              color: "#044291",
+              textAlign: "center",
+              fontSize: responsiveFontSize(3),
+            }}
+          >
+            Log In Now
+          </Text>
+          <Text
+            style={{
+              color: "#071952",
+              fontSize: responsiveFontSize(1.7),
+              textAlign: "center",
+            }}
+          >
+            Please login to continue using our app
+          </Text>
+        </View>
+        <View style={styles.textInputContainer}>
+          <CustomTextInput
+            label=""
+            placeholder="Email"
+            inputIcon={false}
+            value={email}
+            onChangeText={setEmail}
+            inlineStyles={styles.inlineCommonStyles}
+            placeholderTextColor="#A8A196"
+          />
+          <CustomTextInput
+            label=""
+            placeholder="Password"
+            inputIcon={true}
+            secureTextEntry={isVisible}
+            onVisiblePassword={() => setIsVisible(!isVisible)}
+            isVisible={isVisible}
+            value={password}
+            onChangeText={setPassword}
+            inlineStyles={styles.inlineCommonStyles}
+            placeholderTextColor="#A8A196"
+          />
+        </View>
+        <View>
+          <TouchableOpacity onPress={() => setIsModalVisible(true)}>
+            <Text
+              style={{
+                color: "black",
+                textAlign: "right",
+                fontSize: responsiveFontSize(2),
+              }}
+            >
+              Forget Password?
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View>
+          <TouchableOpacity>
+            <View>
+              {loading || isLoading ? (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "#044291",
+                    height: responsiveHeight(6),
+                    borderRadius: moderateScale(6),
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                  }}
+                  onPress={() => {}}
+                >
+                  <ActivityIndicator size="large" color="#37CFEE" />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "#044291",
+                    height: responsiveHeight(6),
+                    borderRadius: moderateScale(6),
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                  }}
+                  onPress={handleAfterLogin}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      textAlign: "center",
+                      alignSelf: "center",
+                      justifyContent: "center",
+                      fontSize: responsiveFontSize(2),
+                    }}
+                  >
+                    Log In
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+            <Text
+              style={{
+                color: "black",
+                textAlign: "right",
+                fontSize: responsiveFontSize(1.8),
+              }}
+            >
+              Dont have an Account ? Create New
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <CustomModal>
+        <ForgetPassword setIsModalVisible={setIsModalVisible} />
+      </CustomModal>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#ffffff",
-    borderRadius: 12,
-    width: "100%",
-    height: "auto",
+    backgroundColor: "white",
+    width: responsiveWidth(100),
+    height: responsiveHeight(100),
+    padding: responsiveWidth(15),
     alignSelf: "center",
+    justifyContent: "center",
     display: "flex",
     flexDirection: "column",
-    gap: moderateScale(24),
-    borderWidth: 1,
-    borderColor: "#DDDDDD8F",
-    padding: moderateScale(12),
-    shadowColor: "#000000",
-    shadowOffset: { width: 4, height: 3 },
-    shadowOpacity: 0.6,
-    shadowRadius: 4,
-    elevation: 6,
+    gap: responsiveHeight(5),
   },
-  button: {
-    borderRadius: 10,
-    fontSize: 12,
-    backgroundColor: "white",
+  textInputContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: responsiveFontSize(2),
+    // backgroundColor:"gray
+  },
+  inlineCommonStyles: {
+    borderWidth: 2,
+    borderColor: "#EEEEEE",
+    height: responsiveHeight(6.5),
+    // flex: 1,
+    width: "100%",
+    paddingLeft: responsiveFontSize(2),
+    borderRadius: 6,
+    color: "#27374D",
   },
 });
 

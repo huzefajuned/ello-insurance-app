@@ -10,16 +10,11 @@ const Menu = () => {
   const { removeToken } = useContext(AuthContext);
 
   const menuItems = [
-    // {
-    //   key: 1,
-    //   title: "Setting",
-    //   icon: "settings",
-    // },
-    // {
-    //   key: 2,
-    //   title: "ChangePas",
-    //   icon: "settings",
-    // },
+    {
+      key: 2,
+      title: "Settings",
+      icon: "settings",
+    },
     {
       key: 3,
       title: "Logout",
@@ -32,7 +27,7 @@ const Menu = () => {
       removeToken(); // Remove the access token from the context
       // navigation.navigate("Login");
     }
-    if (item.title === "ChangePas") {
+    if (item.title === "Settings") {
       navigation.navigate("ChangePassword");
     }
   };
@@ -42,7 +37,7 @@ const Menu = () => {
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: 5,
+        // gap: 5,
       }}
     >
       {menuItems.map((item) => {

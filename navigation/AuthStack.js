@@ -5,6 +5,8 @@ import Tabs from "../navigation/tabs";
 import InquiryForm from "../screens/InquiryFormScreen";
 import LoginScreen from "../screens/LoginScreen";
 import ChangePassword from "../screens/ChangePassword";
+import VideoPlayerScreen from "../screens/VideoPlayerScreen";
+import RegisterScreen from "../screens/RegisterScreen";
 
 const Stack = createStackNavigator();
 
@@ -18,6 +20,11 @@ const AuthStack = () => {
           <Stack.Screen
             name="Login"
             component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
             options={{ headerShown: false }}
           />
         </>
@@ -50,6 +57,11 @@ const MainTabs = () => {
       <Stack.Screen
         name="ChangePassword"
         component={ChangePassword}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="VideoPlayerScreen"
+        component={VideoPlayerScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

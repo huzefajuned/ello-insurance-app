@@ -1,10 +1,23 @@
 import React from "react";
-import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
-import { Feather, Entypo, mic } from "@expo/vector-icons";
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  Keyboard,
+  Button,
+  TouchableOpacity,
+} from "react-native";
+import { Entypo } from "@expo/vector-icons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
-
-const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
+const SearchBar = ({
+  clicked,
+  searchPhrase,
+  setSearchPhrase,
+  setClicked,
+  inputText,
+  setInputText,
+}) => {
   return (
     <View style={styles.container}>
       <View
@@ -13,14 +26,21 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
         }
       >
         {/* search Icon */}
-        <FontAwesome5 name="search" size={16} color="#707070" style={styles.icon} />
+        <FontAwesome5
+          name="search"
+          size={16}
+          color="#707070"
+          style={styles.icon}
+        />
 
         {/* Input field */}
         <TextInput
           style={styles.input}
           placeholder="Search"
-          value={searchPhrase}
-          onChangeText={setSearchPhrase}
+          value={inputText}
+          onChangeText={(text) => {
+            setInputText(text);
+          }}
           onFocus={() => {
             setClicked(true);
           }}
@@ -28,21 +48,22 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
 
         {/* cross Icon, depending on whether the search bar is clicked or not */}
         {clicked ? (
-          <Entypo
-            name="cross"
-            size={18}
-            color="#707070"
+          <TouchableOpacity
             onPress={() => {
-              setSearchPhrase("");
+              setInputText("");
             }}
-          />
+          >
+            <Entypo name="cross" size={18} color="#707070" />
+          </TouchableOpacity>
         ) : (
-          <FontAwesome5 name="microphone" size={20} color="#707070" style={styles.icon} />
+          ""
+          // <FontAwesome5 name="microphone" size={20} color="#707070" style={styles.icon} />
         )}
       </View>
     </View>
   );
 };
+
 export default SearchBar;
 
 // styles
@@ -91,6 +112,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 12,
-    color: "#707070", 
-     },
+    color: "#707070",
+  },
 });

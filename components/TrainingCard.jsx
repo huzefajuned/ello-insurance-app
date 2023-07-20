@@ -1,53 +1,106 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
+import React, { useState } from "react";
 import { moderateScale, scale } from "react-native-size-matters";
-import { Feather } from "@expo/vector-icons";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from "react-native-responsive-dimensions";
+import { openBrowserAsync } from "expo-web-browser";
+import { useNavigation } from "@react-navigation/native";
+import CustomModal from "./CustomModal";
 
-const TrainingCard = () => {
-  const trainingData = [
-    {
-      key: 1,
-      title: "IC 38",
-      subTitle: "Basic Agent Training",
-    },
-    {
-      key: 2,
-      title: "IC 40",
-      subTitle: "Basic Agent Training",
-    },
-    {
-      key: 3,
-      title: "IC 44",
-      subTitle: "Basic Agent Training",
-    },
-  ];
+const TrainingCard = ({ trainingData }) => {
+  const navigation = useNavigation();
+
+  const openTraining = (data) => {
+    const { id, asset_type, asset, title, description } = data;
+    console.log(asset_type);
+    if (asset_type == "Link") {
+      openBrowserAsync(asset);
+    } else if (asset_type === "Document") {
+      console.log(asset_type);
+    } else if (asset_type === "Video") {
+      navigation.navigate("VideoPlayerScreen", { asset });
+    } else {
+      console.log(asset_type);
+    }
+  };
+
   return (
     <View style={styles.trainingContainer}>
-      {trainingData.map((data) => {
-        return (
-          <View key={data.key} style={styles.trainingContainerCard}>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: moderateScale(8),
-              }}
-            >
-              <Text style={{ color: "#000000", fontSize: 12, fontWeight: 900 }}>
-                {data.title}
-              </Text>
-              <Text style={{ color: "#000000", fontSize: 12, fontWeight: 300 }}>
-                {data.subTitle}
-              </Text>
-            </View>
-            <View>
-              <TouchableOpacity>
-                <Feather name="share-2" size={22} color="#000000" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        );
-      })}
+      {trainingData?.length === 0 ? (
+        <View
+          style={{
+            height: responsiveHeight(100),
+            width: responsiveWidth(90),
+            // justifyContent: "center",
+          }}
+        >
+          <Text style={{ textAlign: "center" }}>
+            <ActivityIndicator size="large" color="#37CFEE" />
+          </Text>
+        </View>
+      ) : (
+        <ScrollView
+          style={styles.trainingContainer}
+          showsHorizontalScrollIndicator={false}
+        >
+          <>
+            {trainingData?.data?.map((data) => {
+              const { id, asset_type, asset, title, description } = data;
+              return (
+                <View key={id} style={styles.trainingContainerCard}>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: moderateScale(8),
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#000000",
+                        fontSize: 12,
+                        fontWeight: 900,
+                      }}
+                    >
+                      {title}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "#000000",
+                        fontSize: 12,
+                        fontWeight: 300,
+                      }}
+                    >
+                      {description}
+                    </Text>
+                  </View>
+                  <View>
+                    <TouchableOpacity onPress={() => openTraining(data)}>
+                      <MaterialIcons
+                        // name="open-in-new"
+                        name={asset_type==="Video" ? "play-circle-fill":"" || asset_type==="Link" ? "link":"" ||asset_type==="Document" ? "picture-as-pdf":""  }
+                        size={22}
+                        color="#000000"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              );
+            })}
+          </>
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -55,28 +108,23 @@ const TrainingCard = () => {
 export default TrainingCard;
 
 const styles = StyleSheet.create({
-  // trainingContainer
-
   trainingContainer: {
-    width: "100%",
-    height: "100%",
+    width: responsiveWidth(90),
+    height: responsiveHeight(80),
+    alignSelf: "center",
     display: "flex",
-    margin: "auto",
     flexDirection: "column",
-    alignItems: "center",
-    gap: 14,
   },
   trainingContainerHeader: {
-    width: "95%",
+    // backgroundColor: "red",
   },
   trainingContainerCard: {
     display: "flex",
     flexDirection: "column",
-    width: "95%",
-    justifyContent: "center",
     height: moderateScale(91),
     backgroundColor: "#FFFFFF",
     display: "flex",
+    marginTop: responsiveFontSize(2),
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
