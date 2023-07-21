@@ -7,6 +7,7 @@ import BankDetailsForm from "../components/BankDetailsForm";
 import UploadDocumentsForm from "../components/UploadDocumentsForm";
 import StepIndicator from "react-native-step-indicator";
 import {
+  responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from "react-native-responsive-dimensions";
@@ -59,13 +60,15 @@ const RegisterScreen = () => {
       behavior="padding"
     >
       <View style={styles.innerContainer}>
-        <StepIndicator
-          customStyles={customStyles}
-          currentPosition={currentPosition}
-          labels={labels}
-          stepCount={labels.length}
-          onPress={handleStepClick}
-        />
+        <View style={styles.indicatorContainer}>
+          <StepIndicator
+            customStyles={customStyles}
+            currentPosition={currentPosition}
+            labels={labels}
+            stepCount={labels.length}
+            onPress={handleStepClick}
+          />
+        </View>
         <View style={styles.formContainer}>{renderForm()}</View>
       </View>
     </View>
@@ -79,15 +82,19 @@ const styles = StyleSheet.create({
     // backgroundColor: "gray",
     width: responsiveWidth(100),
     height: responsiveHeight(100),
+    flex: 1, // This allows the outer container to take up the full available space
+    justifyContent: "center", // Center content vertically
+    alignItems: "center",
   },
 
   innerContainer: {
-    justifyContent: "center",
-    alignSelf: "center",
-    // width: responsiveWidth(90),
-    // height: responsiveHeight(90),
+    flex: 1, // This allows the outer container to take up the full available space
+    justifyContent: "center", // Center content vertically
+    alignItems: "center",
   },
-  stepContainer: {},
+  indicatorContainer: {
+    width: responsiveWidth(100),
+  },
   formContainer: {
     flex: 1,
     // marginTop: responsiveFontSize(4),
@@ -107,8 +114,8 @@ const styles = StyleSheet.create({
 });
 
 const customStyles = {
-  stepIndicatorSize: 25,
-  currentStepIndicatorSize: 30,
+  stepIndicatorSize: responsiveFontSize(3),
+  currentStepIndicatorSize: responsiveFontSize(4),
   separatorStrokeWidth: 2,
   currentStepStrokeWidth: 3,
   stepStrokeCurrentColor: "#43c8f6",
@@ -120,12 +127,12 @@ const customStyles = {
   stepIndicatorFinishedColor: "#fe7013",
   stepIndicatorUnFinishedColor: "#ffffff",
   stepIndicatorCurrentColor: "#12bbf5",
-  stepIndicatorLabelFontSize: 13,
-  currentStepIndicatorLabelFontSize: 13,
+  stepIndicatorLabelFontSize: responsiveFontSize(1.5),
+  currentStepIndicatorLabelFontSize: responsiveFontSize(2),
   stepIndicatorLabelCurrentColor: "white",
   stepIndicatorLabelFinishedColor: "#ffffff",
   stepIndicatorLabelUnFinishedColor: "#aaaaaa",
   labelColor: "#999999",
-  labelSize: 13,
+  labelSize: responsiveFontSize(1.3),
   currentStepLabelColor: "#43c8f6",
 };

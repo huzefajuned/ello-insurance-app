@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useContext } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, { useContext, useState } from "react";
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -11,9 +11,7 @@ import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { RegisterContext } from "../context/RegisterContext";
 
 const CustomUpload = ({ title, inlineUploadStyles, value, onChangeText }) => {
-  const [blobURL, setBlobURL] = React.useState(null);
-console.log("blobURL",blobURL)
-  // console.log("value", value)
+  const [blobURL, setBlobURL] = useState("");
   const {
     isBlank,
     setIsBlank,
@@ -26,16 +24,16 @@ console.log("blobURL",blobURL)
   const pickProfile = async () => {
     const _Photo = await DocumentPicker.getDocumentAsync({
       multiple: false,
-      base64: true,
       type: "image/*",
     });
 
-    // console.log(_Photo.uri);
 
     // Convert the base64 data to a blob
     const response = await fetch(_Photo.uri);
+
     const blob = await response.blob();
-    setBlobURL(URL.createObjectURL(blob));
+    const fileName = response?._bodyBlob?._data.name;
+    // setBlobURL(URL.createObjectURL(blob));
 
     // Convert the blob to base64
     const reader = new FileReader();
@@ -44,35 +42,55 @@ console.log("blobURL",blobURL)
       // console.log(base64data);
 
       // Call the onChangeText function with the base64 data
-      onChangeText(base64data);
+      onChangeText(`${fileName},${base64data}`);
+      setBlobURL(base64data);
     };
+
     reader.readAsDataURL(blob);
   };
 
   return (
     <View style={styles.container}>
-      <Text
-        style={
-          isBlank && !value ? [styles.labelErrorStyle] : [styles.labelStyle]
-        }
-      >
-        {title + ` ${isBlank && !value ? "Required" : ""}`}
-      </Text>
+      {title && !isBlank && <Text style={styles.labelStyle}>{title}</Text>}
       <TouchableOpacity style={styles.uploadCard} onPress={pickProfile}>
-        {}
+        {blobURL ? (
+          <View style={styles.profileReview}>
+            <MaterialIcons
+              name="cloud-upload"
+              color="#044291"
+              size={responsiveFontSize(5)}
+              style={{ marginRight: responsiveWidth(20) }}
+            />
+            <Image
+              source={{
+                uri: blobURL,
+                width: responsiveHeight(10),
+                height: responsiveHeight(10),
+              }}
+              style={{ borderRadius: 50 }}
+            />
+          </View>
+        ) : (
+          <MaterialIcons
+            name="cloud-upload"
+            color="#044291"
+            size={responsiveFontSize(5)}
+            style={{ justifyContent: "center", textAlign: "center" }}
+          />
+        )}
       </TouchableOpacity>
+      {isBlank && !value && (
+        <Text style={styles.labelErrorStyle}>{title} is required</Text>
+      )}
     </View>
   );
 };
 
 export default CustomUpload;
 const styles = StyleSheet.create({
-  container: {
-    // backgroundColor: "red",
-    height: responsiveHeight(10),
-  },
+  container: {},
   uploadCard: {
-    height: responsiveHeight(9),
+    height: responsiveHeight(8),
     backgroundColor: "#DCDCDC",
     borderWidth: 2,
     borderColor: "#EEEEEE",
@@ -82,16 +100,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
   },
+  profileReview: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
   labelStyle: {
     color: "#535353",
-    fontSize: responsiveFontSize(1.8),
+    fontSize: responsiveFontSize(1.5),
     fontWeight: "bold",
     letterSpacing: 1,
-    // backgroundColor: "yellow",
   },
   labelErrorStyle: {
     color: "red",
-    fontSize: responsiveFontSize(1.8),
-    // backgroundColor: "green",
+    fontSize: responsiveFontSize(1.5),
   },
 });

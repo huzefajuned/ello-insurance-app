@@ -18,12 +18,14 @@ export const RegisterContextProvider = ({ children }) => {
   const [ifsc_Code, setIfsc_Code] = useState("");
 
   // states for Upload Documnets Form---
-  const [profile, setProfile] = useState("");
-  const [adhaar, setAadhaar] = useState("");
-  const [panCard, setPanCard] = useState("");
-  const [passbook, setPassbook] = useState("");
-  const [edu_Proof, setEdu_Proof] = useState("");
+  const [profile, setProfile] = useState();
 
+  const [adhaar, setAadhaar] = useState();
+  const [panCard, setPanCard] = useState();
+  const [passbook, setPassbook] = useState();
+  const [edu_Proof, setEdu_Proof] = useState();
+
+  
   const contextValue = {
     isBlank,
     setIsBlank,
@@ -58,6 +60,7 @@ export const RegisterContextProvider = ({ children }) => {
     edu_Proof,
     setEdu_Proof,
   };
+  console.log("profile",profile)
   return (
     <RegisterContext.Provider value={contextValue}>
       {children}

@@ -1,9 +1,13 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useContext } from "react";
 import { Feather } from "@expo/vector-icons";
 import { moderateScale } from "react-native-size-matters";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
+import {
+  responsiveFontSize,
+  responsiveHeight,
+} from "react-native-responsive-dimensions";
 
 const Menu = () => {
   const navigation = useNavigation();
@@ -11,9 +15,14 @@ const Menu = () => {
 
   const menuItems = [
     {
-      key: 2,
+      key: 1,
       title: "Settings",
       icon: "settings",
+    },
+    {
+      key: 2,
+      title: "Change Password",
+      icon: "edit",
     },
     {
       key: 3,
@@ -27,7 +36,7 @@ const Menu = () => {
       removeToken(); // Remove the access token from the context
       // navigation.navigate("Login");
     }
-    if (item.title === "Settings") {
+    if (item.title === "Change Password") {
       navigation.navigate("ChangePassword");
     }
   };
@@ -37,7 +46,7 @@ const Menu = () => {
       style={{
         display: "flex",
         flexDirection: "column",
-        // gap: 5,
+        gap: responsiveHeight(1),
       }}
     >
       {menuItems.map((item) => {
@@ -45,21 +54,22 @@ const Menu = () => {
           <TouchableOpacity
             key={item.key}
             onPress={() => goToMenuItem(item)}
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignSelf: "center",
-              alignItems: "center",
-              textAlign: "center",
-              gap: moderateScale(7),
-              width: "100%",
-              borderColor: "#707070",
-              borderBottomWidth: 0.3,
-              padding: 1,
-            }}
+            style={styles.container}
           >
-            <Feather name={item.icon} size={12} color="#4A4A4A" />
-            <Text style={{ fontSize: 14, color: "#4A4A4A" }}>{item.title}</Text>
+            <Feather
+              name={item.icon}
+              size={responsiveFontSize(2)}
+              color="white"
+            />
+            <Text
+              style={{
+                fontSize: responsiveFontSize(2),
+                color: "white",
+                marginLeft: responsiveFontSize(1),
+              }}
+            >
+              {item.title}
+            </Text>
           </TouchableOpacity>
         );
       })}
@@ -68,3 +78,20 @@ const Menu = () => {
 };
 
 export default Menu;
+
+const styles = StyleSheet.create({
+  container: {
+    display: "flex",
+    flexDirection: "row",
+    alignSelf: "center",
+    alignItems: "center",
+    textAlign: "center",
+    width: "80%",
+    marginRight: "10%",
+    borderColor: "#707070",
+    borderRadius: 5,
+    padding: responsiveFontSize(0.4),
+    backgroundColor: "#37CFEE",
+    marginTop: responsiveHeight(1),
+  },
+});

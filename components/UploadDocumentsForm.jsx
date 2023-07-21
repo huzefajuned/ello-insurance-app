@@ -1,18 +1,18 @@
-import { View, Text, StyleSheet } from "react-native";
 import React, { useContext, useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import CustomUpload from "./CustomUpload";
 import {
   responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from "react-native-responsive-dimensions";
-import { TouchableOpacity } from "react-native";
 import { moderateScale } from "react-native-size-matters";
 import { RegisterContext } from "../context/RegisterContext";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../CONSTANTS";
+import Toast from "react-native-toast-message";
 
-const UploadDocumentsForm = () => {
+const UploadDocumentsForm = ({ currentPosition, setCurrentPosition }) => {
   const [loading, setLoading] = useState(false);
   const dummy_id_type = "aadharcard";
   const {
@@ -47,73 +47,74 @@ const UploadDocumentsForm = () => {
   };
 
   const registerApi = async () => {
-    const url = `${BACKEND_BASE_URL}/api/v1/pos/register`;
     setLoading(true);
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("age", age);
-    formData.append("email", email);
-    formData.append("phone", phone);
-    formData.append("address", address);
-    formData.append("experience", experience);
-    formData.append("workDetails", workDetails);
-    formData.append("bank_name", bankName);
-    formData.append("acc_number", account_No);
-    formData.append("ifsc_code", ifsc_Code);
+    const url = `${BACKEND_BASE_URL}/api/v1/pos/register`;
 
-    // Remove the dummy data for id_type, id_number, and password
-
-    const filesToUpload = [
-      { name: "profile", uri: profile },
-      { name: "aadhar_number", uri: adhaar },
-      { name: "pan_number", uri: panCard },
-      { name: "passbook", uri: passbook },
-      { name: "educational_proof", uri: edu_Proof },
-    ];
-
-    const appendFiles = (files, fieldName) => {
-      files.forEach((file) => {
-        if (file.uri) {
-          formData.append(fieldName, {
-            name: file.name,
-            uri: file.uri,
-          });
-        }
-      });
+    const payload = {
+      image: profile,
+      docs: [
+        { name: "aadhar_number", file: adhaar },
+        { name: "pan_number", file: panCard },
+        { name: "passbook", file: passbook },
+        { name: "educational_proof", file: edu_Proof },
+      ],
+      name, //
+      age, //
+      email,
+      phone,
+      address, //
+      password: "Dummy@password", //
+      id_type: "aadharcard",
+      id_number: "RE54RGHTV",
+      experience,
+      detail: workDetails,
+      commission: 0,
+      commission_type: "percentage",
+      bank_name: bankName, //
+      ifsc_code: ifsc_Code, //
+      acc_number: account_No, //
     };
 
-    appendFiles(filesToUpload, "docs");
-
-    // Append the correct id_type value (as per the backend's requirement)
-    formData.append("id_type", dummy_id_type); // Change "Passport" to the correct value
-    formData.append("id_number", "RE54RGHTV");
-    formData.append("password", "Dummy@password");
-
-    console.log("formData", formData);
     try {
-      const response = await axios.post(url, formData, {
+      const response = await axios.post(url, payload, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       });
 
       setLoading(false);
       console.log("response", response.data);
+      console.log(response);
+
+      // Show a success message to the user
+      Alert.alert(
+        "Registration Successful",
+        "You have been registered as a POS."
+      );
     } catch (err) {
       setLoading(false);
-      console.log("Error response data:", err);
+
+      // if (err.response.data.msg.email) {
+      //   Alert.alert(err.response.data.msg.email);
+      // }
+
+      // Show an error message to the user
+      Alert.alert(
+        "Registration Error",
+        "There was an error during registration. Please try again later."
+      );
     }
   };
 
   return (
     <View style={styles.container}>
       <CustomUpload
-        title="Aadhar Number"
+        title="Aadhar Card"
         value={adhaar}
         onChangeText={setAadhaar}
       />
       <CustomUpload
-        title="Pan Number"
+        title="Pan Card"
         value={panCard}
         onChangeText={setPanCard}
       />
@@ -134,6 +135,12 @@ const UploadDocumentsForm = () => {
         <Text style={styles.buttonText}>
           {loading ? "Please wait..." : "Submit"}
         </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.goBackButton}
+        onPress={() => setCurrentPosition(currentPosition - 1)}
+      >
+        <Text style={styles.goBackButtonText}>Go Back</Text>
       </TouchableOpacity>
     </View>
   );
@@ -164,5 +171,19 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     fontSize: responsiveFontSize(2),
+  },
+  goBackButton: {
+    backgroundColor: "#044291",
+    height: responsiveHeight(6),
+    borderRadius: moderateScale(6),
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: responsiveFontSize(2),
+  },
+  goBackButtonText: {
+    color: "white",
+    textAlign: "center",
+    alignSelf: "center",
   },
 });

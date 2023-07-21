@@ -5,6 +5,7 @@ import {
   Button,
   TouchableOpacity,
   KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import React, { useContext } from "react";
 import {
@@ -50,21 +51,23 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
       !workDetails
     ) {
       setIsBlank(true);
+      console.log("something blank.....");
     } else {
+      setIsBlank(false);
+      console.log("Nothing.... blank.....");
+
       setCurrentPosition(currentPosition + 1);
     }
   };
 
   return (
-    <View>
-      <KeyboardAvoidingView style={styles.textInputContainer}>
+    <KeyboardAvoidingView style={styles.textInputContainer}>
+      <ScrollView>
         <CustomUpload
           title="Upload Profile"
           inlineStyles={styles.inlineUploadStyles}
           value={profile}
           onChangeText={setProfile}
-          
-          
         />
         <CustomTextInput
           label="Name"
@@ -134,11 +137,11 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
           inlineStyles={styles.inlineCommonStyles}
           placeholderTextColor="#A8A196"
         />
-      </KeyboardAvoidingView>
-      <TouchableOpacity style={styles.button} onPress={gotoNext}>
-        <Text style={styles.buttonText}>Save & Next</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.button} onPress={gotoNext}>
+          <Text style={styles.buttonText}>Save & Next</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -148,21 +151,15 @@ const styles = StyleSheet.create({
   textInputContainer: {
     display: "flex",
     flexDirection: "column",
-    gap: responsiveFontSize(1),
-    // backgroundColor:"gray",
-    // justifyContent:"space-between"
+    gap: responsiveFontSize(0.3),
   },
   inlineCommonStyles: {
     borderWidth: 2,
     borderColor: "#EEEEEE",
     height: responsiveHeight(6),
-    // flex: 1,
-    // width: "100%",
     paddingLeft: responsiveFontSize(2),
     borderRadius: 6,
     color: "#27374D",
-    // backgroundColor:"red",
-    // height:responsiveHeight(6)
   },
   button: {
     backgroundColor: "#044291",
@@ -171,8 +168,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    position: "relative",
-    top: responsiveFontSize(2),
+    marginTop: responsiveFontSize(2),
   },
   buttonText: {
     color: "white",

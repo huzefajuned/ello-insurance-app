@@ -5,10 +5,11 @@ import {
   Text,
   Image,
   SafeAreaView,
-  Button,
   TouchableOpacity,
   Animated,
   ActivityIndicator,
+  Modal,
+  TextInput,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -31,14 +32,23 @@ const ProfileScreen = () => {
   const insets = useSafeAreaInsets();
   const { accessToken, removeToken } = useContext(AuthContext);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalAnimation, setModalAnimation] = useState(new Animated.Value(0));
-  const [userProfle, setUserProfile] = useState({});
+  const modalAnimation = new Animated.Value(0);
+  const [userProfile, setUserProfile] = useState({});
   const [loading, setLoading] = useState(true);
+  const [canEdit, setCanEdit] = useState(false);
+  const [formValues, setFormValues] = useState({});
 
   const tokenParts = accessToken?.split(".");
   const payload = tokenParts?.[1];
-  const decodedPayload = base64?.decode(payload);
-  const { id } = JSON?.parse(decodedPayload) || {};
+
+  const decodedPayload = payload ? base64?.decode(payload) : null;
+
+  let id;
+  try {
+    id = decodedPayload ? JSON?.parse(decodedPayload)?.id : null;
+  } catch (error) {
+    console.error("Error parsing payload:", error);
+  }
 
   const url = `${BACKEND_BASE_URL}/api/v1/pos/${id}`;
 
@@ -63,44 +73,60 @@ const ProfileScreen = () => {
     navigation.navigate("Home");
   };
 
-  const handleLogout = () => {
-    removeToken();
-    navigation.navigate("Home");
-  };
-
   const infoRows = [
     {
       title: "Name",
-      text: userProfle?.name,
+      text: userProfile?.name,
       icon: "user",
       color: "#26CBED",
+      canEdit: "false",
     },
     {
       title: "Email",
-      text: userProfle?.email,
+      text: userProfile?.email,
       icon: "mail",
       color: "#26CBED",
+      canEdit: "true",
     },
     {
       title: "Address",
-      text: userProfle?.address,
+      text: userProfile?.address,
       icon: "map-pin",
       color: "#26CBED",
+      canEdit: "false",
     },
     {
       title: "Mobile",
-      text: userProfle?.phone,
+      text: userProfile?.phone,
       icon: "phone",
       color: "#26CBED",
+      canEdit: "false",
     },
     {
       title: "Gender",
-      text: userProfle?.gender,
+      text: userProfile?.gender,
       icon: "user",
       color: "#26CBED",
+      canEdit: "true",
     },
-
   ];
+
+  const closeModal = () => {
+    Animated.timing(modalAnimation, {
+      toValue: 0,
+      duration: 100,
+      useNativeDriver: true,
+    }).start(() => setModalOpen(false));
+  };
+
+  const handleChangeText = (key, value) => {
+    setFormValues({ ...formValues, [key]: value });
+  };
+
+  const handleUpdateProfile = () => {
+    // integrate uopdate api later on-----
+    console.log("Updated Profile:", formValues);
+  };
 
   return (
     <SafeAreaView style={[styles.container, { marginTop: insets.top }]}>
@@ -125,38 +151,51 @@ const ProfileScreen = () => {
         <View>
           <View style={styles.profileContainer}>
             <Image
-              source={{ uri: userProfle?.image }}
+              source={{ uri: userProfile?.image }}
               style={styles.profileImage}
             />
-            <TouchableOpacity onPress={handleLogout}>
-              <Feather name="settings" size={30} color="#26CBED" />
+            <TouchableOpacity onPress={() => setModalOpen(true)}>
+              <Feather
+                name="settings"
+                size={responsiveFontSize(3.5)}
+                color="#26CBED"
+              />
             </TouchableOpacity>
           </View>
-          {/* {modalOpen && (
-            <Animated.View
-              style={[
-                styles.modal,
-                {
-                  top: insets.top,
-                },
-                {
-                  transform: [
-                    {
-                      translateX: modalAnimation.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [
-                          responsiveWidth(100),
-                          responsiveWidth(70),
-                        ],
-                      }),
-                    },
-                  ],
-                },
-              ]}
+          <Modal
+            visible={modalOpen}
+            transparent
+            animationType="fade"
+            onRequestClose={closeModal}
+          >
+            <TouchableOpacity
+              style={styles.modalBackdrop}
+              activeOpacity={1}
+              onPress={closeModal}
             >
-              <Menu />
-            </Animated.View>
-          )} */}
+              <Animated.View
+                style={[
+                  styles.modal,
+                  {
+                    top: insets.top,
+                    transform: [
+                      {
+                        translateX: modalAnimation.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [
+                            responsiveWidth(100),
+                            responsiveWidth(70),
+                          ],
+                        }),
+                      },
+                    ],
+                  },
+                ]}
+              >
+                <Menu />
+              </Animated.View>
+            </TouchableOpacity>
+          </Modal>
 
           <View style={styles.infoContainer}>
             {infoRows.map((row, index) => (
@@ -170,13 +209,40 @@ const ProfileScreen = () => {
                   />
                 </View>
                 <View style={styles.textContainer}>
-                  <Text style={styles.infoTitle}>{row.title}:</Text>
-                  <Text style={styles.infoText}>{row.text}</Text>
+                  {row.canEdit === "true" ? (
+                    <>
+                      <Text style={styles.infoTitle}>{row.title}:</Text>
+                      <TextInput
+                        value={formValues[row.title] || row.text}
+                        onChangeText={(text) =>
+                          handleChangeText(row.title, text)
+                        }
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Text style={styles.infoTitle}>{row.title}:</Text>
+                      <Text style={styles.infoText}>{row.text}</Text>
+                    </>
+                  )}
                 </View>
+                {row.canEdit === "true" && (
+                  <TouchableOpacity onPress={handleUpdateProfile}>
+                    <Feather
+                      name="edit"
+                      size={responsiveFontSize(2.1)}
+                      color="red"
+                      style={{ marginRight: responsiveFontSize(1) }}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             ))}
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleUpdateProfile}
+            >
               <Text style={styles.buttonText}>Update Profile</Text>
             </TouchableOpacity>
           </View>
@@ -186,20 +252,14 @@ const ProfileScreen = () => {
   );
 };
 
+export default ProfileScreen;
+
 const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
     width: responsiveWidth(100),
     height: responsiveHeight(100),
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loadingText: {
-    textAlign: "center",
   },
   profileContainer: {
     alignItems: "center",
@@ -215,14 +275,25 @@ const styles = StyleSheet.create({
     height: responsiveHeight(15),
     borderRadius: 50,
   },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   modal: {
     position: "absolute",
-    left: -100,
-    width: responsiveWidth(30),
-    height: responsiveHeight(50),
+    left: -130,
+    width: responsiveWidth(40),
+    height: responsiveHeight(40),
     backgroundColor: "#FFFFFF",
     elevation: 4,
-    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  closeIcon: {
+    position: "absolute",
+    top: 16,
+    right: 16,
   },
   infoContainer: {
     alignItems: "center",
@@ -245,7 +316,6 @@ const styles = StyleSheet.create({
     width: "20%",
     height: "90%",
     justifyContent: "center",
-    textAlign: "cente",
     alignItems: "center",
   },
   textContainer: {
@@ -256,11 +326,11 @@ const styles = StyleSheet.create({
   },
   infoTitle: {
     marginRight: 10,
-    fontSize: 8,
+    fontSize: responsiveFontSize(1.2),
     color: "#444444",
   },
   infoText: {
-    fontSize: 14,
+    fontSize: responsiveFontSize(1.8),
     color: "#444444",
   },
   button: {
@@ -280,5 +350,3 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2),
   },
 });
-
-export default ProfileScreen;

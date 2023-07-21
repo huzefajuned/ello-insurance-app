@@ -20,6 +20,7 @@ const CustomTextInput = ({
   onVisiblePassword,
   inlineStyles,
   value,
+  canEdit,
   inputMode,
   ...props
 }) => {
@@ -27,9 +28,7 @@ const CustomTextInput = ({
 
   return (
     <View>
-      {label && isBlank && value && (
-        <Text style={styles.labelStyle}>{label}</Text>
-      )}
+      {label && !isBlank && <Text style={styles.labelStyle}>{label}</Text>}
       <View
         style={[
           inlineStyles,
@@ -79,13 +78,7 @@ const CustomTextInput = ({
       </View>
 
       {isBlank && !value && (
-        <Text
-          style={
-            isBlank && !value ? [styles.labelErrorStyle] : [styles.labelStyle]
-          }
-        >
-          {label} is required
-        </Text>
+        <Text style={styles.labelErrorStyle}>{label} is required</Text>
       )}
     </View>
   );
@@ -96,12 +89,12 @@ export default CustomTextInput;
 const styles = StyleSheet.create({
   labelStyle: {
     color: "#535353",
-    fontSize: responsiveFontSize(1.8),
+    fontSize: responsiveFontSize(1.5),
     fontWeight: "bold",
     letterSpacing: 1,
   },
   labelErrorStyle: {
     color: "red",
-    fontSize: responsiveFontSize(1.8),
+    fontSize: responsiveFontSize(1.5),
   },
 });

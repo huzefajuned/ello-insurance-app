@@ -4,11 +4,20 @@ import CustomTextInput from "./CustomTextInput";
 import {
   responsiveFontSize,
   responsiveHeight,
+  responsiveWidth,
 } from "react-native-responsive-dimensions";
 import { moderateScale } from "react-native-size-matters";
 import { RegisterContext } from "../context/RegisterContext";
+import CustomDropdown from "./CustomDropdown";
+import banksList from "../screens/Banks.json";
 
 const BankDetailsForm = ({ currentPosition, setCurrentPosition }) => {
+  //format changing....
+  const bankOptions = Object.keys(banksList).map((bankName) => ({
+    label: bankName,
+    value: banksList[bankName],
+  }));
+
   const {
     isBlank,
     setIsBlank,
@@ -30,6 +39,14 @@ const BankDetailsForm = ({ currentPosition, setCurrentPosition }) => {
   return (
     <View>
       <View style={styles.textInputContainer}>
+        {/* <CustomDropdown
+          label="Bank Name"
+          placeholder="Enter Bank Name"
+          data={bankOptions}
+          onValueChange={() => {}}
+          inlineStyle={styles.customDropdownStyle}
+        /> */}
+
         <CustomTextInput
           label="Bank Name"
           placeholder="Enter Bank Name"
@@ -61,6 +78,13 @@ const BankDetailsForm = ({ currentPosition, setCurrentPosition }) => {
       <TouchableOpacity style={styles.button} onPress={gotoNext}>
         <Text style={styles.buttonText}>Save & Next</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.goBackButton}
+        onPress={() => setCurrentPosition(currentPosition - 1)}
+      >
+        <Text style={styles.goBackButtonText}>Go Back</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -72,6 +96,17 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: responsiveFontSize(2),
     // backgroundColor:"gray
+  },
+  customDropdownStyle: {
+    borderWidth: 2,
+    borderColor: "#EEEEEE",
+    height: responsiveHeight(6.5),
+    // flex: 1,
+    width: responsiveWidth(100),
+
+    paddingLeft: responsiveFontSize(2),
+    borderRadius: 6,
+    color: "#27374D",
   },
   inlineCommonStyles: {
     borderWidth: 2,
@@ -90,8 +125,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    position: "relative",
-    top: responsiveFontSize(4),
+    marginTop: responsiveFontSize(2),
   },
   buttonText: {
     color: "white",
@@ -99,5 +133,20 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     fontSize: responsiveFontSize(2),
+  },
+
+  goBackButton: {
+    backgroundColor: "#044291",
+    height: responsiveHeight(6),
+    borderRadius: moderateScale(6),
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: responsiveFontSize(2),
+  },
+  goBackButtonText: {
+    color: "white",
+    textAlign: "center",
+    alignSelf: "center",
   },
 });

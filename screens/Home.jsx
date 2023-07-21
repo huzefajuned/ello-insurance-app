@@ -21,7 +21,7 @@ const Home = () => {
   const [InsuranceServicesData, setInsuranceServicesData] = useState([]);
   const [dataFromApi, setDataFromApi] = useState([]);
   const [filteredInsuranceData, setFilteredInsuranceData] = useState([]);
-  console.log("filteredInsuranceData", filteredInsuranceData);
+  // console.log("filteredInsuranceData", filteredInsuranceData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     width: responsiveWidth(100),
     height: responsiveHeight(90),
     overflow: "scroll",
+    backgroundColor: "white",
   },
 });
 

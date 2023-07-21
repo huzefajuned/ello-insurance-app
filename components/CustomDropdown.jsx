@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { moderateScale } from "react-native-size-matters";
 
-const CustomDropdown = ({ placeholder, data, inlineStyle, onValueChange }) => {
+const CustomDropdown = ({ placeholder, data, inlineStyle, onValueChange, label }) => {
   const [value, setValue] = useState(null);
 
 
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     borderColor: "#DCDCDC",
-    borderBottomWidth: 0.3,
+    // borderBottomWidth: 0.3,
     borderRadius: 0,
     paddingHorizontal: 0,
   },
