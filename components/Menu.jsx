@@ -16,16 +16,11 @@ const Menu = () => {
   const menuItems = [
     {
       key: 1,
-      title: "Settings",
-      icon: "settings",
-    },
-    {
-      key: 2,
       title: "Change Password",
       icon: "edit",
     },
     {
-      key: 3,
+      key: 2,
       title: "Logout",
       icon: "log-out",
     },
@@ -90,8 +85,9 @@ const styles = StyleSheet.create({
     marginRight: "10%",
     borderColor: "#707070",
     borderRadius: 5,
-    padding: responsiveFontSize(0.4),
+    padding: responsiveFontSize(0.5),
+    margin: responsiveFontSize(0.5),
     backgroundColor: "#37CFEE",
-    marginTop: responsiveHeight(1),
+    // marginTop: responsiveHeight(1),
   },
 });

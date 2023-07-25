@@ -25,7 +25,6 @@ export const RegisterContextProvider = ({ children }) => {
   const [passbook, setPassbook] = useState();
   const [edu_Proof, setEdu_Proof] = useState();
 
-  
   const contextValue = {
     isBlank,
     setIsBlank,
@@ -60,7 +59,6 @@ export const RegisterContextProvider = ({ children }) => {
     edu_Proof,
     setEdu_Proof,
   };
-  console.log("profile",profile)
   return (
     <RegisterContext.Provider value={contextValue}>
       {children}

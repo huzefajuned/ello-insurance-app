@@ -28,7 +28,8 @@ const CustomTextInput = ({
 
   return (
     <View>
-      {label && !isBlank && <Text style={styles.labelStyle}>{label}</Text>}
+      {label && <Text style={styles.labelStyle}>{label}</Text>}
+
       <View
         style={[
           inlineStyles,
@@ -78,7 +79,11 @@ const CustomTextInput = ({
       </View>
 
       {isBlank && !value && (
-        <Text style={styles.labelErrorStyle}>{label} is required</Text>
+        <Text style={styles.labelErrorStyle}>
+          {label || placeholder} is required
+          {/* Two variabale for diffrent types of inputs--- */}
+          {/* some inputs dont have any label. then, there will  be placeholder---  */}
+        </Text>
       )}
     </View>
   );

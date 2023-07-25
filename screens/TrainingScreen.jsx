@@ -46,6 +46,8 @@ const TrainingScreen = () => {
         flexDirection: "column",
         justifyContent: "space-between",
         alignSelf: "center",
+        backgroundColor: "#F9F9F9",
+
       }}
     >
       <CommonHeader heading="Training" isBackIcon={true} />

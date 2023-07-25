@@ -16,8 +16,10 @@ import CustomTextInput from "./CustomTextInput";
 import { moderateScale } from "react-native-size-matters";
 import CustomUpload from "./CustomUpload";
 import { RegisterContext } from "../context/RegisterContext";
+import { useNavigation } from "@react-navigation/native";
 
 const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
+  const navigation = useNavigation();
   const {
     isBlank,
     setIsBlank,
@@ -68,6 +70,7 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
           inlineStyles={styles.inlineUploadStyles}
           value={profile}
           onChangeText={setProfile}
+          uploadType="image/*"
         />
         <CustomTextInput
           label="Name"
@@ -139,6 +142,20 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
         />
         <TouchableOpacity style={styles.button} onPress={gotoNext}>
           <Text style={styles.buttonText}>Save & Next</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Login")}
+          style={{ marginTop: responsiveFontSize(4) }}
+        >
+          <Text
+            style={{
+              color: "black",
+              textAlign: "center",
+              fontSize: responsiveFontSize(1.9),
+            }}
+          >
+            Already have an Account ? Login New
+          </Text>
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>

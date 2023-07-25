@@ -17,9 +17,13 @@ import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../CONSTANTS";
+import {
+  responsiveFontSize,
+  responsiveWidth,
+} from "react-native-responsive-dimensions";
 
 const ChangePassword = () => {
-  const { accessToken, isLoading } = useContext(AuthContext);
+  const { accessToken, isLoading, removeToken } = useContext(AuthContext);
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const [current, setCurrent] = useState("");
@@ -57,8 +61,9 @@ const ChangePassword = () => {
         Toast.show({
           type: "success",
           text1: response?.data?.msg,
+          text2:"Login to continue..."
         });
-        await navigation.navigate("Tabs");
+        await removeToken();
       } else {
         console.error("Failed to change password");
       }
@@ -85,7 +90,6 @@ const ChangePassword = () => {
         flex: 1,
         display: "flex",
         flexDirection: "column",
-        padding: moderateScale(10),
       }}
     >
       <CommonHeader
@@ -94,7 +98,10 @@ const ChangePassword = () => {
         isCloseIcon={true}
       />
 
-      <CommonDescription description="Enter your new password in the field below to change your password." />
+      <CommonDescription
+        description="Enter your new password in the field below to change your password."
+        inlineStyles={styles.descriptionStyles}
+      />
       <View style={styles.container}>
         <CustomTextInput
           label="Current Password"
@@ -159,7 +166,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#ffffff",
     borderRadius: 12,
-    width: "100%",
+    // width: "100%",
+    width: responsiveWidth(90),
     height: "auto",
     alignSelf: "center",
     display: "flex",
@@ -177,6 +185,13 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     fontSize: 10,
+  },
+  descriptionStyles: {
+    width: responsiveWidth(90),
+    paddingTop: responsiveWidth(5),
+    paddingBottom: responsiveWidth(5),
+
+    marginLeft: responsiveWidth(5),
   },
 });
 

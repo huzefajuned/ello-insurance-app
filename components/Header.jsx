@@ -50,9 +50,9 @@ const Header = () => {
   const logo_url = `${BACKEND_BASE_URL}/api/v1/company-settings/${userProfle?.org_id}`;
 
   const handleCompanyLogo = async () => {
-    const headers = { Authorization: `${accessToken}` };
+    // const headers = { Authorization: `${accessToken}` };
     try {
-      const response = await axios.get(logo_url, { headers });
+      const response = await axios.get(logo_url);
       setCompnayLogo(response?.data?.data);
       // console.log("res in handleCompanyLogo",response?.data?.data)
     } catch (error) {
@@ -79,7 +79,7 @@ const Header = () => {
             style={{
               fontSize: responsiveFontSize(1.5),
               letterSpacing: 1,
-              marginTop:responsiveFontSize(1)
+              marginTop: responsiveFontSize(1),
             }}
           >
             {companyLogo?.name ? (

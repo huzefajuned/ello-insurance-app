@@ -14,7 +14,6 @@ import Toast from "react-native-toast-message";
 
 const UploadDocumentsForm = ({ currentPosition, setCurrentPosition }) => {
   const [loading, setLoading] = useState(false);
-  const dummy_id_type = "aadharcard";
   const {
     setIsBlank,
     profile,
@@ -58,23 +57,22 @@ const UploadDocumentsForm = ({ currentPosition, setCurrentPosition }) => {
         { name: "passbook", file: passbook },
         { name: "educational_proof", file: edu_Proof },
       ],
-      name, //
-      age, //
+      name,
+      age,
       email,
       phone,
-      address, //
-      password: "Dummy@password", //
+      address,
+      password: "Dummy@123Pwd",
       id_type: "aadharcard",
       id_number: "RE54RGHTV",
       experience,
       detail: workDetails,
       commission: 0,
       commission_type: "percentage",
-      bank_name: bankName, //
-      ifsc_code: ifsc_Code, //
-      acc_number: account_No, //
+      bank_name: bankName,
+      ifsc_code: ifsc_Code,
+      acc_number: account_No,
     };
-
     try {
       const response = await axios.post(url, payload, {
         headers: {
@@ -87,22 +85,18 @@ const UploadDocumentsForm = ({ currentPosition, setCurrentPosition }) => {
       console.log(response);
 
       // Show a success message to the user
-      Alert.alert(
-        "Registration Successful",
-        "You have been registered as a POS."
-      );
+      Toast.show({
+        type: "success",
+        text1: "Registration  Succesful", // replace with response message
+      });
+      nav;
     } catch (err) {
       setLoading(false);
-
-      // if (err.response.data.msg.email) {
-      //   Alert.alert(err.response.data.msg.email);
-      // }
-
       // Show an error message to the user
-      Alert.alert(
-        "Registration Error",
-        "There was an error during registration. Please try again later."
-      );
+      Toast.show({
+        type: "error",
+        text1: err.response?.data?.msg?.email, // replace with response message
+      });
     }
   };
 
@@ -112,21 +106,25 @@ const UploadDocumentsForm = ({ currentPosition, setCurrentPosition }) => {
         title="Aadhar Card"
         value={adhaar}
         onChangeText={setAadhaar}
+        uploadType="*/*"
       />
       <CustomUpload
         title="Pan Card"
         value={panCard}
         onChangeText={setPanCard}
+        uploadType="*/*"
       />
       <CustomUpload
         title="Upload Bank Statement"
         value={passbook}
         onChangeText={setPassbook}
+        uploadType="*/*"
       />
       <CustomUpload
         title="Upload Educational Proof"
         value={edu_Proof}
         onChangeText={setEdu_Proof}
+        uploadType="*/*"
       />
       <TouchableOpacity
         style={styles.button}

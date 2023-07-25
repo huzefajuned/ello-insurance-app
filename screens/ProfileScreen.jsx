@@ -26,6 +26,7 @@ import {
 } from "react-native-responsive-dimensions";
 import Menu from "../components/Menu";
 import { moderateScale } from "react-native-size-matters";
+import GenderDropdown from "../components/GenderDropdown";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -37,6 +38,7 @@ const ProfileScreen = () => {
   const [loading, setLoading] = useState(true);
   const [canEdit, setCanEdit] = useState(false);
   const [formValues, setFormValues] = useState({});
+  const [selectedGender, setSelectedGender] = useState("Male");
 
   const tokenParts = accessToken?.split(".");
   const payload = tokenParts?.[1];
@@ -120,6 +122,7 @@ const ProfileScreen = () => {
   };
 
   const handleChangeText = (key, value) => {
+    console.log(key, value);
     setFormValues({ ...formValues, [key]: value });
   };
 
@@ -210,15 +213,26 @@ const ProfileScreen = () => {
                 </View>
                 <View style={styles.textContainer}>
                   {row.canEdit === "true" ? (
-                    <>
-                      <Text style={styles.infoTitle}>{row.title}:</Text>
+                    row.title === "Gender" ? (
+                      <GenderDropdown
+                        selectedGender={selectedGender}
+                        setSelectedGender={setSelectedGender}
+                        options={["Male", "Female"]}
+                        // value={selectedGender}
+                        selectedOption={selectedGender}
+                        onSelectOption={(option) =>
+                          handleChangeText(row.title, option)
+                        }
+                      />
+                    ) : (
                       <TextInput
+                        style={styles.modalInput}
                         value={formValues[row.title] || row.text}
                         onChangeText={(text) =>
                           handleChangeText(row.title, text)
                         }
                       />
-                    </>
+                    )
                   ) : (
                     <>
                       <Text style={styles.infoTitle}>{row.title}:</Text>
@@ -239,6 +253,34 @@ const ProfileScreen = () => {
               </View>
             ))}
 
+            {/* {infoRows.map((row, index) => (
+              <View style={styles.modalRow} key={index}>
+                <Text style={styles.modalLabel}>{row.title}:</Text>
+                {row.canEdit ? (
+                  row.title === "Gender" ? (
+                    <GenderDropdown
+                      options={["Male", "Female"]}
+                      selectedOption={
+                        formValues[row.title] || userProfile[row.title]
+                      }
+                      onSelectOption={(option) =>
+                        handleChangeText(row.title, option)
+                      }
+                    />
+                  ) : (
+                    <TextInput
+                      style={styles.modalInput}
+                      value={formValues[row.title] || userProfile[row.title]}
+                      onChangeText={(text) => handleChangeText(row.title, text)}
+                    />
+                  )
+                ) : (
+                  <Text style={styles.modalValue}>
+                    {userProfile[row.title]}
+                  </Text>
+                )}
+              </View>
+            ))} */}
             <TouchableOpacity
               style={styles.button}
               onPress={handleUpdateProfile}
@@ -260,6 +302,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     width: responsiveWidth(100),
     height: responsiveHeight(100),
+    // backgroundColor: "#F9F9F9",
   },
   profileContainer: {
     alignItems: "center",
@@ -283,9 +326,9 @@ const styles = StyleSheet.create({
   },
   modal: {
     position: "absolute",
-    left: -130,
-    width: responsiveWidth(40),
-    height: responsiveHeight(40),
+    left: -responsiveWidth(50),
+    // width: responsiveWidth(40),
+    // height: responsiveHeight(40),
     backgroundColor: "#FFFFFF",
     elevation: 4,
     borderRadius: 5,

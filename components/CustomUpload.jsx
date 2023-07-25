@@ -10,7 +10,13 @@ import * as DocumentPicker from "expo-document-picker";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { RegisterContext } from "../context/RegisterContext";
 
-const CustomUpload = ({ title, inlineUploadStyles, value, onChangeText }) => {
+const CustomUpload = ({
+  title,
+  inlineUploadStyles,
+  value,
+  onChangeText,
+  uploadType,
+}) => {
   const [blobURL, setBlobURL] = useState("");
   const {
     isBlank,
@@ -26,7 +32,6 @@ const CustomUpload = ({ title, inlineUploadStyles, value, onChangeText }) => {
       multiple: false,
       type: "image/*",
     });
-
 
     // Convert the base64 data to a blob
     const response = await fetch(_Photo.uri);
@@ -51,7 +56,7 @@ const CustomUpload = ({ title, inlineUploadStyles, value, onChangeText }) => {
 
   return (
     <View style={styles.container}>
-      {title && !isBlank && <Text style={styles.labelStyle}>{title}</Text>}
+      {title && <Text style={styles.labelStyle}>{title}</Text>}
       <TouchableOpacity style={styles.uploadCard} onPress={pickProfile}>
         {blobURL ? (
           <View style={styles.profileReview}>

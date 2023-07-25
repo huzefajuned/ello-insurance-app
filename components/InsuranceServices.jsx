@@ -28,7 +28,43 @@ const InsuranceServices = ({
 
   const handleCardPress = (service) => {
     // Navigate to the form screen with selected state value---
-    navigation.navigate("InquiryForm", { service });
+    switch (service.formId) {
+      case "TwoWheelerForm":
+        alert(service.formId);
+        navigation.navigate("InquiryForm", { service });
+        break;
+
+      case "FourWheelerForm":
+        alert(service.formId);
+
+        navigation.navigate("InquiryForm", { service });
+        break;
+
+      case "PensionAndRetirementForm":
+        alert(service.formId);
+
+        navigation.navigate("InquiryForm", { service });
+        break;
+
+      case "ChildSavingForm":
+        alert(service.formId);
+
+        navigation.navigate("InquiryForm", { service });
+        break;
+
+      case "HealthForm":
+        alert(service.formId);
+
+        navigation.navigate("InquiryForm", { service });
+        break;
+
+      default:
+        alert("invalid type-", service.formId);
+
+        break;
+    }
+
+    // navigation.navigate("InquiryForm", { service });
   };
 
   return (
@@ -51,16 +87,29 @@ const InsuranceServices = ({
           </View>
         ) : (
           <>
-            {InsuranceServicesData?.map((service, index) => (
-              <TouchableOpacity
-                key={index} // replace with  object key
-                style={styles.card}
-                onPress={() => handleCardPress(service)}
-              >
-                <Image source={{ uri: service?.image }} style={styles.image} />
-                <Text style={styles.serviceName}>{service?.name}</Text>
-              </TouchableOpacity>
-            ))}
+            {InsuranceServicesData?.map(
+              (service, index) => (
+                console.log("service", service),
+                (
+                  <TouchableOpacity
+                    key={index} // replace with  object key
+                    style={styles.card}
+                    onPress={() => handleCardPress(service)}
+                  >
+                    <Image
+                      source={{
+                        uri:
+                          service?.logo === null
+                            ? "https://t3.ftcdn.net/jpg/01/38/48/40/360_F_138484065_1enzXuW8NlkppNxSv4hVUrYoeF8qgoeY.jpg"
+                            : service?.logo,
+                      }}
+                      style={styles.image}
+                    />
+                    <Text style={styles.serviceName}>{service?.name}</Text>
+                  </TouchableOpacity>
+                )
+              )
+            )}
           </>
         )}
       </ScrollView>

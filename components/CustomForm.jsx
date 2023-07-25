@@ -24,8 +24,9 @@ import {
 import CustomModal from "./CustomModal";
 import { CustomModalContext } from "../context/CustomModalContext";
 import ForgetPassword from "./ForgetPassword";
+import { RegisterContext } from "../context/RegisterContext";
 
-const CustomForm = () => {
+const CustomForm = ({ companyLogo }) => {
   const url = `${BACKEND_BASE_URL}/api/v1/auth/user/login`;
   const navigation = useNavigation();
   const { setToken, isLoading } = useContext(AuthContext);
@@ -105,15 +106,21 @@ const CustomForm = () => {
             width: responsiveWidth(70),
           }}
         >
-          <Image
-            style={{
-              height: responsiveWidth(20),
-              width: responsiveWidth(20),
-              resizeMode: "cover",
-            }}
-            source={require("../assets/login-logo.png")}
-            resizeMethod="resize"
-          />
+          {companyLogo ? (
+            <Image
+              style={{
+                height: responsiveWidth(20),
+                width: responsiveWidth(20),
+                resizeMode: "cover",
+              }}
+              source={{ uri: companyLogo }}
+              resizeMethod="resize"
+            />
+          ) : (
+            <Text>
+              <ActivityIndicator size="large" color="#37CFEE" />
+            </Text>
+          )}
         </View>
 
         <View
@@ -228,7 +235,7 @@ const CustomForm = () => {
             <Text
               style={{
                 color: "black",
-                textAlign: "right",
+                textAlign: "center",
                 fontSize: responsiveFontSize(1.8),
               }}
             >
@@ -247,14 +254,14 @@ const CustomForm = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    width: responsiveWidth(100),
-    height: responsiveHeight(100),
+    width: "100%",
+    height: "100%",
     padding: responsiveWidth(15),
     alignSelf: "center",
     justifyContent: "center",
     display: "flex",
     flexDirection: "column",
-    gap: responsiveHeight(5),
+    gap: responsiveHeight(4),
   },
   textInputContainer: {
     display: "flex",
