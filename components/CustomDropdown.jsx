@@ -1,35 +1,66 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Dropdown } from "react-native-element-dropdown";
+import { Dropdown, MultiSelect } from "react-native-element-dropdown";
+// import MultiSelect from "react-native-multi-select"; // Fixed import statement
 import { moderateScale } from "react-native-size-matters";
 
-const CustomDropdown = ({ placeholder, data, inlineStyle, onValueChange, label }) => {
+const CustomDropdown = ({
+  placeholder,
+  data,
+  inlineStyle,
+  onValueChange,
+  dropdownType,
+  label,
+}) => {
   const [value, setValue] = useState(null);
-
 
   const handleValueChange = (item) => {
     setValue(item.value);
-    onValueChange(item.value); // Call the callback function with the selected value
+    onValueChange(item.value);
   };
 
   return (
     <View style={styles.container}>
-      <Dropdown
-        style={[styles.dropdown]}
-        placeholderStyle={[inlineStyle]}
-        selectedTextStyle={[styles.selectedTextStyle]}
-        inputSearchStyle={styles.inputSearchStyle}
-        iconStyle={styles.iconStyle}
-        iconColor="#37CFEE"
-        data={data}
-        search
-        labelField="label"
-        valueField="value"
-        placeholder={placeholder}
-        searchPlaceholder="Search..."
-        value={value}
-        onChange={handleValueChange}
-      />
+      {dropdownType === "singleSelect" && (
+        <Dropdown
+          style={[styles.dropdown]}
+          placeholderStyle={[inlineStyle]}
+          selectedTextStyle={[styles.selectedTextStyle]}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          iconColor="#37CFEE"
+          data={data}
+          search
+          labelField="label"
+          valueField="value"
+          placeholder={placeholder}
+          searchPlaceholder="Search..."
+          value={value}
+          onChange={handleValueChange}
+          keyboardAvoiding={true} // Removed quotes, as keyboardAvoiding prop should be a boolean
+        />
+      )}
+      {dropdownType === "multiSelect" && (
+        <MultiSelect
+          style={[styles.dropdown]}
+          placeholderStyle={[inlineStyle]}
+          selectedTextStyle={[styles.selectedTextStyle]}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          iconColor="#37CFEE"
+          data={data}
+          search
+          labelField="label"
+          imageField="image"
+          valueField="value"
+          placeholder={placeholder}
+          searchPlaceholder="Search..."
+          single={false} // To enable multi-select, set single prop to false
+          selectedItems={value} // Pass an array of selected items for multi-select
+          onSelectedItemsChange={handleValueChange} // Use onSelectedItemsChange for multi-select
+          keyboardAvoiding={true} // Removed quotes, as keyboardAvoiding prop should be a boolean
+        />
+      )}
     </View>
   );
 };
@@ -42,11 +73,9 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     borderColor: "#DCDCDC",
-    // borderBottomWidth: 0.3,
     borderRadius: 0,
     paddingHorizontal: 0,
   },
-
   selectedTextStyle: {
     fontSize: 14,
     color: "#000000",

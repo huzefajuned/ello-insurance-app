@@ -20,7 +20,7 @@ const VideoPlayerScreen = ({ route }) => {
   const { asset } = route.params;
  
 
-  console.log("asset", asset);
+  // console.log("asset", asset);
 
   const insets = useSafeAreaInsets();
 

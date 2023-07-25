@@ -40,6 +40,7 @@ const CustomTextInput = ({
             textAlign: "center",
             alignContent: "center",
             alignContent: "center",
+            // backgroundColor:"blue"
           },
         ]}
       >

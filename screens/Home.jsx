@@ -3,14 +3,12 @@ import { Text, View, StyleSheet, ScrollView } from "react-native";
 import InsuranceServices from "../components/InsuranceServices";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Header from "../components/Header";
-import { moderateScale } from "react-native-size-matters";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../CONSTANTS";
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
-  responsiveScreenHeight,
 } from "react-native-responsive-dimensions";
 
 const Home = () => {
@@ -28,20 +26,14 @@ const Home = () => {
         const response = await axios.get(
           `${BACKEND_BASE_URL}/api/v1/insurance-category/product-type`
         );
-
-        // const checkId = response.data?.data?.map((item) => ({
-        //   test_is: item.formid.id,
-        // }));
-        // console.log("checkId", checkId);
         // Handle the response data
         const insuranceCategories = response.data?.data.map((item) => ({
-          // name: item.ins_category?.map((entry_name) => entry_name.name),
           formId: item.formid,
           name: item.ins_category.name,
           logo: item.logo,
         }));
 
-        setDataFromApi(insuranceCategories); // Simplify data setting
+        setDataFromApi(insuranceCategories);
       } catch (error) {
         // Handle the error
         console.error("error is", error);

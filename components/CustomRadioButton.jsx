@@ -1,16 +1,16 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 
-const CustomRadioButton = () => {
+const CustomRadioButton = ({ service_FormId }) => {
   const [selectedRadio, setSelectedRadio] = useState(1);
   const radioData = [
     {
       key: 1,
-      title: "Brand New Vehicle",
+      title: `Brand New ${service_FormId}`,
     },
     {
       key: 2,
-      title: "Registered Vehicle",
+      title: `Registered  ${service_FormId}`,
     },
   ];
 
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     width: "100%",
     display: "flex",
     flexDirection: "row",
-    justifyContent:"space-between",
+    justifyContent: "space-between",
     gap: 2,
     overflow: "hidden",
   },
@@ -84,7 +84,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#37CFEE",
   },
   radioText: {
-    marginTop: 7,marginLeft:5,
+    marginTop: 7,
+    marginLeft: 5,
     fontSize: 11,
   },
 });

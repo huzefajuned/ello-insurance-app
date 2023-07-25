@@ -7,7 +7,6 @@ import { AuthProvider } from "./context/AuthContext";
 import { CustomModalProvider } from "./context/CustomModalContext";
 import { RegisterContextProvider } from "./context/RegisterContext";
 export default function App() {
-  // const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
     <CustomModalProvider>
