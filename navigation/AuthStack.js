@@ -2,11 +2,11 @@ import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AuthContext } from "../context/AuthContext";
 import Tabs from "../navigation/tabs";
-import InquiryForm from "../screens/InquiryFormScreen";
 import LoginScreen from "../screens/LoginScreen";
 import ChangePassword from "../screens/ChangePassword";
 import VideoPlayerScreen from "../screens/VideoPlayerScreen";
 import RegisterScreen from "../screens/RegisterScreen";
+import InquiryFormScreen from "../screens/InquiryFormScreen";
 
 const Stack = createStackNavigator();
 
@@ -19,6 +19,7 @@ const AuthStack = () => {
         <>
           <Stack.Screen
             name="Login"
+            // component={InquiryFormScreen}
             component={LoginScreen}
             options={{ headerShown: false }}
           />
@@ -51,7 +52,7 @@ const MainTabs = () => {
       />
       <Stack.Screen
         name="InquiryForm"
-        component={InquiryForm}
+        component={InquiryFormScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen

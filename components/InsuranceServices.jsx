@@ -73,6 +73,38 @@ const InsuranceServices = ({
     { label: "Father", value: "father " },
     { label: "Mother", value: "mother" },
   ];
+  const annualIncome = [
+    { label: "1000 - 5000", value: "1000 - 10000" },
+    { label: "10000 - 20000", value: "20000 - 100000" },
+    { label: "100000 - 150000", value: "150000 - 2000000" },
+  ];
+
+  const sumAssuredAmount = [
+    { label: "999 - 19000", value: "11000 - 12000" },
+    { label: "150000 - 200000", value: "200000 - 240000" },
+    { label: "240000 - 2900000", value: "320000 - 380000" },
+  ];
+  const radioData = [
+    {
+      key: 1,
+      title: `Brand New  Vehicle`,
+    },
+    {
+      key: 2,
+      title: `Registered Vehicle`,
+    },
+  ];
+
+  const radioSmokeOrNotData = [
+    {
+      key: 1,
+      title: `Yes`,
+    },
+    {
+      key: 2,
+      title: `No`,
+    },
+  ];
 
   const TwoFourWheelerFormConfigration = [
     {
@@ -101,7 +133,7 @@ const InsuranceServices = ({
       type: "radio",
       key: "vahicle_type",
       // label: "Gender",
-      // data: genderData,
+      data: radioData,
     },
     {
       type: "text",
@@ -143,12 +175,12 @@ const InsuranceServices = ({
     {
       type: "text",
       key: "name",
-      placeholder: "Customer name",
+      placeholder: "Your Name",
     },
     {
       type: "contact",
       key: "contact",
-      placeholder: "Enter Your Email",
+      // placeholder: "Enter Your Email",
     },
     {
       type: "singleSelect",
@@ -159,7 +191,7 @@ const InsuranceServices = ({
     {
       type: "multiSelect",
       key: "members",
-      label: "member",
+      label: "Who would you like to get insured?",
       data: selectMembers,
     },
   ];
@@ -189,26 +221,50 @@ const InsuranceServices = ({
   ];
   const PensionAndRetirementFormConfigration = [
     {
-      type: "text",
-      key: "name",
-      placeholder: "Customer name",
-    },
-    {
-      type: "contact",
-      key: "contact",
-      placeholder: "Enter Your Email",
-    },
-    {
       type: "singleSelect",
       key: "gender",
       label: "Gender",
       data: genderData,
     },
     {
-      type: "multiSelect",
+      type: "date",
+      key: "dob",
+      label: "Date of birth",
+      // data: annualIncome,
+    },
+    {
+      type: "singleSelect",
       key: "members",
-      label: "member",
-      data: selectMembers,
+      label: "Approx. annual income",
+      data: annualIncome,
+    },
+    {
+      type: "radio",
+      key: "smokeOrNot",
+      label: "Do you smoke or chew tobacco?",
+      data: radioSmokeOrNotData,
+    },
+    {
+      type: "singleSelect",
+      key: "sumAssuredAmount",
+      label: "Sum Assured Amount!",
+      data: sumAssuredAmount,
+    },
+    {
+      type: "text",
+      key: "name",
+      placeholder: "Your Name",
+    },
+    {
+      type: "contact",
+      key: "contact",
+      label: "contact",
+      // data: genderData,
+    },
+    {
+      type: "text",
+      key: "email",
+      placeholder: "Primary Email Address",
     },
   ];
   const handleCardPress = (service) => {

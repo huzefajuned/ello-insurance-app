@@ -3,10 +3,10 @@ import { StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import DynamicInquiryForm from "../components/DynamicInquiryForm";
 
-const InquiryForm = ({ navigation, route }) => {
+const InquiryFormScreen = ({ navigation, route }) => {
 
   // const service_FormId = route.params.service.formId;
-  const formConfigurations = route.params.formConfigurations;
+  const formConfigurations = route?.params?.formConfigurations;
 
   const insets = useSafeAreaInsets();
 
@@ -138,4 +138,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InquiryForm;
+export default InquiryFormScreen;

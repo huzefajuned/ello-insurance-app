@@ -73,7 +73,11 @@ const Header = () => {
         <View style={styles.logoContainer}>
           <Image
             source={{ uri: companyLogo?.logo }}
-            style={{ width: responsiveWidth(12), height: responsiveHeight(6) }}
+            style={{
+              width: responsiveWidth(12),
+              height: responsiveHeight(6),
+              marginTop: responsiveFontSize(1),
+            }}
           />
           <Text
             style={{

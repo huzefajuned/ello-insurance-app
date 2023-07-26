@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     height: responsiveHeight(90),
     overflow: "scroll",
     backgroundColor: "#F9F9F9",
+
     // #F9F9F9
   },
 });

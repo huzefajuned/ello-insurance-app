@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
+import { responsiveFontSize } from "react-native-responsive-dimensions";
 // import MultiSelect from "react-native-multi-select"; // Fixed import statement
 import { moderateScale } from "react-native-size-matters";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 
 const CustomDropdown = ({
   placeholder,
@@ -11,8 +13,12 @@ const CustomDropdown = ({
   onValueChange,
   dropdownType,
   label,
+  selected,
+  setSelected,
 }) => {
   const [value, setValue] = useState(null);
+  // const [selected, setSelected] = useState([]);
+  console.log("selected length", selected.length);
 
   const handleValueChange = (item) => {
     setValue(item.value);
@@ -24,7 +30,7 @@ const CustomDropdown = ({
       {dropdownType === "singleSelect" && (
         <Dropdown
           style={[styles.dropdown]}
-          placeholderStyle={[inlineStyle]}
+          placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={[styles.selectedTextStyle]}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
@@ -42,23 +48,26 @@ const CustomDropdown = ({
       )}
       {dropdownType === "multiSelect" && (
         <MultiSelect
-          style={[styles.dropdown]}
-          placeholderStyle={[inlineStyle]}
-          selectedTextStyle={[styles.selectedTextStyle]}
+          style={styles.dropdown}
+          containerStyle={styles.multiSelectContainer}
+          itemContainerStyle={styles.multiselectItemContainerStyle}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
           iconColor="#37CFEE"
-          data={data}
           search
+          data={data}
           labelField="label"
-          imageField="image"
           valueField="value"
           placeholder={placeholder}
           searchPlaceholder="Search..."
-          single={false} // To enable multi-select, set single prop to false
-          selectedItems={value} // Pass an array of selected items for multi-select
-          onSelectedItemsChange={handleValueChange} // Use onSelectedItemsChange for multi-select
-          keyboardAvoiding={true} // Removed quotes, as keyboardAvoiding prop should be a boolean
+          value={selected}
+          onChange={(item) => {
+            setSelected(item);
+          }}
+          selectedStyle={styles.selectedStyle}
+          keyboardAvoiding={true}
         />
       )}
     </View>
@@ -69,23 +78,39 @@ export default CustomDropdown;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    borderBottomColor: "#EEEEEE",
+    borderBottomWidth: responsiveFontSize(0.2),
+    // backgroundColor: "red",
   },
   dropdown: {
     borderColor: "#DCDCDC",
     borderRadius: 0,
     paddingHorizontal: 0,
+    // backgroundColor:"red"
   },
   selectedTextStyle: {
-    fontSize: 14,
+    fontSize: responsiveFontSize(1.9),
     color: "#000000",
   },
   iconStyle: {
-    width: 15,
-    height: 7,
+    width: responsiveFontSize(4),
+    height: responsiveFontSize(2),
+  },
+  placeholderStyle: {
+    fontSize: responsiveFontSize(1.8),
   },
   inputSearchStyle: {
     height: moderateScale(35),
-    fontSize: 14,
+    fontSize: responsiveFontSize(1.9),
+  },
+  selectedStyle: {
+    borderRadius: responsiveFontSize(1),
+  },
+  multiSelectContainer: {
+    // backgroundColor: "green",
+  },
+  multiselectItemContainerStyle: {
+    // backgroundColor: "red",
+    // fontSize: 10,
   },
 });

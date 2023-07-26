@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import CustomRadioButton from "./CustomRadioButton";
 import ContactWithCountry from "./ContactWithCountry";
 import CustomDropdown from "./CustomDropdown";
@@ -8,8 +15,92 @@ import CommonDescription from "./CommonDescription";
 import { moderateScale } from "react-native-size-matters";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CommonHeader from "../components/CommonHeader";
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from "react-native-responsive-dimensions";
+import { KeyboardAvoidingView } from "react-native";
+import { ScrollView } from "react-native";
+import CustomDatePicker from "./CustomDatePicker";
 
 const DynamicInquiryForm = ({ formConfigurations }) => {
+  const [selected, setSelected] = useState([]); // for generating textInputs based on dropdown selection---
+  // fixing formconfiguration for testing----  remove lateron
+
+  // const genderData = [
+  //   { label: "Male", value: "Male" },
+  //   { label: "Female", value: "Female" },
+  // ];
+  // const brandData = [
+  //   { label: "Brand A", value: "Brand A" },
+  //   { label: "Brand B", value: "Brand B" },
+  //   { label: "Brand C", value: "Brand C" },
+  // ];
+  // const modelData = [
+  //   { label: "Model A", value: "Model A" },
+  //   { label: "Model B", value: "Model B" },
+  //   { label: "Model C", value: "Model C" },
+  // ];
+  // const fuelTypeData = [
+  //   { label: "Fuel Type A", value: "Fuel Type A" },
+  //   { label: "Fuel Type B", value: "Fuel Type B" },
+  //   { label: "Fuel Type C", value: "Fuel Type C" },
+  // ];
+  // const manufactureYearData = [
+  //   { label: "2020", value: "2020" },
+  //   { label: "2021", value: "2021" },
+  //   { label: "2022", value: "2022" },
+  // ];
+  // const variantData = [
+  //   { label: "Variant A", value: "Variant A" },
+  //   { label: "Variant B", value: "Variant B" },
+  //   { label: "Variant C", value: "Variant C" },
+  // ];
+  // const registrationData = [
+  //   { label: "registration A", value: "registration A" },
+  //   { label: "registration B", value: "registration B" },
+  //   { label: "registration C", value: "registration C" },
+  // ];
+  // const selectMembers = [
+  //   {
+  //     label: "Self",
+  //     value: "self ",
+  //     image:
+  //       "https://ashallendesign.ams3.cdn.digitaloceanspaces.com/rMbsGOyK6i1KjNkbXff8qLohzM1nWQA8HNGwHF0J.png",
+  //   },
+  //   { label: "Spouse", value: "spouse " },
+  //   { label: "Son", value: "son " },
+  //   { label: "Daughter", value: "daughter " },
+  //   { label: "Father", value: "father " },
+  //   { label: "Mother", value: "mother" },
+  // ];
+  // const HealthFormConfigration = [
+  //   {
+  //     type: "text",
+  //     key: "name",
+  //     placeholder: "Customer name",
+  //   },
+  //   {
+  //     type: "contact",
+  //     key: "contact",
+  //     placeholder: "Enter Your Email",
+  //   },
+  //   {
+  //     type: "singleSelect",
+  //     key: "gender",
+  //     label: "Gender",
+  //     data: genderData,
+  //   },
+  //   {
+  //     type: "multiSelect",
+  //     key: "members",
+  //     label: "Who would you like to get insured?",
+  //     data: selectMembers,
+  //   },
+  // ];
+  // fixing formconfiguration for testing----  remove everthing in betweenn commnets---
+
   const insets = useSafeAreaInsets();
 
   const [formValues, setFormValues] = useState({});
@@ -26,85 +117,132 @@ const DynamicInquiryForm = ({ formConfigurations }) => {
   };
 
   return (
-    <View
-      style={{ paddingTop: insets.top, flex: 1, padding: moderateScale(10) }}
+    <KeyboardAvoidingView
+      style={{ paddingTop: insets.top, flex: 1, overflow: "scroll" }}
     >
-      <CommonHeader
-        heading="Add inquiry"
-        isBackIcon={true}
-        isCloseIcon={true}
-      />
-      <CommonDescription description="To add a new Inquiry, enter the details of the Inquiry in the input field below." />
-      <View style={styles.formContainer}>
-        {formConfigurations?.map((field) => {
-          switch (field.type) {
-            case "text":
+      <ScrollView>
+        <CommonHeader
+          heading="Add inquiry"
+          isBackIcon={true}
+          isCloseIcon={true}
+        />
+        <CommonDescription
+          description="To add a new Inquiry, enter the details of the Inquiry in the input field below."
+          inlineStyles={{
+            width: responsiveWidth(90),
+            marginLeft: responsiveWidth(5),
+          }}
+        />
+        <View style={styles.formContainer}>
+          {formConfigurations?.map((field) => {
+            switch (field.type) {
+              case "text":
+                return (
+                  <CustomTextInput
+                    key={field.key}
+                    placeholder={field.placeholder}
+                    onChangeText={(value) => handleChangeText(field.key, value)}
+                    inlineStyles={styles.inputStyle}
+                  />
+                );
+
+              case "singleSelect":
+                return (
+                  <CustomDropdown
+                    key={field.key}
+                    placeholder={field.label}
+                    data={field.data}
+                    dropdownType={field.type}
+                    // onChangeText={(value) =>
+                    //   handleChangeText("contact", value)
+                    // }
+                    onValueChange={(value) =>
+                      handleChangeText(field.key, value)
+                    }
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                );
+              case "multiSelect":
+                return (
+                  <CustomDropdown
+                    key={field.key}
+                    placeholder={field.label}
+                    data={field.data}
+                    dropdownType={field.type}
+                    // onChangeText={(value) =>
+                    //   handleChangeText("contact", value)
+                    // }
+                    onValueChange={(value) =>
+                      handleChangeText(field.key, value)
+                    }
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                );
+
+              case "contact":
+                return (
+                  <ContactWithCountry
+                    key="phoneField"
+                    onChangeText={(value) => handleChangeText("contact", value)}
+                  />
+                );
+
+              case "radio":
+                return (
+                  <CustomRadioButton
+                    label={field.label}
+                    key={field.key}
+                    data={field.data}
+                    onValueChange={(value) =>
+                      handleChangeText(field.key, value)
+                    }
+                    service_FormId={field.service_FormId}
+                  />
+                );
+
+              case "date":
+                return (
+                  <CustomDatePicker
+                    title={field.label}
+                    key={field.key}
+
+                    // key={field.key}
+                    // onValueChange={(value) =>
+                    //   handleChangeText(field.key, value)
+                    // }
+                    // service_FormId={field.service_FormId}
+                  />
+                );
+              default:
+                return null;
+            }
+          })}
+          {/* Generating custom inputs Based on multiselect--- */}
+          {selected?.length > 0 &&
+            selected?.map((label) => {
               return (
                 <CustomTextInput
-                  key={field.key}
-                  placeholder={field.placeholder}
-                  onChangeText={(value) => handleChangeText(field.key, value)}
-                  inlineStyles={styles.inputStyle}
+                  label={`Your ${label === "self" ? "" : label} age`}
+                  key={label}
+                  placeholder={`Your ${label === "self" ? "" : label} age`}
+                  inlineStyles={styles.selectedStyles}
+                  inputMode="numeric"
+                  onChangeText={(value) => handleChangeText(label, value)}
                 />
               );
+            })}
 
-            case "singleSelect":
-              return (
-                <CustomDropdown
-                  key={field.key}
-                  placeholder={field.label}
-                  data={field.data}
-                  dropdownType={field.type}
-                  // onChangeText={(value) =>
-                  //   handleChangeText("contact", value)
-                  // }
-                  onValueChange={(value) => handleChangeText(field.key, value)}
-                  inlineStyle={styles.inputStyle}
-                />
-              );
-            case "multiSelect":
-              return (
-                <CustomDropdown
-                  key={field.key}
-                  placeholder={field.label}
-                  data={field.data}
-                  dropdownType={field.type}
-                  // onChangeText={(value) =>
-                  //   handleChangeText("contact", value)
-                  // }
-                  onValueChange={(value) => handleChangeText(field.key, value)}
-                  inlineStyle={styles.inputStyle}
-                />
-              );
-
-            case "contact":
-              return (
-                <ContactWithCountry
-                  key={field.key}
-                  onChangeText={(value) => handleChangeText("contact", value)}
-                />
-              );
-
-            case "radio":
-              return (
-                <CustomRadioButton
-                  key={field.key}
-                  onValueChange={(value) => handleChangeText(field.key, value)}
-                  service_FormId={field.service_FormId}
-                />
-              );
-            default:
-              return null;
-          }
-        })}
-        <Button
-          color="#37CFEE"
-          title="Save Details"
-          onPress={handleFormSubmit} // Call handleFormSubmit when the button is pressed
-          style={styles.buttonStyle}
-        />
-      </View>
-    </View>
+          <TouchableOpacity
+            onPress={handleFormSubmit} // Call handleFormSubmit when the button is pressed
+            style={styles.saveButton}
+          >
+            <Text style={styles.saveButtonText}>Save Details</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -112,33 +250,55 @@ export default DynamicInquiryForm;
 
 const styles = StyleSheet.create({
   formContainer: {
-    marginTop: 5,
-    gap: 5,
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
+    marginTop: responsiveHeight(2),
+    gap: responsiveHeight(0.5),
+    // flex: 1, .. un-commnet if u want full height of the container...
+    backgroundColor: "white",
+    borderRadius: responsiveFontSize(1),
     shadowColor: "#DDDDDD",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.4,
     elevation: 3,
-    padding: 10,
+    padding: responsiveFontSize(1),
     borderColor: "#DDDDDD",
     borderWidth: 1,
+    width: responsiveWidth(90),
+    marginLeft: responsiveWidth(5),
   },
 
-  formHeading: {
-    color: "#000000",
-    fontSize: 14,
-  },
   inputStyle: {
-    fontSize: 14,
+    fontSize: responsiveFontSize(2),
     color: "#DCDCDC",
-    borderBottomWidth: 2,
+    paddingBottom: responsiveFontSize(1),
+    borderBottomWidth: responsiveFontSize(0.2),
     borderColor: "#EEEEEE",
-    color: "#27374D",
-    paddingBottom: 5,
   },
   buttonStyle: {
-    fontSize: 12,
+    fontSize: responsiveFontSize(2),
+  },
+  selectedStyles: {
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: "#EEEEEE",
+    height: responsiveHeight(5),
+    paddingLeft: responsiveFontSize(2),
+    borderRadius: 6,
+    color: "#27374D",
+    marginTop: responsiveFontSize(0.3),
+  },
+
+  saveButton: {
+    backgroundColor: "#044291",
+    height: responsiveHeight(6),
+    borderRadius: moderateScale(6),
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: responsiveFontSize(2),
+  },
+  saveButtonText: {
+    color: "white",
+    textAlign: "center",
+    alignSelf: "center",
   },
 });
