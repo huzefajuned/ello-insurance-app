@@ -10,6 +10,7 @@ import {
   responsiveWidth,
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
+import { BACKEND_LIVE_URL } from "../env";
 
 const Home = () => {
   const insets = useSafeAreaInsets();
@@ -24,7 +25,7 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://insurance.ellocentlabs.in/api/v1/insurance-category/product-type"
+          `${BACKEND_LIVE_URL}insurance-category/product-type`
         );
         // Handle the response data
         const insuranceCategories = response.data?.data.map((item) => ({

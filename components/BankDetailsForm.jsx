@@ -8,14 +8,14 @@ import {
 } from "react-native-responsive-dimensions";
 import { moderateScale } from "react-native-size-matters";
 import { RegisterContext } from "../context/RegisterContext";
-import CustomDropdown from "./CustomDropdown";
-import banksList from "../screens/Banks.json";
+// import CustomDropdown from "./CustomDropdown";
+// import banksList from "../screens/Banks.json";
 
 const BankDetailsForm = ({ currentPosition, setCurrentPosition }) => {
   //format changing....
   const bankOptions = Object.keys(banksList).map((bankName) => ({
     label: bankName,
-    value: banksList[bankName],
+    // value: banksList[bankName],
   }));
 
   const {
