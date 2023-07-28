@@ -1,14 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import Logo from "../assets/images/logo.png";
 import { moderateScale } from "react-native-size-matters";
 import base64 from "react-native-base64";
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
-  responsiveScreenHeight,
 } from "react-native-responsive-dimensions";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";

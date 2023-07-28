@@ -41,13 +41,13 @@ const TrainingScreen = () => {
       style={{
         paddingTop: insets.top,
         width: responsiveWidth(100),
+        height: responsiveHeight(100),
         flex: 1,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         alignSelf: "center",
         backgroundColor: "#F9F9F9",
-
       }}
     >
       <CommonHeader heading="Training" isBackIcon={true} />

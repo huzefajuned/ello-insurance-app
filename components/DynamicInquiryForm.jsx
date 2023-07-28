@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import CustomRadioButton from "./CustomRadioButton";
 import ContactWithCountry from "./ContactWithCountry";
@@ -23,102 +24,56 @@ import {
 import { KeyboardAvoidingView } from "react-native";
 import { ScrollView } from "react-native";
 import CustomDatePicker from "./CustomDatePicker";
+import { RegisterContext } from "../context/RegisterContext";
+import { DynamicFormDataContext } from "../context/DynamicFormDataContext";
+import { fixedInputsInForms } from "../CONSTANTS";
+import { useNavigation } from "@react-navigation/native";
 
-const DynamicInquiryForm = ({ formConfigurations }) => {
+const DynamicInquiryForm = () => {
+  const { dy_formConfigurations } = useContext(DynamicFormDataContext);
+  const [loading, setLoading] = useState(true);
+  const { setIsBlank } = useContext(RegisterContext);
+  const [selectedRadio, setSelectedRadio] = useState(2); // ststes for chnaging
+
   const [selected, setSelected] = useState([]); // for generating textInputs based on dropdown selection---
-  // fixing formconfiguration for testing----  remove lateron
-
-  // const genderData = [
-  //   { label: "Male", value: "Male" },
-  //   { label: "Female", value: "Female" },
-  // ];
-  // const brandData = [
-  //   { label: "Brand A", value: "Brand A" },
-  //   { label: "Brand B", value: "Brand B" },
-  //   { label: "Brand C", value: "Brand C" },
-  // ];
-  // const modelData = [
-  //   { label: "Model A", value: "Model A" },
-  //   { label: "Model B", value: "Model B" },
-  //   { label: "Model C", value: "Model C" },
-  // ];
-  // const fuelTypeData = [
-  //   { label: "Fuel Type A", value: "Fuel Type A" },
-  //   { label: "Fuel Type B", value: "Fuel Type B" },
-  //   { label: "Fuel Type C", value: "Fuel Type C" },
-  // ];
-  // const manufactureYearData = [
-  //   { label: "2020", value: "2020" },
-  //   { label: "2021", value: "2021" },
-  //   { label: "2022", value: "2022" },
-  // ];
-  // const variantData = [
-  //   { label: "Variant A", value: "Variant A" },
-  //   { label: "Variant B", value: "Variant B" },
-  //   { label: "Variant C", value: "Variant C" },
-  // ];
-  // const registrationData = [
-  //   { label: "registration A", value: "registration A" },
-  //   { label: "registration B", value: "registration B" },
-  //   { label: "registration C", value: "registration C" },
-  // ];
-  // const selectMembers = [
-  //   {
-  //     label: "Self",
-  //     value: "self ",
-  //     image:
-  //       "https://ashallendesign.ams3.cdn.digitaloceanspaces.com/rMbsGOyK6i1KjNkbXff8qLohzM1nWQA8HNGwHF0J.png",
-  //   },
-  //   { label: "Spouse", value: "spouse " },
-  //   { label: "Son", value: "son " },
-  //   { label: "Daughter", value: "daughter " },
-  //   { label: "Father", value: "father " },
-  //   { label: "Mother", value: "mother" },
-  // ];
-  // const HealthFormConfigration = [
-  //   {
-  //     type: "text",
-  //     key: "name",
-  //     placeholder: "Customer name",
-  //   },
-  //   {
-  //     type: "contact",
-  //     key: "contact",
-  //     placeholder: "Enter Your Email",
-  //   },
-  //   {
-  //     type: "singleSelect",
-  //     key: "gender",
-  //     label: "Gender",
-  //     data: genderData,
-  //   },
-  //   {
-  //     type: "multiSelect",
-  //     key: "members",
-  //     label: "Who would you like to get insured?",
-  //     data: selectMembers,
-  //   },
-  // ];
-  // fixing formconfiguration for testing----  remove everthing in betweenn commnets---
-
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
 
   const [formValues, setFormValues] = useState({});
+  setTimeout(() => {
+    setLoading(false);
+  }, 1000);
 
   const handleChangeText = (key, value) => {
-    console.log(value);
     setFormValues({ ...formValues, [key]: value });
   };
 
   const handleFormSubmit = () => {
-    // This function will be called when the "Save Details" button is pressed
-    console.log("Form Values:", formValues);
-    // You can further process the formValues or send them to an API, etc.
+    console.log("formValues", formValues);
+    alert(`We will back to you...😊 , ${formValues["customer-name"]}`);
+
+    // dummy timeout, do it later using apis.....
+    setTimeout(() => {
+      navigation.navigate("Tabs");
+    }, 1000);
   };
+
+  //  function using Regular expression to extract text within HTML tags...
+  function extractTextFromHTML(htmlSnippet) {
+    const regex = />(.*?)<\/\w+>/;
+    const match = htmlSnippet.match(regex);
+    const extractedText = match ? match[1] : "";
+    return extractedText;
+  }
 
   return (
     <KeyboardAvoidingView
-      style={{ paddingTop: insets.top, flex: 1, overflow: "scroll" }}
+      style={{
+        paddingTop: insets.top,
+        flex: 1,
+        overflow: "scroll",
+        backgroundColor: "#F9F9F9",
+      }}
     >
       <ScrollView>
         <CommonHeader
@@ -133,114 +88,245 @@ const DynamicInquiryForm = ({ formConfigurations }) => {
             marginLeft: responsiveWidth(5),
           }}
         />
-        <View style={styles.formContainer}>
-          {formConfigurations?.map((field) => {
-            switch (field.type) {
-              case "text":
-                return (
-                  <CustomTextInput
-                    key={field.key}
-                    placeholder={field.placeholder}
-                    onChangeText={(value) => handleChangeText(field.key, value)}
-                    inlineStyles={styles.inputStyle}
-                  />
-                );
 
-              case "singleSelect":
-                return (
-                  <CustomDropdown
-                    key={field.key}
-                    placeholder={field.label}
-                    data={field.data}
-                    dropdownType={field.type}
-                    // onChangeText={(value) =>
-                    //   handleChangeText("contact", value)
-                    // }
-                    onValueChange={(value) =>
-                      handleChangeText(field.key, value)
-                    }
-                    selected={selected}
-                    setSelected={setSelected}
-                  />
-                );
-              case "multiSelect":
-                return (
-                  <CustomDropdown
-                    key={field.key}
-                    placeholder={field.label}
-                    data={field.data}
-                    dropdownType={field.type}
-                    // onChangeText={(value) =>
-                    //   handleChangeText("contact", value)
-                    // }
-                    onValueChange={(value) =>
-                      handleChangeText(field.key, value)
-                    }
-                    selected={selected}
-                    setSelected={setSelected}
-                  />
-                );
+        {loading ? (
+          <Text style={styles.loading}>
+            <ActivityIndicator
+              size="large"
+              color="#37CFEE"
+              style={styles.loadingLoader}
+            />
+          </Text>
+        ) : (
+          <View style={styles.formContainer}>
+            <View>
+              <Text>Customer Details</Text>
+            </View>
 
-              case "contact":
-                return (
-                  <ContactWithCountry
-                    key="phoneField"
-                    onChangeText={(value) => handleChangeText("contact", value)}
-                  />
-                );
+            <>
+              {/*  mantory filds for all forms--- */}
+              {fixedInputsInForms?.map((field) => {
+                // console.log("field",field)
+                switch (field.type) {
+                  case "text":
+                    return (
+                      <CustomTextInput
+                        key={field.key}
+                        placeholder={field.placeholder}
+                        onChangeText={(value) =>
+                          handleChangeText(field.key, value)
+                        }
+                        inlineStyles={styles.inputStyle}
+                        inputMode={field.inputMode}
+                        value={formValues[field.key]}
+                      />
+                    );
+                  case "number": // remove this later if needed.
+                    return (
+                      <CustomTextInput
+                        key={field.key || field.name}
+                        placeholder={field.placeholder || field.name}
+                        onChangeText={(value) =>
+                          handleChangeText(field.key, value)
+                        }
+                        inlineStyles={styles.inputStyle}
+                        inputMode={field.inputMode}
+                        value={formValues[field.key]}
+                      />
+                    );
 
-              case "radio":
-                return (
-                  <CustomRadioButton
-                    label={field.label}
-                    key={field.key}
-                    data={field.data}
-                    onValueChange={(value) =>
-                      handleChangeText(field.key, value)
-                    }
-                    service_FormId={field.service_FormId}
-                  />
-                );
+                  case "contact":
+                    return (
+                      <ContactWithCountry
+                        key="phoneField"
+                        onChangeText={(value) =>
+                          handleChangeText("contact", value)
+                        }
+                      />
+                    );
+                  default:
+                    return null;
+                }
+              })}
+              {/*  mapping all fields based on api responses */}
+              {dy_formConfigurations?.fields?.map((field) => {
+                switch (field.type) {
+                  case "text":
+                    return (
+                      <CustomTextInput
+                        key={
+                          field.key ||
+                          field.placeholder ||
+                          field.name ||
+                          field.label
+                        }
+                        placeholder={
+                          field.placeholder || field.label || field.name
+                        }
+                        onChangeText={(value) =>
+                          handleChangeText(
+                            field.key ||
+                              field.placeholder ||
+                              field.label ||
+                              field.name,
+                            value
+                          )
+                        }
+                        inlineStyles={styles.inputStyle}
+                        inputMode={field.inputMode}
+                        value={formValues[field.name]}
+                      />
+                    );
 
-              case "date":
-                return (
-                  <CustomDatePicker
-                    title={field.label}
-                    key={field.key}
+                  case "textarea":
+                    return (
+                      <CustomTextInput
+                        key={field.key || field.placeholder || field.name}
+                        placeholder={extractTextFromHTML(
+                          field.placeholder || field.label || field.name
+                        )}
+                        onChangeText={(value) =>
+                          handleChangeText(
+                            extractTextFromHTML(field.label),
+                            value
+                          )
+                        }
+                        inlineStyles={styles.inputStyle}
+                        inputMode={field.inputMode}
+                        value={formValues[field.name]}
+                        multiline={true}
+                      />
+                    );
 
-                    // key={field.key}
-                    // onValueChange={(value) =>
-                    //   handleChangeText(field.key, value)
-                    // }
-                    // service_FormId={field.service_FormId}
-                  />
-                );
-              default:
-                return null;
-            }
-          })}
-          {/* Generating custom inputs Based on multiselect--- */}
-          {selected?.length > 0 &&
-            selected?.map((label) => {
-              return (
-                <CustomTextInput
-                  label={`Your ${label === "self" ? "" : label} age`}
-                  key={label}
-                  placeholder={`Your ${label === "self" ? "" : label} age`}
-                  inlineStyles={styles.selectedStyles}
-                  inputMode="numeric"
-                  onChangeText={(value) => handleChangeText(label, value)}
-                />
-              );
-            })}
+                  case "number": // remove this later if needed.
+                    return (
+                      <CustomTextInput
+                        key={field.key || field.name}
+                        placeholder={
+                          field.placeholder || field.label || field.name
+                        }
+                        onChangeText={(value) =>
+                          handleChangeText(
+                            field.key ||
+                              field.placeholder ||
+                              field.label ||
+                              field.name,
+                            value
+                          )
+                        }
+                        inlineStyles={styles.inputStyle}
+                        inputMode="numeric" // only for  number inputss
+                        value={formValues[field.name]}
+                      />
+                    );
 
-          <TouchableOpacity
-            onPress={handleFormSubmit} // Call handleFormSubmit when the button is pressed
-            style={styles.saveButton}
-          >
-            <Text style={styles.saveButtonText}>Save Details</Text>
-          </TouchableOpacity>
-        </View>
+                  case "select": // old was singleselect
+                    return (
+                      <CustomDropdown
+                        key={field.name}
+                        placeholder={field.label}
+                        data={field.values}
+                        dropdownType={field.type}
+                        onValueChange={(value) =>
+                          handleChangeText(field.label, value)
+                        }
+                        selected={selected}
+                        setSelected={setSelected}
+                      />
+                    );
+                  case "multiSelect":
+                    return (
+                      <CustomDropdown
+                        key={field.key}
+                        placeholder={field.label}
+                        data={field.data}
+                        dropdownType={field.type}
+                        onValueChange={(value) =>
+                          handleChangeText(field.key, value)
+                        }
+                        selected={selected}
+                        setSelected={setSelected}
+                      />
+                    );
+
+                  case "contact":
+                    return (
+                      <ContactWithCountry
+                        key="phoneField"
+                        onChangeText={(value) =>
+                          handleChangeText("contact", value)
+                        }
+                      />
+                    );
+
+                  case "radio":
+                    return (
+                      <CustomRadioButton
+                        label={field.label}
+                        key={field.key}
+                        data={field.data}
+                        onValueChange={(value) =>
+                          handleChangeText(field.label, value)
+                        }
+                        service_FormId={field.service_FormId}
+                        value={formValues[field.label]}
+                      />
+                    );
+
+                  case "radio-group":
+                    return (
+                      <CustomRadioButton
+                        label={extractTextFromHTML(field.label) || field.label}
+                        key={field.values}
+                        data={field.values}
+                        onValueChange={(value) =>
+                          handleChangeText(
+                            extractTextFromHTML(field.label),
+                            value
+                          )
+                        }
+                        service_FormId={field.service_FormId}
+                      />
+                    );
+
+                  case "date":
+                    return (
+                      <CustomDatePicker
+                        title={field.label}
+                        key={field.name}
+                        onValueChange={(value) =>
+                          handleChangeText(field.label, value)
+                        }
+                      />
+                    );
+                  default:
+                    return null;
+                }
+              })}
+              {/* Generating custom inputs Based on multiselect--- */}
+              {selected?.length > 0 &&
+                selected?.map((label) => {
+                  return (
+                    <CustomTextInput
+                      label={`Your ${label === "self" ? "" : label} age`}
+                      key={label}
+                      placeholder={`Your ${label === "self" ? "" : label} age`}
+                      inlineStyles={styles.selectedStyles}
+                      inputMode="numeric"
+                      onChangeText={(value) => handleChangeText(label, value)}
+                    />
+                  );
+                })}
+            </>
+
+            <TouchableOpacity
+              onPress={handleFormSubmit} // Call handleFormSubmit when the button is pressed
+              style={styles.saveButton}
+            >
+              <Text style={styles.saveButtonText}>Save Details</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -249,6 +335,16 @@ const DynamicInquiryForm = ({ formConfigurations }) => {
 export default DynamicInquiryForm;
 
 const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "center",
+    textAlign: "center",
+    height: responsiveHeight(100),
+  },
+  loadingLoader: {},
   formContainer: {
     marginTop: responsiveHeight(2),
     gap: responsiveHeight(0.5),
@@ -288,7 +384,7 @@ const styles = StyleSheet.create({
   },
 
   saveButton: {
-    backgroundColor: "#044291",
+    backgroundColor: "#37CFEE",
     height: responsiveHeight(6),
     borderRadius: moderateScale(6),
     display: "flex",

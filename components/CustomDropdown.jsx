@@ -17,8 +17,6 @@ const CustomDropdown = ({
   setSelected,
 }) => {
   const [value, setValue] = useState(null);
-  // const [selected, setSelected] = useState([]);
-  console.log("selected length", selected.length);
 
   const handleValueChange = (item) => {
     setValue(item.value);
@@ -27,7 +25,7 @@ const CustomDropdown = ({
 
   return (
     <View style={styles.container}>
-      {dropdownType === "singleSelect" && (
+      {dropdownType === "select" && (
         <Dropdown
           style={[styles.dropdown]}
           placeholderStyle={styles.placeholderStyle}

@@ -39,14 +39,6 @@ const BankDetailsForm = ({ currentPosition, setCurrentPosition }) => {
   return (
     <View>
       <View style={styles.textInputContainer}>
-        {/* <CustomDropdown
-          label="Bank Name"
-          placeholder="Enter Bank Name"
-          data={bankOptions}
-          onValueChange={() => {}}
-          inlineStyle={styles.customDropdownStyle}
-        /> */}
-
         <CustomTextInput
           label="Bank Name"
           placeholder="Enter Bank Name"
@@ -95,13 +87,11 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     gap: responsiveFontSize(2),
-    // backgroundColor:"gray
   },
   customDropdownStyle: {
     borderWidth: 2,
     borderColor: "#EEEEEE",
     height: responsiveHeight(6.5),
-    // flex: 1,
     width: responsiveWidth(100),
 
     paddingLeft: responsiveFontSize(2),
@@ -112,7 +102,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#EEEEEE",
     height: responsiveHeight(6.5),
-    // flex: 1,
     width: "100%",
     paddingLeft: responsiveFontSize(2),
     borderRadius: 6,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,6 +16,8 @@ import {
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
 import { ActivityIndicator } from "react-native";
+import { getdynamicFormJsonApi } from "../services/apiServices";
+import { DynamicFormDataContext } from "../context/DynamicFormDataContext";
 
 const InsuranceServices = ({
   InsuranceServicesData,
@@ -23,303 +25,43 @@ const InsuranceServices = ({
   setInputText,
 }) => {
   const [clicked, setClicked] = useState(false);
-
+  // const [dy_formConfigurations, setDy_formConfigurations] = useState([]);
+  const { dy_formConfigurations, setDy_formConfigurations, setLoading } =
+    useContext(DynamicFormDataContext);
+  // console.log("dy_formConfigurations", dy_formConfigurations);
   const navigation = useNavigation();
 
-  const genderData = [
-    { label: "Male", value: "Male" },
-    { label: "Female", value: "Female" },
-  ];
-  const brandData = [
-    { label: "Brand A", value: "Brand A" },
-    { label: "Brand B", value: "Brand B" },
-    { label: "Brand C", value: "Brand C" },
-  ];
-  const modelData = [
-    { label: "Model A", value: "Model A" },
-    { label: "Model B", value: "Model B" },
-    { label: "Model C", value: "Model C" },
-  ];
-  const fuelTypeData = [
-    { label: "Fuel Type A", value: "Fuel Type A" },
-    { label: "Fuel Type B", value: "Fuel Type B" },
-    { label: "Fuel Type C", value: "Fuel Type C" },
-  ];
-  const manufactureYearData = [
-    { label: "2020", value: "2020" },
-    { label: "2021", value: "2021" },
-    { label: "2022", value: "2022" },
-  ];
-  const variantData = [
-    { label: "Variant A", value: "Variant A" },
-    { label: "Variant B", value: "Variant B" },
-    { label: "Variant C", value: "Variant C" },
-  ];
-  const registrationData = [
-    { label: "registration A", value: "registration A" },
-    { label: "registration B", value: "registration B" },
-    { label: "registration C", value: "registration C" },
-  ];
-  const selectMembers = [
-    {
-      label: "Self",
-      value: "self ",
-      image:
-        "https://ashallendesign.ams3.cdn.digitaloceanspaces.com/rMbsGOyK6i1KjNkbXff8qLohzM1nWQA8HNGwHF0J.png",
-    },
-    { label: "Spouse", value: "spouse " },
-    { label: "Son", value: "son " },
-    { label: "Daughter", value: "daughter " },
-    { label: "Father", value: "father " },
-    { label: "Mother", value: "mother" },
-  ];
-  const annualIncome = [
-    { label: "1000 - 5000", value: "1000 - 10000" },
-    { label: "10000 - 20000", value: "20000 - 100000" },
-    { label: "100000 - 150000", value: "150000 - 2000000" },
-  ];
+  function getObjectById(data, specifiedId) {
+    return data.find((obj) => obj.id === specifiedId);
+  }
 
-  const sumAssuredAmount = [
-    { label: "999 - 19000", value: "11000 - 12000" },
-    { label: "150000 - 200000", value: "200000 - 240000" },
-    { label: "240000 - 2900000", value: "320000 - 380000" },
-  ];
-  const radioData = [
-    {
-      key: 1,
-      title: `Brand New  Vehicle`,
-    },
-    {
-      key: 2,
-      title: `Registered Vehicle`,
-    },
-  ];
-
-  const radioSmokeOrNotData = [
-    {
-      key: 1,
-      title: `Yes`,
-    },
-    {
-      key: 2,
-      title: `No`,
-    },
-  ];
-
-  const TwoFourWheelerFormConfigration = [
-    {
-      type: "text",
-      key: "name",
-      placeholder: "Customer name",
-    },
-    {
-      type: "text",
-      key: "email",
-      placeholder: "Primary Email Address",
-    },
-    {
-      type: "singleSelect",
-      key: "gender",
-      label: "Gender",
-      data: genderData,
-    },
-    {
-      type: "contact",
-      key: "contact",
-      label: "contact",
-      // data: genderData,
-    },
-    {
-      type: "radio",
-      key: "vahicle_type",
-      // label: "Gender",
-      data: radioData,
-    },
-    {
-      type: "text",
-      key: "reg_number",
-      placeholder: "Registration Number",
-    },
-    {
-      type: "singleSelect",
-      key: "brand",
-      label: "Brand",
-      data: brandData,
-    },
-    {
-      type: "singleSelect",
-      key: "model",
-      label: "Model",
-      data: modelData,
-    },
-    {
-      type: "singleSelect",
-      key: "fuel_Type",
-      label: "Fuel Type",
-      data: fuelTypeData,
-    },
-    {
-      type: "singleSelect",
-      key: "man_year",
-      label: "Manufacture Year",
-      data: manufactureYearData,
-    },
-    {
-      type: "singleSelect",
-      key: "varient",
-      label: "Varient",
-      data: variantData,
-    },
-  ];
-  const HealthFormConfigration = [
-    {
-      type: "text",
-      key: "name",
-      placeholder: "Your Name",
-    },
-    {
-      type: "contact",
-      key: "contact",
-      // placeholder: "Enter Your Email",
-    },
-    {
-      type: "singleSelect",
-      key: "gender",
-      label: "Gender",
-      data: genderData,
-    },
-    {
-      type: "multiSelect",
-      key: "members",
-      label: "Who would you like to get insured?",
-      data: selectMembers,
-    },
-  ];
-  const ChildSavingFormConfigration = [
-    {
-      type: "text",
-      key: "name",
-      placeholder: "Customer name",
-    },
-    {
-      type: "contact",
-      key: "contact",
-      placeholder: "Enter Your Email",
-    },
-    {
-      type: "singleSelect",
-      key: "gender",
-      label: "Gender",
-      data: genderData,
-    },
-    {
-      type: "multiSelect",
-      key: "members",
-      label: "member",
-      data: selectMembers,
-    },
-  ];
-  const PensionAndRetirementFormConfigration = [
-    {
-      type: "singleSelect",
-      key: "gender",
-      label: "Gender",
-      data: genderData,
-    },
-    {
-      type: "date",
-      key: "dob",
-      label: "Date of birth",
-      // data: annualIncome,
-    },
-    {
-      type: "singleSelect",
-      key: "members",
-      label: "Approx. annual income",
-      data: annualIncome,
-    },
-    {
-      type: "radio",
-      key: "smokeOrNot",
-      label: "Do you smoke or chew tobacco?",
-      data: radioSmokeOrNotData,
-    },
-    {
-      type: "singleSelect",
-      key: "sumAssuredAmount",
-      label: "Sum Assured Amount!",
-      data: sumAssuredAmount,
-    },
-    {
-      type: "text",
-      key: "name",
-      placeholder: "Your Name",
-    },
-    {
-      type: "contact",
-      key: "contact",
-      label: "contact",
-      // data: genderData,
-    },
-    {
-      type: "text",
-      key: "email",
-      placeholder: "Primary Email Address",
-    },
-  ];
   const handleCardPress = (service) => {
-    // Navigate to the form screen with selected state value---
-    switch (service.formId) {
-      case "TwoWheelerForm":
-        alert(service.formId);
-        navigation.navigate("InquiryForm", {
-          formConfigurations: TwoFourWheelerFormConfigration,
-          service,
-        });
-        break;
+    const formId = service?.formId;
+    getdynamicFormJsonApi()
+      .then((data) => {
+        const specificObject = getObjectById(data?.data?.data, formId);
+        // console.log("specificObject", specificObject);
+        if (specificObject) {
+          setDy_formConfigurations(specificObject);
+        } else {
+          console.log("Object with ID", formId, "not found.");
+        }
+      })
+      .catch((error) => {
+        console.log("error yes", error);
+      });
 
-      case "FourWheelerForm":
-        alert(service.formId);
-        navigation.navigate("InquiryForm", {
-          service,
-          formConfigurations: TwoFourWheelerFormConfigration,
-        });
-        break;
-
-      case "PensionAndRetirementForm":
-        alert(service.formId);
-
-        navigation.navigate("InquiryForm", {
-          service,
-          formConfigurations: PensionAndRetirementFormConfigration,
-        });
-        break;
-
-      case "ChildSavingForm":
-        alert(service.formId);
-
-        navigation.navigate("InquiryForm", {
-          service,
-          formConfigurations: ChildSavingFormConfigration,
-        });
-        break;
-
-      case "HealthForm":
-        alert(service.formId);
-
-        navigation.navigate("InquiryForm", {
-          service,
-          formConfigurations: HealthFormConfigration,
-        });
-        break;
-
-      default:
-        alert("invalid type-", service.formId);
-
-        break;
+    if (!isNaN(service.formId)) {
+      alert(service.formId);
+      navigation.navigate("InquiryForm", {
+        service,
+      });
+      // setLoading(false)
+    } else {
+      // setLoading(false)
+      // Handle the case when service.formId is not a valid number
+      console.log("Invalid form ID:", service.formId);
     }
-
-    // navigation.navigate("InquiryForm", { service });
   };
 
   return (

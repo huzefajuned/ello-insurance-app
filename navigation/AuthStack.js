@@ -19,8 +19,8 @@ const AuthStack = () => {
         <>
           <Stack.Screen
             name="Login"
-            // component={InquiryFormScreen}
-            component={LoginScreen}
+            component={MainTabs}
+            // component={LoginScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen

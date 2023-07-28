@@ -6,9 +6,9 @@ import {
 } from "react-native-responsive-dimensions";
 
 const CustomRadioButton = ({ service_FormId, onValueChange, data, label }) => {
-  const [selectedRadio, setSelectedRadio] = useState(1);
+  const [selectedRadio, setSelectedRadio] = useState();
   const handleRadioClick = (radioTitle, radioKey) => {
-    // console.log("radioKey", radioKey); // for debugging---
+    // for debugging---
     setSelectedRadio(radioKey);
     onValueChange(radioTitle);
   };
@@ -19,12 +19,14 @@ const CustomRadioButton = ({ service_FormId, onValueChange, data, label }) => {
 
       <TouchableOpacity style={styles.container}>
         {data?.map((radio) => {
-          const isSelected = radio.key === selectedRadio;
+          const isSelected = radio.label === selectedRadio;
           return (
             <TouchableOpacity
-              key={radio.key}
+              key={radio.title || radio.value || radio.key}
               style={styles.radioBtn}
-              onPress={() => handleRadioClick(radio.title, radio.key)}
+              onPress={() =>
+                handleRadioClick(radio.title || radio?.label, radio.label)
+              }
             >
               <View style={styles.radioCircle}>
                 <View
@@ -35,7 +37,9 @@ const CustomRadioButton = ({ service_FormId, onValueChange, data, label }) => {
                 ></View>
               </View>
               <View>
-                <Text style={styles.radioText}>{radio.title}</Text>
+                <Text style={styles.radioText}>
+                  {radio.title || radio.label}
+                </Text>
               </View>
             </TouchableOpacity>
           );
@@ -52,6 +56,7 @@ const styles = StyleSheet.create({
     width: responsiveWidth(90),
     display: "flex",
     flexDirection: "row",
+    flexWrap: "wrap",
     gap: responsiveWidth(5),
     marginTop: responsiveFontSize(1),
     marginBottom: responsiveFontSize(0.5),
@@ -81,6 +86,9 @@ const styles = StyleSheet.create({
   },
   selectedRadioInnerCircle: {
     backgroundColor: "#37CFEE",
+  },
+  notSelectedRadioInnerCircle: {
+    backgroundColor: "red",
   },
   radioText: {
     fontSize: responsiveFontSize(1.7),

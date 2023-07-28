@@ -13,8 +13,6 @@ const ContactWithCountry = ({ onChangeText }) => {
   const [value, setValue] = useState("");
   const [formattedValue, setFormattedValue] = useState("");
   const phoneInput = useRef();
-  console.log("value", value);
-
   const handleValueChange = (number) => {
     setValue(number);
     onChangeText(value);

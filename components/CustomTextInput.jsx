@@ -22,6 +22,7 @@ const CustomTextInput = ({
   value,
   canEdit,
   inputMode,
+  multiline,
   ...props
 }) => {
   const { isBlank, setIsBlank } = useContext(RegisterContext);
@@ -40,7 +41,6 @@ const CustomTextInput = ({
             textAlign: "center",
             alignContent: "center",
             alignContent: "center",
-            // backgroundColor:"blue"
           },
         ]}
       >
@@ -55,6 +55,7 @@ const CustomTextInput = ({
           placeholderTextColor={placeholderTextColor}
           value={value}
           inputMode={inputMode}
+          multiline={multiline}
         />
 
         <View

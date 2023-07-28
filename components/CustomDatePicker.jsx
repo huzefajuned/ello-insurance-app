@@ -13,7 +13,7 @@ import {
   responsiveHeight,
 } from "react-native-responsive-dimensions";
 
-const CustomDatePicker = ({ title }) => {
+const CustomDatePicker = ({ title, onValueChange }) => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
@@ -23,6 +23,7 @@ const CustomDatePicker = ({ title }) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
+    onValueChange(formatDate(currentDate));
   };
 
   const showMode = (currentMode) => {
@@ -48,7 +49,11 @@ const CustomDatePicker = ({ title }) => {
       <TouchableOpacity onPress={showDatepicker} style={styles.innerContainer}>
         <View style={styles.rowContainer}>
           <Text>{title} :</Text>
-          {showDob && <Text>{formatDate(date)}</Text>}
+          {showDob && (
+            <Text style={{ fontSize: responsiveFontSize(2) }}>
+              {formatDate(date)}
+            </Text>
+          )}
         </View>
       </TouchableOpacity>
       {show && (

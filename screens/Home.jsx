@@ -24,15 +24,14 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${BACKEND_BASE_URL}/api/v1/insurance-category/product-type`
+          "https://insurance.ellocentlabs.in/api/v1/insurance-category/product-type"
         );
         // Handle the response data
         const insuranceCategories = response.data?.data.map((item) => ({
-          formId: item.formid,
-          name: item.ins_category.name,
-          logo: item.logo,
+          formId: item?.formid?.id,
+          name: item?.ins_category?.name,
+          logo: item?.logo,
         }));
-
         setDataFromApi(insuranceCategories);
       } catch (error) {
         // Handle the error
@@ -86,10 +85,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     width: responsiveWidth(100),
-    height: responsiveHeight(90),
+    height: responsiveHeight(100),
     overflow: "scroll",
     backgroundColor: "#F9F9F9",
-
     // #F9F9F9
   },
 });

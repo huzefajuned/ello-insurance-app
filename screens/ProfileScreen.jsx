@@ -132,7 +132,7 @@ const ProfileScreen = () => {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { marginTop: insets.top }]}>
+    <SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
       <CommonHeader
         heading="My Profile"
         isBackIcon={true}
@@ -298,11 +298,12 @@ export default ProfileScreen;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     display: "flex",
     flexDirection: "column",
     width: responsiveWidth(100),
     height: responsiveHeight(100),
-    // backgroundColor: "#F9F9F9",
+    backgroundColor: "#F9F9F9",
   },
   profileContainer: {
     alignItems: "center",

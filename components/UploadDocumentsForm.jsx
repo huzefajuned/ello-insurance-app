@@ -47,7 +47,7 @@ const UploadDocumentsForm = ({ currentPosition, setCurrentPosition }) => {
 
   const registerApi = async () => {
     setLoading(true);
-    const url = `${BACKEND_BASE_URL}/api/v1/pos/register`;
+    const url = `${BACKEND_BASE_URL}pos/register`;
 
     const payload = {
       image: profile,
