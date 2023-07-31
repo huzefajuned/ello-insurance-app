@@ -3,6 +3,7 @@ import { StyleSheet, Button, View } from "react-native";
 import { Video, ResizeMode } from "expo-av";
 import React from "react";
 import {
+  responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from "react-native-responsive-dimensions";
@@ -48,6 +49,6 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   buttons: {
-    margin: 16,
+    margin: responsiveFontSize(2),
   },
 });

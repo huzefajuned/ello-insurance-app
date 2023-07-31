@@ -26,7 +26,7 @@ import { RegisterContext } from "../context/RegisterContext";
 import { DynamicFormDataContext } from "../context/DynamicFormDataContext";
 import { fixedInputsInForms } from "../CONSTANTS";
 import { useNavigation } from "@react-navigation/native";
-import { postInquiry } from "../services/apiServices";
+import { extractTextFromHTML, postInquiry } from "../services/apiServices";
 import Toast from "react-native-toast-message";
 
 const DynamicInquiryForm = () => {
@@ -53,41 +53,47 @@ const DynamicInquiryForm = () => {
     setPleaseWait(true);
     //calling post api for sending inquiry data---
     postInquiry(formValues)
-  
       .then((res) => {
-        console.log("respo", res?.data?.msg);
+        // console.log("respo", res.response.data.msg.name);
         // here reposne message
-        Toast.show({
-          type: "success",
-          text1: res?.data?.msg,
-        });
+        if (res.status === 200) {
+          Toast.show({
+            type: "success",
+            text1: res?.data?.msg,
+            text2: `We will Back to you ${formValues["name"]}`,
+          });
+          setPleaseWait(false);
+          setTimeout(() => {
+            navigation.navigate("Tabs");
+          }, 1000);
+        }
         setPleaseWait(false);
-        // setTimeout(() => {
-        //   navigation.navigate("Tabs");
-        // }, 1000);
+
+        if (res.status === 400) {
+          Toast.show({
+            type: "error",
+            text1: res.response.data.msg.name,
+          });
+          setPleaseWait(false);
+        }
       })
       .catch((err) => {
         setPleaseWait(false);
         // fields like name, email, contact are required, and it should be validate in front-end only---
-        console.log("error", err?.response);
+        Toast.show({
+          type: "error",
+          text1: err?.response?.data?.msg?.name || "Invalid Request",
+        });
       });
   };
 
-  // alert(`We will back to you...😊 , ${formValues["customer-name"]}`);
-
-  // dummy timeout, do it later using apis.....
-  // setTimeout(() => {
-  //   navigation.navigate("Tabs");
-  // }, 1000);
+  // //  function using Regular expression to extract text within HTML tags...
+  // function extractTextFromHTML(htmlSnippet) {
+  //   const regex = />(.*?)<\/\w+>/;
+  //   const match = htmlSnippet.match(regex);
+  //   const extractedText = match ? match[1] : "";
+  //   return extractedText;
   // }
-
-  //  function using Regular expression to extract text within HTML tags...
-  function extractTextFromHTML(htmlSnippet) {
-    const regex = />(.*?)<\/\w+>/;
-    const match = htmlSnippet.match(regex);
-    const extractedText = match ? match[1] : "";
-    return extractedText;
-  }
 
   return (
     <KeyboardAvoidingView
@@ -305,7 +311,7 @@ const DynamicInquiryForm = () => {
                           )
                         }
                         inlineStyles={styles.inputStyle}
-                        
+
                         // service_FormId={field.service_FormId}
                       />
                     );
@@ -401,7 +407,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: responsiveFontSize(0.2),
     borderColor: "#EEEEEE",
     // backgroundColor:'red',
-     marginTop:responsiveFontSize(1)
+    marginTop: responsiveFontSize(1),
   },
   buttonStyle: {
     fontSize: responsiveFontSize(2),

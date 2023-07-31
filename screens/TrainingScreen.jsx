@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { moderateScale } from "react-native-size-matters";
 import TrainingCard from "../components/TrainingCard";
 import { AuthContext } from "../context/AuthContext";
-import { BACKEND_BASE_URL } from "../CONSTANTS";
+import { BACKEND_BASE_URL } from "../env";
 import axios from "axios";
 import {
   responsiveHeight,
@@ -48,6 +48,8 @@ const TrainingScreen = () => {
         justifyContent: "space-between",
         alignSelf: "center",
         backgroundColor: "#F9F9F9",
+        // backgroundColor:"red"
+
       }}
     >
       <CommonHeader heading="Training" isBackIcon={true} />

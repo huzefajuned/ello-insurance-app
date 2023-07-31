@@ -16,7 +16,7 @@ import { AuthContext } from "../context/AuthContext";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import { BACKEND_BASE_URL } from "../CONSTANTS";
+import { BACKEND_BASE_URL } from "../env";
 import {
   responsiveFontSize,
   responsiveWidth,

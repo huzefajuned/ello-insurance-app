@@ -24,12 +24,10 @@ const InsuranceServices = ({
   inputText,
   setInputText,
 }) => {
+  const navigation = useNavigation();
   const [clicked, setClicked] = useState(false);
-  // const [dy_formConfigurations, setDy_formConfigurations] = useState([]);
   const { dy_formConfigurations, setDy_formConfigurations, setLoading } =
     useContext(DynamicFormDataContext);
-  // console.log("dy_formConfigurations", dy_formConfigurations);
-  const navigation = useNavigation();
 
   function getObjectById(data, specifiedId) {
     return data.find((obj) => obj.id === specifiedId);

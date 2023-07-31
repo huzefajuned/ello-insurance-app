@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BACKEND_BASE_URL } from "../CONSTANTS";
+import { BACKEND_BASE_URL } from "../env";
 
 //1. company Logo--
 export async function companyLogoApi() {
@@ -49,18 +49,29 @@ export async function getdynamicFormJsonApi() {
 }
 
 export async function postInquiry(formValues) {
-  const url = `${BACKEND_BASE_URL}/ccxuser/product/data`;
+  const url = `${BACKEND_BASE_URL}user/product/data`;
   try {
-    // Create an empty payload object
-    const payload = {};
+    // Create an empty payload object with insurance_details property
+    const payload = {
+      insurance_details: {},
+    };
 
-    // Iterate through the formValues object and add defined properties to the payload dynamically
+    // Extract and add name, email, and contact to the payload directly
+    payload.name = formValues.name;
+    payload.email = formValues.email;
+    payload.contact = formValues.contact;
+
+    // Iterate through the formValues object (except name, email, and contact) and add defined properties to the insurance_details dynamically
     for (const [key, value] of Object.entries(formValues)) {
-      if (value !== undefined) {
-        payload[key] = value;
+      if (
+        value !== undefined &&
+        key !== "name" &&
+        key !== "email" &&
+        key !== "contact"
+      ) {
+        payload.insurance_details[key] = value;
       }
     }
-    console.log("payload", payload);
 
     const config = {
       //  form type--
@@ -68,9 +79,20 @@ export async function postInquiry(formValues) {
         "Content-Type": "application/json",
       },
     };
-    const data = axios.post(url, payload, config);
+    console.log("payload", payload);
+
+    const data = await axios.post(url, payload, config);
     return data;
   } catch (error) {
-    console.log(error);
+    return error
+    // console.log("error", error);
   }
 }
+
+  // 4.  function using Regular expression to extract text within HTML tags...
+   export function extractTextFromHTML(htmlSnippet) {
+    const regex = />(.*?)<\/\w+>/;
+    const match = htmlSnippet.match(regex);
+    const extractedText = match ? match[1] : "";
+    return extractedText;
+  }

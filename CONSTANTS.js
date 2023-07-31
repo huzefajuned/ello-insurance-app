@@ -1,4 +1,3 @@
-export const BACKEND_BASE_URL = "https://e9bf-203-190-154-123.ngrok-free.app/api/v1/";
 
 export const fixedInputsInForms = [
   {

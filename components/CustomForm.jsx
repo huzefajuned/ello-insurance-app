@@ -14,7 +14,7 @@ import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomTextInput from "./CustomTextInput";
 import { AuthContext } from "../context/AuthContext";
-import { BACKEND_BASE_URL } from "../CONSTANTS";
+import { BACKEND_BASE_URL } from "../env";
 
 import {
   responsiveFontSize,
@@ -54,8 +54,6 @@ const CustomForm = ({ companyLogo }) => {
 
       setLoading(false);
       if (response.status === 200) {
-        console.log("response", JSON.stringify(response));
-
         const token = response.data["tokens"]["access_token"];
         AsyncStorage.setItem("access_token", token);
         setToken(token); // Save the access token in the context
@@ -83,7 +81,6 @@ const CustomForm = ({ companyLogo }) => {
             error.response?.data.msg?.email ||
             error.response?.data.msg?.password,
         });
-        console.log("Error data:", error.response.data);
       } else if (error.request) {
         console.log("No response received:", error.request);
       } else {

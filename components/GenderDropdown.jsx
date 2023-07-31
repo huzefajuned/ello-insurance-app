@@ -37,9 +37,13 @@ const GenderDropdown = ({
         <View
           style={{
             position: "absolute",
-            bottom: responsiveFontSize(1),
+            bottom: responsiveFontSize(2),
+            right: responsiveFontSize(1),
             backgroundColor: "white",
             padding: responsiveFontSize(2),
+            borderRadius: responsiveFontSize(1),
+            borderColor: "#DDDDDD",
+            borderWidth: 1,
           }}
         >
           {options.map((option) => (
@@ -49,7 +53,12 @@ const GenderDropdown = ({
               onPress={() => handleOptionSelect(option)}
             >
               <Text
-                style={{ fontSize: responsiveFontSize(1.9), color: "#444444" }}
+                style={{
+                  fontSize: responsiveFontSize(1.9),
+                  color: "#444444",
+                  borderColor: "#DDDDDD",
+                  borderBottomWidth: 1,
+                }}
               >
                 {value || option}
               </Text>

@@ -9,7 +9,7 @@ import {
 import { moderateScale } from "react-native-size-matters";
 import { RegisterContext } from "../context/RegisterContext";
 import axios from "axios";
-import { BACKEND_BASE_URL } from "../CONSTANTS";
+import { BACKEND_BASE_URL } from "../env";
 import Toast from "react-native-toast-message";
 
 const UploadDocumentsForm = ({ currentPosition, setCurrentPosition }) => {

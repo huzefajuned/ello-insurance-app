@@ -17,7 +17,7 @@ import CommonHeader from "../components/CommonHeader";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AuthContext } from "../context/AuthContext";
 import base64 from "react-native-base64";
-import { BACKEND_BASE_URL } from "../CONSTANTS";
+import { BACKEND_BASE_URL } from "../env";
 import axios from "axios";
 import {
   responsiveFontSize,
@@ -218,7 +218,6 @@ const ProfileScreen = () => {
                         selectedGender={selectedGender}
                         setSelectedGender={setSelectedGender}
                         options={["Male", "Female"]}
-                        // value={selectedGender}
                         selectedOption={selectedGender}
                         onSelectOption={(option) =>
                           handleChangeText(row.title, option)
@@ -252,35 +251,6 @@ const ProfileScreen = () => {
                 )}
               </View>
             ))}
-
-            {/* {infoRows.map((row, index) => (
-              <View style={styles.modalRow} key={index}>
-                <Text style={styles.modalLabel}>{row.title}:</Text>
-                {row.canEdit ? (
-                  row.title === "Gender" ? (
-                    <GenderDropdown
-                      options={["Male", "Female"]}
-                      selectedOption={
-                        formValues[row.title] || userProfile[row.title]
-                      }
-                      onSelectOption={(option) =>
-                        handleChangeText(row.title, option)
-                      }
-                    />
-                  ) : (
-                    <TextInput
-                      style={styles.modalInput}
-                      value={formValues[row.title] || userProfile[row.title]}
-                      onChangeText={(text) => handleChangeText(row.title, text)}
-                    />
-                  )
-                ) : (
-                  <Text style={styles.modalValue}>
-                    {userProfile[row.title]}
-                  </Text>
-                )}
-              </View>
-            ))} */}
             <TouchableOpacity
               style={styles.button}
               onPress={handleUpdateProfile}
@@ -328,8 +298,6 @@ const styles = StyleSheet.create({
   modal: {
     position: "absolute",
     left: -responsiveWidth(50),
-    // width: responsiveWidth(40),
-    // height: responsiveHeight(40),
     backgroundColor: "#FFFFFF",
     elevation: 4,
     borderRadius: 5,

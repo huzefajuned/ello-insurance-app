@@ -68,7 +68,6 @@ const Home = () => {
   }, [inputText, dataFromApi]);
 
   return (
-    <View style={{}}>
       <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
         <View style={{ marginBottom: responsiveFontSize(4) }}>
           <Header />
@@ -79,7 +78,6 @@ const Home = () => {
           />
         </View>
       </ScrollView>
-    </View>
   );
 };
 
@@ -90,7 +88,7 @@ const styles = StyleSheet.create({
     width: responsiveWidth(100),
     height: responsiveHeight(100),
     overflow: "scroll",
-    // backgroundColor: "#F9F9F9",
+    backgroundColor: "#F9F9F9",
   },
 });
 
