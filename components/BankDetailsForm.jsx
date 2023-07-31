@@ -13,10 +13,10 @@ import { RegisterContext } from "../context/RegisterContext";
 
 const BankDetailsForm = ({ currentPosition, setCurrentPosition }) => {
   //format changing....
-  const bankOptions = Object.keys(banksList).map((bankName) => ({
-    label: bankName,
-    // value: banksList[bankName],
-  }));
+  // const bankOptions = Object.keys(banksList).map((bankName) => ({
+  //   label: bankName,
+  //   // value: banksList[bankName],
+  // }));
 
   const {
     isBlank,

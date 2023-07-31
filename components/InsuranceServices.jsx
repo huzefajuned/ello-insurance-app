@@ -40,7 +40,6 @@ const InsuranceServices = ({
     getdynamicFormJsonApi()
       .then((data) => {
         const specificObject = getObjectById(data?.data?.data, formId);
-        // console.log("specificObject", specificObject);
         if (specificObject) {
           setDy_formConfigurations(specificObject);
         } else {
@@ -52,13 +51,11 @@ const InsuranceServices = ({
       });
 
     if (!isNaN(service.formId)) {
-      alert(service.formId);
       navigation.navigate("InquiryForm", {
         service,
       });
       // setLoading(false)
     } else {
-      // setLoading(false)
       // Handle the case when service.formId is not a valid number
       console.log("Invalid form ID:", service.formId);
     }
@@ -135,7 +132,7 @@ const styles = StyleSheet.create({
     width: responsiveWidth(25),
     height: responsiveHeight(10),
     aspectRatio: 1,
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
     textAlign: "center",
     backgroundColor: "#FFFFFF",
@@ -154,11 +151,12 @@ const styles = StyleSheet.create({
   image: {
     width: responsiveWidth(10),
     height: responsiveWidth(10),
-    // resizeMode: "contain",
   },
   serviceName: {
     marginTop: responsiveFontSize(1),
     fontSize: responsiveFontSize(1.6),
+    width: responsiveWidth(22),
+    textAlign: "center",
   },
 });
 

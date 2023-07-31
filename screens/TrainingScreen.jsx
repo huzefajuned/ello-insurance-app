@@ -24,7 +24,7 @@ const TrainingScreen = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `${BACKEND_BASE_URL}/api/v1/pos/training`,
+          `${BACKEND_BASE_URL}pos/training`,
           { headers }
         );
         await setTrainingData(response.data);

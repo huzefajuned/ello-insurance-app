@@ -46,7 +46,7 @@ const ChangePassword = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        `${BACKEND_BASE_URL}/api/v1/auth/user/change/password`,
+        `${BACKEND_BASE_URL}auth/user/change/password`,
         payload,
         {
           headers: {
@@ -95,7 +95,7 @@ const ChangePassword = () => {
       <CommonHeader
         heading="Change Password"
         isBackIcon={true}
-        isCloseIcon={true}
+        // isCloseIcon={true}
       />
 
       <CommonDescription

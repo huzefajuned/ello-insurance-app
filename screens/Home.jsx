@@ -27,10 +27,10 @@ const Home = () => {
         const response = await axios.get(
           `${BACKEND_LIVE_URL}insurance-category/product-type`
         );
-        // Handle the response data
+
         const insuranceCategories = response.data?.data.map((item) => ({
           formId: item?.formid?.id,
-          name: item?.ins_category?.name,
+          name: item?.name,
           logo: item?.logo,
         }));
         setDataFromApi(insuranceCategories);
@@ -68,16 +68,18 @@ const Home = () => {
   }, [inputText, dataFromApi]);
 
   return (
-    <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={{ marginBottom: responsiveFontSize(4) }}>
-        <Header />
-        <InsuranceServices
-          InsuranceServicesData={filteredInsuranceData} // Use the filtered data here
-          inputText={inputText}
-          setInputText={setInputText}
-        />
-      </View>
-    </ScrollView>
+    <View style={{}}>
+      <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
+        <View style={{ marginBottom: responsiveFontSize(4) }}>
+          <Header />
+          <InsuranceServices
+            InsuranceServicesData={filteredInsuranceData} // Use the filtered data here
+            inputText={inputText}
+            setInputText={setInputText}
+          />
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -88,8 +90,7 @@ const styles = StyleSheet.create({
     width: responsiveWidth(100),
     height: responsiveHeight(100),
     overflow: "scroll",
-    backgroundColor: "#F9F9F9",
-    // #F9F9F9
+    // backgroundColor: "#F9F9F9",
   },
 });
 

@@ -1,10 +1,8 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
-  Button,
   StyleSheet,
-  SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
@@ -28,10 +26,13 @@ import { RegisterContext } from "../context/RegisterContext";
 import { DynamicFormDataContext } from "../context/DynamicFormDataContext";
 import { fixedInputsInForms } from "../CONSTANTS";
 import { useNavigation } from "@react-navigation/native";
+import { postInquiry } from "../services/apiServices";
+import Toast from "react-native-toast-message";
 
 const DynamicInquiryForm = () => {
   const { dy_formConfigurations } = useContext(DynamicFormDataContext);
   const [loading, setLoading] = useState(true);
+  const [pleaseWait, setPleaseWait] = useState(false);
   const { setIsBlank } = useContext(RegisterContext);
   const [selectedRadio, setSelectedRadio] = useState(2); // ststes for chnaging
 
@@ -49,14 +50,36 @@ const DynamicInquiryForm = () => {
   };
 
   const handleFormSubmit = () => {
-    console.log("formValues", formValues);
-    alert(`We will back to you...😊 , ${formValues["customer-name"]}`);
-
-    // dummy timeout, do it later using apis.....
-    setTimeout(() => {
-      navigation.navigate("Tabs");
-    }, 1000);
+    setPleaseWait(true);
+    //calling post api for sending inquiry data---
+    postInquiry(formValues)
+  
+      .then((res) => {
+        console.log("respo", res?.data?.msg);
+        // here reposne message
+        Toast.show({
+          type: "success",
+          text1: res?.data?.msg,
+        });
+        setPleaseWait(false);
+        // setTimeout(() => {
+        //   navigation.navigate("Tabs");
+        // }, 1000);
+      })
+      .catch((err) => {
+        setPleaseWait(false);
+        // fields like name, email, contact are required, and it should be validate in front-end only---
+        console.log("error", err?.response);
+      });
   };
+
+  // alert(`We will back to you...😊 , ${formValues["customer-name"]}`);
+
+  // dummy timeout, do it later using apis.....
+  // setTimeout(() => {
+  //   navigation.navigate("Tabs");
+  // }, 1000);
+  // }
 
   //  function using Regular expression to extract text within HTML tags...
   function extractTextFromHTML(htmlSnippet) {
@@ -76,11 +99,7 @@ const DynamicInquiryForm = () => {
       }}
     >
       <ScrollView>
-        <CommonHeader
-          heading="Add inquiry"
-          isBackIcon={true}
-          isCloseIcon={true}
-        />
+        <CommonHeader heading="Add inquiry" isBackIcon={true} />
         <CommonDescription
           description="To add a new Inquiry, enter the details of the Inquiry in the input field below."
           inlineStyles={{
@@ -104,7 +123,7 @@ const DynamicInquiryForm = () => {
             </View>
 
             <>
-              {/*  mantory filds for all forms--- */}
+              {/*  mantory fields for all forms--- */}
               {fixedInputsInForms?.map((field) => {
                 // console.log("field",field)
                 switch (field.type) {
@@ -263,12 +282,12 @@ const DynamicInquiryForm = () => {
                     return (
                       <CustomRadioButton
                         label={field.label}
-                        key={field.key}
+                        key={field.label}
                         data={field.data}
                         onValueChange={(value) =>
                           handleChangeText(field.label, value)
                         }
-                        service_FormId={field.service_FormId}
+                        // service_FormId={field.service_FormId}
                         value={formValues[field.label]}
                       />
                     );
@@ -281,11 +300,13 @@ const DynamicInquiryForm = () => {
                         data={field.values}
                         onValueChange={(value) =>
                           handleChangeText(
-                            extractTextFromHTML(field.label),
+                            extractTextFromHTML(field.label) || field.label,
                             value
                           )
                         }
-                        service_FormId={field.service_FormId}
+                        inlineStyles={styles.inputStyle}
+                        
+                        // service_FormId={field.service_FormId}
                       />
                     );
 
@@ -318,13 +339,24 @@ const DynamicInquiryForm = () => {
                   );
                 })}
             </>
-
-            <TouchableOpacity
-              onPress={handleFormSubmit} // Call handleFormSubmit when the button is pressed
-              style={styles.saveButton}
-            >
-              <Text style={styles.saveButtonText}>Save Details</Text>
-            </TouchableOpacity>
+            {/* show and hide submit and loading buttons... */}
+            {pleaseWait ? (
+              <TouchableOpacity style={styles.saveButton}>
+                <Text style={styles.saveButtonText}>Please Wait... </Text>
+                <ActivityIndicator
+                  size="small"
+                  color="white"
+                  style={styles.loadingLoader}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => handleFormSubmit()} // Call handleFormSubmit when the button is pressed
+                style={styles.saveButton}
+              >
+                <Text style={styles.saveButtonText}>Save Details</Text>
+              </TouchableOpacity>
+            )}
           </View>
         )}
       </ScrollView>
@@ -368,6 +400,8 @@ const styles = StyleSheet.create({
     paddingBottom: responsiveFontSize(1),
     borderBottomWidth: responsiveFontSize(0.2),
     borderColor: "#EEEEEE",
+    // backgroundColor:'red',
+     marginTop:responsiveFontSize(1)
   },
   buttonStyle: {
     fontSize: responsiveFontSize(2),

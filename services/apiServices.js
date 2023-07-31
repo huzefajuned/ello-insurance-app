@@ -3,7 +3,7 @@ import { BACKEND_BASE_URL } from "../CONSTANTS";
 
 //1. company Logo--
 export async function companyLogoApi() {
-  const logo_url = `${BACKEND_BASE_URL}/api/v1/company-settings/1`; //${userProfle?.org_id}
+  const logo_url = `${BACKEND_BASE_URL}company-settings/1`; //${userProfle?.org_id}
   try {
     const response = await axios.get(logo_url);
     return response?.data?.data?.logo;
@@ -23,9 +23,9 @@ export async function companyLogoApi() {
 //       pos_agent,
 //     };
 //     const config = {
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
+// headers: {
+//   "Content-Type": "application/json",
+// },
 //     };
 //     const data = await axios.post(url, payload, config);
 //     return data;
@@ -45,5 +45,32 @@ export async function getdynamicFormJsonApi() {
   } catch (error) {
     console.log("error is", error);
     // return error;
+  }
+}
+
+export async function postInquiry(formValues) {
+  const url = `${BACKEND_BASE_URL}/ccxuser/product/data`;
+  try {
+    // Create an empty payload object
+    const payload = {};
+
+    // Iterate through the formValues object and add defined properties to the payload dynamically
+    for (const [key, value] of Object.entries(formValues)) {
+      if (value !== undefined) {
+        payload[key] = value;
+      }
+    }
+    console.log("payload", payload);
+
+    const config = {
+      //  form type--
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const data = axios.post(url, payload, config);
+    return data;
+  } catch (error) {
+    console.log(error);
   }
 }

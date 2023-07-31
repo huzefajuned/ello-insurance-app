@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#EEEEEE",
     borderBottomWidth: responsiveFontSize(0.2),
     // backgroundColor: "red",
+    marginTop:responsiveFontSize(1)
   },
   dropdown: {
     borderColor: "#DCDCDC",
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     height: responsiveFontSize(2),
   },
   placeholderStyle: {
-    fontSize: responsiveFontSize(1.8),
+    fontSize: responsiveFontSize(2.1),
   },
   inputSearchStyle: {
     height: moderateScale(35),

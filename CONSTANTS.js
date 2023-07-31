@@ -1,20 +1,20 @@
-export const BACKEND_BASE_URL = "https://77a0-203-190-154-123.ngrok-free.app/";
+export const BACKEND_BASE_URL = "https://e9bf-203-190-154-123.ngrok-free.app/api/v1/";
 
 export const fixedInputsInForms = [
   {
     type: "text",
-    key: "customer-name",
+    key: "name",
     placeholder: "Your Name",
   },
 
   {
     type: "text",
-    key: "customer-email",
+    key: "email",
     placeholder: "Your Email Address",
   },
   {
     type: "contact",
-    key: "customer-contact",
+    key: "contact",
     label: "contact",
   },
 ];

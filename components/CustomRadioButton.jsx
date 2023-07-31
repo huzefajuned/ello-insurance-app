@@ -5,7 +5,13 @@ import {
   responsiveWidth,
 } from "react-native-responsive-dimensions";
 
-const CustomRadioButton = ({ service_FormId, onValueChange, data, label }) => {
+const CustomRadioButton = ({
+  service_FormId,
+  onValueChange,
+  data,
+  label,
+  inlineStyles,
+}) => {
   const [selectedRadio, setSelectedRadio] = useState();
   const handleRadioClick = (radioTitle, radioKey) => {
     // for debugging---
@@ -17,7 +23,7 @@ const CustomRadioButton = ({ service_FormId, onValueChange, data, label }) => {
     <>
       {label && <Text style={styles.labelStyles}>{label}</Text>}
 
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity style={[inlineStyles, styles.container]}>
         {data?.map((radio) => {
           const isSelected = radio.label === selectedRadio;
           return (
@@ -97,5 +103,7 @@ const styles = StyleSheet.create({
   },
   labelStyles: {
     fontSize: responsiveFontSize(2),
+    marginTop:responsiveFontSize(1),
+    // backgroundColor:'red'
   },
 });

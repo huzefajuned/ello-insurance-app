@@ -7,7 +7,6 @@ import { companyLogoApi } from "../services/apiServices";
 
 const LoginScreen = () => {
   const [companyLogo, setCompnayLogo] = useState("");
-  console.log("companyLogo",companyLogo)
   const insets = useSafeAreaInsets();
 
   useEffect(() => {

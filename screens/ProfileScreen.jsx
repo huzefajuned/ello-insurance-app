@@ -52,7 +52,7 @@ const ProfileScreen = () => {
     console.error("Error parsing payload:", error);
   }
 
-  const url = `${BACKEND_BASE_URL}/api/v1/pos/${id}`;
+  const url = `${BACKEND_BASE_URL}pos/${id}`;
 
   const handleProfile = async () => {
     const headers = { Authorization: `${accessToken}` };

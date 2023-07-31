@@ -34,7 +34,7 @@ const Header = () => {
     console.error("Error parsing payload:", error);
   }
 
-  const url = `${BACKEND_BASE_URL}/api/v1/pos/${id}`;
+  const url = `${BACKEND_BASE_URL}pos/${id}`;
   const handleProfile = async () => {
     const headers = { Authorization: `${accessToken}` };
     try {
@@ -44,7 +44,7 @@ const Header = () => {
       console.log("error", error);
     }
   };
-  const logo_url = `${BACKEND_BASE_URL}/api/v1/company-settings/${userProfle?.org_id}`;
+  const logo_url = `${BACKEND_BASE_URL}company-settings/${userProfle?.org_id}`;
 
   const handleCompanyLogo = async () => {
     // const headers = { Authorization: `${accessToken}` };

@@ -27,7 +27,7 @@ import ForgetPassword from "./ForgetPassword";
 import { RegisterContext } from "../context/RegisterContext";
 
 const CustomForm = ({ companyLogo }) => {
-  const url = `${BACKEND_BASE_URL}/api/v1/auth/user/login`;
+  const url = `${BACKEND_BASE_URL}auth/user/login`;
   const navigation = useNavigation();
   const { setToken, isLoading } = useContext(AuthContext);
   const { isModalVisible, setIsModalVisible } = useContext(CustomModalContext);
