@@ -1,19 +1,33 @@
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../env";
 
-//1. company Logo--
+//1. company Logo only
 export async function companyLogoApi() {
   const logo_url = `${BACKEND_BASE_URL}company-settings/1`; //${userProfle?.org_id}
   try {
     const response = await axios.get(logo_url);
     return response?.data?.data?.logo;
   } catch (error) {
-    console.log("error", error);
+    console.log("error in api of catch", error);
     // return error;
   }
 }
 
-//2. User Login--   integrate later...
+//1. company Logo only
+export async function userProfileApi(id, headers) {
+  if (id !== undefined) {
+    const url = `${BACKEND_BASE_URL}pos/${id}`;
+    try {
+      const data = await axios.get(url, { headers });
+      return data;
+    } catch (error) {
+      console.log("error is", error.response);
+      // return error;
+    }
+  }
+  return;
+}
+//2. User Login
 export async function loginUserApi(email, password, pos_agent) {
   const url = `${BACKEND_BASE_URL}auth/user/login`;
   try {
@@ -33,10 +47,10 @@ export async function loginUserApi(email, password, pos_agent) {
     return error;
   }
 }
+//3. Register User
+export async function registerUserApi() {}
 
-// ${BACKEND_BASE_URL}/api/v1/insurance-category/product-type/field
-
-// 3. Get dynamic form json ---
+// 4. Get dynamic form json
 export async function getdynamicFormJsonApi() {
   const json_live_url =
     "https://insurance.ellocentlabs.in/api/v1/insurance-category/product-type/field"; //${userProfle?.org_id}
@@ -49,6 +63,7 @@ export async function getdynamicFormJsonApi() {
   }
 }
 
+//5.Post an Inquiry
 export async function postInquiry(formValues) {
   const url = `${BACKEND_BASE_URL}user/product/data`;
   try {
@@ -87,7 +102,7 @@ export async function postInquiry(formValues) {
   }
 }
 
-// 4.  function using Regular expression to extract text within HTML tags...
+// 6.  function using Regular expression to extract text within HTML tags...
 export function extractTextFromHTML(htmlSnippet) {
   const regex = />(.*?)<\/\w+>/;
   const match = htmlSnippet.match(regex);
@@ -95,12 +110,11 @@ export function extractTextFromHTML(htmlSnippet) {
   return extractedText;
 }
 
-//5. Update Profile ---
+//7. Update Profile ---
 export async function updateProfileApi(headers, id, formValues) {
   const { Email, Gender } = formValues;
   const url = `${BACKEND_BASE_URL}pos/register`;
   const config = {
-    //  form type--
     headers,
   };
   try {
@@ -109,7 +123,6 @@ export async function updateProfileApi(headers, id, formValues) {
       gender: Gender,
     };
     const data = await axios.patch(url, payload, config);
-    // console.log("data inisde api",data)
     return data;
   } catch (error) {
     return console.log("error in api catch", error);

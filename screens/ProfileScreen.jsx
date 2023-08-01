@@ -28,7 +28,7 @@ import {
 import Menu from "../components/Menu";
 import { moderateScale } from "react-native-size-matters";
 import GenderDropdown from "../components/GenderDropdown";
-import { updateProfileApi } from "../services/apiServices";
+import { updateProfileApi, userProfileApi } from "../services/apiServices";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -47,6 +47,7 @@ const ProfileScreen = () => {
   const tokenParts = accessToken?.split(".");
   const payload = tokenParts?.[1];
   const decodedPayload = payload ? base64?.decode(payload) : null;
+  
   useEffect(() => {
     try {
       const res_id = decodedPayload ? JSON?.parse(decodedPayload)?.id : null;
@@ -57,19 +58,15 @@ const ProfileScreen = () => {
       console.error("Error parsing payload:", error);
     }
   }, []);
-  const url = `${BACKEND_BASE_URL}pos/${id}`;
-
   // get profile
   const handleProfile = async () => {
     const headers = { Authorization: `${accessToken}` };
     setLoading(true);
     try {
-      const response = await axios.get(url, { headers });
-      // console.log("response-profile",response)
-      setUserProfile(response?.data?.data);
+      const data = await userProfileApi(id, headers);
+      await setUserProfile(data?.data?.data);
       setLoading(false);
     } catch (error) {
-      // console.log("error ss", error.response);
       setLoading(false);
     }
   };
