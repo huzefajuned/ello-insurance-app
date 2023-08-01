@@ -13,10 +13,12 @@ const GenderDropdown = ({
   value,
   selectedGender,
   setSelectedGender,
+  onSelectOption
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+    onSelectOption(selectedGender)
   };
 
   const handleOptionSelect = (option) => {

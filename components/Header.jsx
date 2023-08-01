@@ -60,6 +60,7 @@ const Header = () => {
   useEffect(() => {
     handleProfile();
   }, []);
+  
   useEffect(() => {
     handleCompanyLogo();
   }, [userProfle]);
@@ -68,27 +69,29 @@ const Header = () => {
     <View style={styles.main}>
       <View style={styles.container}>
         <View style={styles.logoContainer}>
-          <Image
-            source={{ uri: companyLogo?.logo }}
-            style={{
-              width: responsiveWidth(12),
-              height: responsiveHeight(6),
-              marginTop: responsiveFontSize(1),
-            }}
-          />
-          <Text
-            style={{
-              fontSize: responsiveFontSize(1.5),
-              letterSpacing: 1,
-              marginTop: responsiveFontSize(1),
-            }}
-          >
-            {companyLogo?.name ? (
-              companyLogo?.name
-            ) : (
-              <ActivityIndicator size="small" color="#37CFEE" />
-            )}
-          </Text>
+          {companyLogo || companyLogo.name ? (
+            <>
+              <Image
+                source={{ uri: companyLogo?.logo }}
+                style={{
+                  width: responsiveWidth(12),
+                  height: responsiveHeight(6),
+                  marginTop: responsiveFontSize(1),
+                }}
+              />
+              <Text
+                style={{
+                  fontSize: responsiveFontSize(1.5),
+                  letterSpacing: 1,
+                  marginTop: responsiveFontSize(1),
+                }}
+              >
+                {companyLogo?.name}
+              </Text>
+            </>
+          ) : (
+            <ActivityIndicator size="small" color="#37CFEE" />
+          )}
         </View>
 
         <View style={styles.avatarContainer}>

@@ -35,7 +35,6 @@ const DynamicInquiryForm = () => {
   const [pleaseWait, setPleaseWait] = useState(false);
   const { setIsBlank } = useContext(RegisterContext);
   const [selectedRadio, setSelectedRadio] = useState(2); // ststes for chnaging
-
   const [selected, setSelected] = useState([]); // for generating textInputs based on dropdown selection---
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -50,51 +49,52 @@ const DynamicInquiryForm = () => {
   };
 
   const handleFormSubmit = () => {
-    setPleaseWait(true);
-    //calling post api for sending inquiry data---
-    postInquiry(formValues)
-      .then((res) => {
-        // console.log("respo", res.response.data.msg.name);
-        // here reposne message
-        if (res.status === 200) {
-          Toast.show({
-            type: "success",
-            text1: res?.data?.msg,
-            text2: `We will Back to you ${formValues["name"]}`,
-          });
-          setPleaseWait(false);
-          setTimeout(() => {
-            navigation.navigate("Tabs");
-          }, 1000);
-        }
-        setPleaseWait(false);
+    if (
+      formValues["name" || "email" || "contact"] === undefined ||
+      "" ||
+      null
+    ) {
+      setIsBlank(true);
+      // console.log("requied Call");
+    } else {
+      setPleaseWait(true);
 
-        if (res.status === 400) {
+      //calling post api for sending inquiry data---
+      postInquiry(formValues)
+        .then((res) => {
+          // console.log("respo", res.response.data.msg.name);
+          // here reposne message
+          if (res.status === 200) {
+            Toast.show({
+              type: "success",
+              text1: res?.data?.msg,
+              text2: `We will Back to you ${formValues["name"]}`,
+            });
+            setPleaseWait(false);
+            setTimeout(() => {
+              navigation.navigate("Tabs");
+            }, 1000);
+          }
+          setPleaseWait(false);
+
+          if (res.status === 400) {
+            Toast.show({
+              type: "error",
+              text1: res.response.data.msg.name,
+            });
+            setPleaseWait(false);
+          }
+        })
+        .catch((err) => {
+          setPleaseWait(false);
+          // fields like name, email, contact are required, and it should be validate in front-end only---
           Toast.show({
             type: "error",
-            text1: res.response.data.msg.name,
+            text1: err?.response?.data?.msg?.name || "Invalid Request",
           });
-          setPleaseWait(false);
-        }
-      })
-      .catch((err) => {
-        setPleaseWait(false);
-        // fields like name, email, contact are required, and it should be validate in front-end only---
-        Toast.show({
-          type: "error",
-          text1: err?.response?.data?.msg?.name || "Invalid Request",
         });
-      });
+    }
   };
-
-  // //  function using Regular expression to extract text within HTML tags...
-  // function extractTextFromHTML(htmlSnippet) {
-  //   const regex = />(.*?)<\/\w+>/;
-  //   const match = htmlSnippet.match(regex);
-  //   const extractedText = match ? match[1] : "";
-  //   return extractedText;
-  // }
-
   return (
     <KeyboardAvoidingView
       style={{
@@ -119,7 +119,10 @@ const DynamicInquiryForm = () => {
             <ActivityIndicator
               size="large"
               color="#37CFEE"
-              style={styles.loadingLoader}
+              style={{
+                width: responsiveWidth(90),
+                height: responsiveHeight(90),
+              }}
             />
           </Text>
         ) : (
@@ -144,6 +147,7 @@ const DynamicInquiryForm = () => {
                         inlineStyles={styles.inputStyle}
                         inputMode={field.inputMode}
                         value={formValues[field.key]}
+                        required={field.required}
                       />
                     );
                   case "number": // remove this later if needed.
@@ -157,16 +161,18 @@ const DynamicInquiryForm = () => {
                         inlineStyles={styles.inputStyle}
                         inputMode={field.inputMode}
                         value={formValues[field.key]}
+                        required={field.required}
                       />
                     );
 
                   case "contact":
                     return (
                       <ContactWithCountry
-                        key="phoneField"
+                        key={field.key}
                         onChangeText={(value) =>
-                          handleChangeText("contact", value)
+                          handleChangeText(field.label, value)
                         }
+                        required={field.required}
                       />
                     );
                   default:
@@ -330,20 +336,6 @@ const DynamicInquiryForm = () => {
                     return null;
                 }
               })}
-              {/* Generating custom inputs Based on multiselect--- */}
-              {selected?.length > 0 &&
-                selected?.map((label) => {
-                  return (
-                    <CustomTextInput
-                      label={`Your ${label === "self" ? "" : label} age`}
-                      key={label}
-                      placeholder={`Your ${label === "self" ? "" : label} age`}
-                      inlineStyles={styles.selectedStyles}
-                      inputMode="numeric"
-                      onChangeText={(value) => handleChangeText(label, value)}
-                    />
-                  );
-                })}
             </>
             {/* show and hide submit and loading buttons... */}
             {pleaseWait ? (

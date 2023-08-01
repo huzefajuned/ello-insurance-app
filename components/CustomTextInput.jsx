@@ -22,6 +22,8 @@ const CustomTextInput = ({
   value,
   canEdit,
   inputMode,
+  required,
+
   multiline,
   ...props
 }) => {
@@ -80,7 +82,7 @@ const CustomTextInput = ({
         </View>
       </View>
 
-      {isBlank && !value && (
+      {isBlank && required && !value && (
         <Text style={styles.labelErrorStyle}>
           {label || placeholder} is required
           {/* Two variabale for diffrent types of inputs--- */}

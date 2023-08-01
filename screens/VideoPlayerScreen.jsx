@@ -27,6 +27,7 @@ const VideoPlayerScreen = ({ route }) => {
         isLooping
         onPlaybackStatusUpdate={setStatus}
         resizeMode={ResizeMode.CONTAIN}
+        // rotation={true}
       />
       <StatusBar style="auto" backgroundColor="white" />
     </View>

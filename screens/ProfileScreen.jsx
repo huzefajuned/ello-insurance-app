@@ -19,6 +19,7 @@ import { AuthContext } from "../context/AuthContext";
 import base64 from "react-native-base64";
 import { BACKEND_BASE_URL } from "../env";
 import axios from "axios";
+import Toast from "react-native-toast-message";
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -27,6 +28,7 @@ import {
 import Menu from "../components/Menu";
 import { moderateScale } from "react-native-size-matters";
 import GenderDropdown from "../components/GenderDropdown";
+import { updateProfileApi } from "../services/apiServices";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -39,37 +41,62 @@ const ProfileScreen = () => {
   const [canEdit, setCanEdit] = useState(false);
   const [formValues, setFormValues] = useState({});
   const [selectedGender, setSelectedGender] = useState("Male");
+  const [id, setId] = useState();
+  const [updateProfile, setUpdateProfile] = useState(false);
 
   const tokenParts = accessToken?.split(".");
   const payload = tokenParts?.[1];
-
   const decodedPayload = payload ? base64?.decode(payload) : null;
-
-  let id;
-  try {
-    id = decodedPayload ? JSON?.parse(decodedPayload)?.id : null;
-  } catch (error) {
-    console.error("Error parsing payload:", error);
-  }
-
+  useEffect(() => {
+    try {
+      const res_id = decodedPayload ? JSON?.parse(decodedPayload)?.id : null;
+      if (typeof res_id === "number") {
+        setId(res_id);
+      }
+    } catch (error) {
+      console.error("Error parsing payload:", error);
+    }
+  }, []);
   const url = `${BACKEND_BASE_URL}pos/${id}`;
 
+  // get profile
   const handleProfile = async () => {
     const headers = { Authorization: `${accessToken}` };
     setLoading(true);
     try {
       const response = await axios.get(url, { headers });
+      // console.log("response-profile",response)
       setUserProfile(response?.data?.data);
       setLoading(false);
     } catch (error) {
-      console.log("error", error);
+      // console.log("error ss", error.response);
       setLoading(false);
+    }
+  };
+  //update profile
+  const handleUpdateProfile = async () => {
+    setUpdateProfile(true);
+    // Api call
+    const headers = { Authorization: `${accessToken}` };
+    try {
+      const response = await updateProfileApi(headers, id, formValues);
+      if (response.status === 200) {
+        Toast.show({
+          type: "success",
+          text1: response?.data?.msg, // replace with response message
+        });
+        await removeToken();
+      }
+      setUpdateProfile(false);
+    } catch (error) {
+      setUpdateProfile(false);
+      console.log("error in catch ", error);
     }
   };
 
   useEffect(() => {
     handleProfile();
-  }, []);
+  }, [id]);
 
   const handleGoBack = () => {
     navigation.navigate("Home");
@@ -121,14 +148,11 @@ const ProfileScreen = () => {
     }).start(() => setModalOpen(false));
   };
 
-  const handleChangeText = (key, value) => {
-    console.log(key, value);
-    setFormValues({ ...formValues, [key]: value });
-  };
-
-  const handleUpdateProfile = () => {
-    // integrate uopdate api later on-----
-    console.log("Updated Profile:", formValues);
+  const handleChangeText = (field, value) => {
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      [field]: value,
+    }));
   };
 
   return (
@@ -240,7 +264,7 @@ const ProfileScreen = () => {
                   )}
                 </View>
                 {row.canEdit === "true" && (
-                  <TouchableOpacity onPress={handleUpdateProfile}>
+                  <TouchableOpacity>
                     <Feather
                       name="edit"
                       size={responsiveFontSize(2.1)}
@@ -251,12 +275,18 @@ const ProfileScreen = () => {
                 )}
               </View>
             ))}
-            <TouchableOpacity
-              style={styles.button}
-              onPress={handleUpdateProfile}
-            >
-              <Text style={styles.buttonText}>Update Profile</Text>
-            </TouchableOpacity>
+            {updateProfile ? (
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>Please Wait...</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleUpdateProfile}
+              >
+                <Text style={styles.buttonText}>Update Profile</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       )}

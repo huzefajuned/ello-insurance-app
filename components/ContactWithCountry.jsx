@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useState, useRef, useContext } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
 import {
   responsiveFontSize,
@@ -8,8 +8,11 @@ import {
 } from "react-native-responsive-dimensions";
 import { moderateScale } from "react-native-size-matters";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import { RegisterContext } from "../context/RegisterContext";
 
-const ContactWithCountry = ({ onChangeText }) => {
+
+const ContactWithCountry = ({ onChangeText, required }) => {
+  const { isBlank, setIsBlank } = useContext(RegisterContext);
   const [value, setValue] = useState("");
   const [formattedValue, setFormattedValue] = useState("");
   const phoneInput = useRef();
@@ -40,7 +43,11 @@ const ContactWithCountry = ({ onChangeText }) => {
         codeTextStyle={styles.codeTextStyle}
         flagButtonStyle={styles.flagButtonStyle}
         textContainerStyle={styles.textContainerStyle}
+        
       />
+      {!value && isBlank && (
+        <Text style={styles.labelErrorStyle}>Contact is required</Text>
+      )}
     </View>
   );
 };
@@ -80,5 +87,9 @@ const styles = StyleSheet.create({
   },
   codeTextStyle: {
     display: "none",
+  },
+  labelErrorStyle: {
+    color: "red",
+    fontSize: responsiveFontSize(1.5),
   },
 });

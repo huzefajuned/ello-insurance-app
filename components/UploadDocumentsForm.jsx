@@ -39,9 +39,11 @@ const UploadDocumentsForm = ({ currentPosition, setCurrentPosition }) => {
 
   const submitRegistration = () => {
     if (!adhaar || !panCard || !passbook || !edu_Proof) {
-      setIsBlank(true);
+      // just leave
     } else {
-      registerApi();
+      console.log("api called")
+
+      // registerApi();
     }
   };
 
@@ -107,24 +109,31 @@ const UploadDocumentsForm = ({ currentPosition, setCurrentPosition }) => {
         value={adhaar}
         onChangeText={setAadhaar}
         uploadType="*/*"
+        required={true}
       />
       <CustomUpload
         title="Pan Card"
         value={panCard}
         onChangeText={setPanCard}
         uploadType="*/*"
+        required={true}
+
       />
       <CustomUpload
         title="Upload Bank Statement"
         value={passbook}
         onChangeText={setPassbook}
         uploadType="*/*"
+        required={true}
+
       />
       <CustomUpload
         title="Upload Educational Proof"
         value={edu_Proof}
         onChangeText={setEdu_Proof}
         uploadType="*/*"
+        required={true}
+
       />
       <TouchableOpacity
         style={styles.button}

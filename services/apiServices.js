@@ -14,25 +14,26 @@ export async function companyLogoApi() {
 }
 
 //2. User Login--   integrate later...
-// export async function loginUserApi({ email, password, pos_agent }) {
-//   const url = `${BACKEND_BASE_URL}/api/v1/auth/user/login`;
-//   try {
-//     const payload = {
-//       email,
-//       password,
-//       pos_agent,
-//     };
-//     const config = {
-// headers: {
-//   "Content-Type": "application/json",
-// },
-//     };
-//     const data = await axios.post(url, payload, config);
-//     return data;
-//   } catch (error) {
-//     return error;
-//   }
-// }
+export async function loginUserApi(email, password, pos_agent) {
+  const url = `${BACKEND_BASE_URL}auth/user/login`;
+  try {
+    const payload = {
+      email,
+      password,
+      pos_agent,
+    };
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const data = await axios.post(url, payload, config);
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
 // ${BACKEND_BASE_URL}/api/v1/insurance-category/product-type/field
 
 // 3. Get dynamic form json ---
@@ -72,27 +73,45 @@ export async function postInquiry(formValues) {
         payload.insurance_details[key] = value;
       }
     }
-
     const config = {
       //  form type--
       headers: {
         "Content-Type": "application/json",
       },
     };
-    console.log("payload", payload);
-
     const data = await axios.post(url, payload, config);
     return data;
   } catch (error) {
-    return error
+    return error;
     // console.log("error", error);
   }
 }
 
-  // 4.  function using Regular expression to extract text within HTML tags...
-   export function extractTextFromHTML(htmlSnippet) {
-    const regex = />(.*?)<\/\w+>/;
-    const match = htmlSnippet.match(regex);
-    const extractedText = match ? match[1] : "";
-    return extractedText;
+// 4.  function using Regular expression to extract text within HTML tags...
+export function extractTextFromHTML(htmlSnippet) {
+  const regex = />(.*?)<\/\w+>/;
+  const match = htmlSnippet.match(regex);
+  const extractedText = match ? match[1] : "";
+  return extractedText;
+}
+
+//5. Update Profile ---
+export async function updateProfileApi(headers, id, formValues) {
+  const { Email, Gender } = formValues;
+  const url = `${BACKEND_BASE_URL}pos/register`;
+  const config = {
+    //  form type--
+    headers,
+  };
+  try {
+    const payload = {
+      email: Email,
+      gender: Gender,
+    };
+    const data = await axios.patch(url, payload, config);
+    // console.log("data inisde api",data)
+    return data;
+  } catch (error) {
+    return console.log("error in api catch", error);
   }
+}

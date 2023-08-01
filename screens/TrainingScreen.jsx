@@ -23,10 +23,9 @@ const TrainingScreen = () => {
       const headers = { Authorization: `${accessToken}` };
       setLoading(true);
       try {
-        const response = await axios.get(
-          `${BACKEND_BASE_URL}pos/training`,
-          { headers }
-        );
+        const response = await axios.get(`${BACKEND_BASE_URL}pos/training`, {
+          headers,
+        });
         await setTrainingData(response.data);
       } catch (error) {
         console.log(error.response);
@@ -48,8 +47,6 @@ const TrainingScreen = () => {
         justifyContent: "space-between",
         alignSelf: "center",
         backgroundColor: "#F9F9F9",
-        // backgroundColor:"red"
-
       }}
     >
       <CommonHeader heading="Training" isBackIcon={true} />

@@ -31,7 +31,7 @@ const BankDetailsForm = ({ currentPosition, setCurrentPosition }) => {
 
   const gotoNext = () => {
     if (!bankName || !account_No || !ifsc_Code) {
-      setIsBlank(true);
+      // just leave
     } else {
       setCurrentPosition(currentPosition + 1);
     }
@@ -47,6 +47,8 @@ const BankDetailsForm = ({ currentPosition, setCurrentPosition }) => {
           onChangeText={setBankName}
           inlineStyles={styles.inlineCommonStyles}
           placeholderTextColor="#A8A196"
+          required={true}
+
         />
         <CustomTextInput
           label="Account Number"
@@ -56,6 +58,8 @@ const BankDetailsForm = ({ currentPosition, setCurrentPosition }) => {
           onChangeText={setAccount_No}
           inlineStyles={styles.inlineCommonStyles}
           placeholderTextColor="#A8A196"
+          required={true}
+
         />
         <CustomTextInput
           label="IFSC Code"
@@ -65,6 +69,7 @@ const BankDetailsForm = ({ currentPosition, setCurrentPosition }) => {
           onChangeText={setIfsc_Code}
           inlineStyles={styles.inlineCommonStyles}
           placeholderTextColor="#A8A196"
+          required={true}
         />
       </View>
       <TouchableOpacity style={styles.button} onPress={gotoNext}>

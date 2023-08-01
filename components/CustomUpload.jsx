@@ -16,17 +16,9 @@ const CustomUpload = ({
   value,
   onChangeText,
   uploadType,
+  required
 }) => {
   const [blobURL, setBlobURL] = useState("");
-  const {
-    isBlank,
-    setIsBlank,
-    setProfile,
-    setAadhaar,
-    setPanCard,
-    setPassbook,
-    setEdu_Proof,
-  } = useContext(RegisterContext);
   const pickProfile = async () => {
     const _Photo = await DocumentPicker.getDocumentAsync({
       multiple: false,
@@ -84,7 +76,7 @@ const CustomUpload = ({
           />
         )}
       </TouchableOpacity>
-      {isBlank && !value && (
+      {required && !value && (
         <Text style={styles.labelErrorStyle}>{title} is required</Text>
       )}
     </View>

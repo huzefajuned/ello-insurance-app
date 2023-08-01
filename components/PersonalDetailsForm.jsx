@@ -42,22 +42,10 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
   } = useContext(RegisterContext);
 
   const gotoNext = () => {
-    if (
-      !profile ||
-      !name ||
-      !age ||
-      !email ||
-      !phone ||
-      !address ||
-      !experience ||
-      !workDetails
-    ) {
-      setIsBlank(true);
-      console.log("something blank.....");
+    if (!profile || !name || !age || !email || !phone || !address) {
+      setIsBlank(true)
+      // just console
     } else {
-      setIsBlank(false);
-      console.log("Nothing.... blank.....");
-
       setCurrentPosition(currentPosition + 1);
     }
   };
@@ -71,6 +59,8 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
           value={profile}
           onChangeText={setProfile}
           uploadType="image/*"
+          required={true}
+
         />
         <CustomTextInput
           label="Name"
@@ -80,6 +70,7 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
           onChangeText={setName}
           inlineStyles={styles.inlineCommonStyles}
           placeholderTextColor="#A8A196"
+          required={true}
         />
         <CustomTextInput
           label="Age"
@@ -90,6 +81,7 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
           inlineStyles={styles.inlineCommonStyles}
           placeholderTextColor="#A8A196"
           inputMode="numeric"
+          required={true}
         />
 
         <CustomTextInput
@@ -101,6 +93,7 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
           inlineStyles={styles.inlineCommonStyles}
           placeholderTextColor="#A8A196"
           inputMode="email"
+          required={true}
         />
         <CustomTextInput
           label="Phone"
@@ -111,6 +104,7 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
           inlineStyles={styles.inlineCommonStyles}
           placeholderTextColor="#A8A196"
           inputMode="tel"
+          required={true}
         />
         <CustomTextInput
           label="Address"
@@ -120,6 +114,7 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
           onChangeText={setAddress}
           inlineStyles={styles.inlineCommonStyles}
           placeholderTextColor="#A8A196"
+          required={true}
         />
         <CustomTextInput
           label="Working Experience [in months]"
@@ -130,6 +125,7 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
           inlineStyles={styles.inlineCommonStyles}
           placeholderTextColor="#A8A196"
           inputMode="numeric"
+          required={false}
         />
         <CustomTextInput
           label="Previous Work Details"
@@ -139,6 +135,7 @@ const PersonalDetailsForm = ({ setCurrentPosition, currentPosition }) => {
           onChangeText={setWorkDetails}
           inlineStyles={styles.inlineCommonStyles}
           placeholderTextColor="#A8A196"
+          required={false}
         />
         <TouchableOpacity style={styles.button} onPress={gotoNext}>
           <Text style={styles.buttonText}>Save & Next</Text>

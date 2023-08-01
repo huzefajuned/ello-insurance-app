@@ -19,7 +19,6 @@ const AuthStack = () => {
         <>
           <Stack.Screen
             name="Login"
-            // component={MainTabs}  // remove this later on
             component={LoginScreen}
             options={{ headerShown: false }}
           />

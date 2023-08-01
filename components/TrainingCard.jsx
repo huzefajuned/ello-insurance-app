@@ -42,10 +42,15 @@ const TrainingCard = ({ trainingData }) => {
           style={{
             height: responsiveHeight(100),
             width: responsiveWidth(90),
-            // justifyContent: "center",
           }}
         >
-          <Text style={{ textAlign: "center" }}>
+          <Text
+            style={{
+              textAlign: "center",
+              justifyContent: "center",
+              marginTop: responsiveHeight(40),
+            }}
+          >
             <ActivityIndicator size="large" color="#37CFEE" />
           </Text>
         </View>
@@ -89,7 +94,15 @@ const TrainingCard = ({ trainingData }) => {
                     <TouchableOpacity onPress={() => openTraining(data)}>
                       <MaterialIcons
                         // name="open-in-new"
-                        name={asset_type==="Video" ? "play-circle-fill":"" || asset_type==="Link" ? "link":"" ||asset_type==="Document" ? "picture-as-pdf":""  }
+                        name={
+                          asset_type === "Video"
+                            ? "play-circle-fill"
+                            : "" || asset_type === "Link"
+                            ? "link"
+                            : "" || asset_type === "Document"
+                            ? "picture-as-pdf"
+                            : ""
+                        }
                         size={22}
                         color="#000000"
                       />

@@ -15,7 +15,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomTextInput from "./CustomTextInput";
 import { AuthContext } from "../context/AuthContext";
 import { BACKEND_BASE_URL } from "../env";
-
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -24,7 +23,7 @@ import {
 import CustomModal from "./CustomModal";
 import { CustomModalContext } from "../context/CustomModalContext";
 import ForgetPassword from "./ForgetPassword";
-import { RegisterContext } from "../context/RegisterContext";
+import { loginUserApi } from "../services/apiServices";
 
 const CustomForm = ({ companyLogo }) => {
   const url = `${BACKEND_BASE_URL}auth/user/login`;
@@ -36,56 +35,37 @@ const CustomForm = ({ companyLogo }) => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  // const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleAfterLogin = async () => {
+    setLoading(true);
     try {
-      const payload = {
-        email: email,
-        password: password,
-        pos_agent: true,
-      };
-      setLoading(true);
-      const response = await axios.post(url, payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
+      const data = await loginUserApi(email, password, (pos_agent = true)); // api function for loginUser is calling here----
       setLoading(false);
-      if (response.status === 200) {
-        const token = response.data["tokens"]["access_token"];
+
+      // console.log("data",data)
+      if (data?.status === 200) {
+        const token = data?.data["tokens"]["access_token"];
         AsyncStorage.setItem("access_token", token);
         setToken(token); // Save the access token in the context
 
         Toast.show({
           type: "success",
           text1: "Logged In Successfully",
+          text2: "welcome back",
         });
         await navigation.navigate("Tabs");
-      } else {
-        console.error("Login failed");
       }
-    } catch (error) {
-      setLoading(false);
-      if (error.response) {
-        if (error.response.status === 404) {
-          Toast.show({
-            type: "error",
-            text1: "404 Not Found",
-          });
-        }
+
+      if (data?.response?.status === 400) {
         Toast.show({
           type: "error",
           text1:
-            error.response?.data.msg?.email ||
-            error.response?.data.msg?.password,
+            data.response?.data.msg?.email || data.response?.data.msg?.password,
         });
-      } else if (error.request) {
-        console.log("No response received:", error.request);
-      } else {
-        console.error("Error:", error.message);
       }
+    } catch (error) {
+      setLoading(false);
+      console.log("error", error);
     }
   };
 
