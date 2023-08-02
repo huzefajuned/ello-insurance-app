@@ -1,35 +1,21 @@
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
-import React from "react";
+import React,{useState} from "react";
 import {
   responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
 } from "react-native-responsive-dimensions";
 import inquiries from "../dummyInquiry.json";
-import CustomDropdown from "./CustomDropdown";
-const data = [
-  { label: 'Item 1', value: '1' },
-  { label: 'Item 2', value: '2' },
-  { label: 'Item 3', value: '3' },
-  { label: 'Item 4', value: '4' },
-  { label: 'Item 5', value: '5' },
-  { label: 'Item 6', value: '6' },
-  { label: 'Item 7', value: '7' },
-  { label: 'Item 8', value: '8' },
-];
+import FilterInquiry from "./FilterInquiry";
+
 const InquiryCard = () => {
+
+  const [value, setValue] = useState(null); // this state will accces in both component...
+
   return (
     <ScrollView>
-      <View style={styles.filterView}>
-        <Text>Here will be filter </Text>
-        <CustomDropdown
-          // key={field.name}
-          placeholder="select for filter"
-          data={data}
-          // dropdownType={field.type}
-          // onValueChange={(value) => handleChangeText(field.label, value)}
-        />
-      </View>
+      {/* Filter component */}
+      <FilterInquiry value={value} setValue={setValue} />
       <View style={styles.container}>
         {inquiries?.map((inquiry) => {
           const {
@@ -108,9 +94,5 @@ const styles = StyleSheet.create({
     height: responsiveWidth(15),
     borderRadius: 50,
     resizeMode: "contain",
-  },
-  //
-  filterView: {
-    height: responsiveHeight(10),
   },
 });

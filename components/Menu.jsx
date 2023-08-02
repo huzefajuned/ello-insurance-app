@@ -17,12 +17,12 @@ const Menu = () => {
     {
       key: 1,
       title: "All Inquiry",
-      icon: "edit",
+      icon: "award",
     },
     {
       key: 2,
       title: "View Earnings",
-      icon: "edit",
+      icon: "credit-card",
     },
     {
       key: 3,
