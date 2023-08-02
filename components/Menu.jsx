@@ -16,11 +16,21 @@ const Menu = () => {
   const menuItems = [
     {
       key: 1,
-      title: "Change Password",
+      title: "All Inquiry",
       icon: "edit",
     },
     {
       key: 2,
+      title: "View Earnings",
+      icon: "edit",
+    },
+    {
+      key: 3,
+      title: "Change Password",
+      icon: "edit",
+    },
+    {
+      key: 4,
       title: "Logout",
       icon: "log-out",
     },
@@ -29,10 +39,12 @@ const Menu = () => {
   const goToMenuItem = (item) => {
     if (item.title === "Logout") {
       removeToken(); // Remove the access token from the context
-      // navigation.navigate("Login");
-    }
-    if (item.title === "Change Password") {
+    } else if (item.title === "All Inquiry") {
+      navigation.navigate("AllInquiry");
+    } else if (item.title === "Change Password") {
       navigation.navigate("ChangePassword");
+    } else {
+      // nothing
     }
   };
 

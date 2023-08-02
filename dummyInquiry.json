@@ -1,0 +1,164 @@
+[
+  {
+    "inquiry_ID": "1001",
+    "inquiry_Image": "https://insurance.ellocentlabs.in/media/logo/home-security.png",
+    "inquiry_Name": "Home Insurance",
+    "createdBy": "Rahul",
+    "DateOfCreation": "31-07-2023"
+  },
+  {
+    "inquiry_ID": "1002",
+    "inquiry_Image": "https://insurance.ellocentlabs.in/media/logo/car-insurance.png",
+    "inquiry_Name": "Car Insurance",
+    "createdBy": "Amit",
+    "DateOfCreation": "01-08-2023"
+  },
+
+  {
+    "inquiry_ID": "1006",
+    "inquiry_Image": "https://insurance.ellocentlabs.in/media/logo/pet-insurance.png",
+    "inquiry_Name": "Pet Insurance",
+    "createdBy": "Alex",
+    "DateOfCreation": "05-08-2023"
+  },
+  {
+    "inquiry_ID": "1009",
+    "inquiry_Image": "https://insurance.ellocentlabs.in/media/logo/car-insurance.png",
+    "inquiry_Name": "Car Insurance",
+    "createdBy": "David",
+    "DateOfCreation": "08-08-2023"
+  },
+  {
+    "inquiry_ID": "1012",
+    "inquiry_Image": "https://fakeimg.pl/200x150/",
+    "inquiry_Name": "Car Insurance",
+    "createdBy": "Amy",
+    "DateOfCreation": "11-08-2023"
+  },
+  {
+    "inquiry_ID": "1013",
+    "inquiry_Image": "https://fakeimg.pl/300/",
+    "inquiry_Name": "Home Insurance",
+    "createdBy": "Sam",
+    "DateOfCreation": "12-08-2023"
+  },
+  {
+    "inquiry_ID": "1014",
+    "inquiry_Image": "https://fakeimg.pl/300x200/",
+    "inquiry_Name": "Travel Insurance",
+    "createdBy": "Ella",
+    "DateOfCreation": "13-08-2023"
+  },
+  {
+    "inquiry_ID": "1015",
+    "inquiry_Image": "https://fakeimg.pl/250x100/",
+    "inquiry_Name": "Life Insurance",
+    "createdBy": "Chris",
+    "DateOfCreation": "14-08-2023"
+  },
+  {
+    "inquiry_ID": "1016",
+    "inquiry_Image": "https://fakeimg.pl/250x150/",
+    "inquiry_Name": "Pet Insurance",
+    "createdBy": "Lily",
+    "DateOfCreation": "15-08-2023"
+  },
+  {
+    "inquiry_ID": "1017",
+    "inquiry_Image": "https://fakeimg.pl/200/",
+    "inquiry_Name": "Home Insurance",
+    "createdBy": "Michael",
+    "DateOfCreation": "16-08-2023"
+  },
+  {
+    "inquiry_ID": "1018",
+    "inquiry_Image": "https://fakeimg.pl/200x150/",
+    "inquiry_Name": "Travel Insurance",
+    "createdBy": "Emma",
+    "DateOfCreation": "17-08-2023"
+  },
+  {
+    "inquiry_ID": "1019",
+    "inquiry_Image": "https://fakeimg.pl/300/",
+    "inquiry_Name": "Health Insurance",
+    "createdBy": "Daniel",
+    "DateOfCreation": "18-08-2023"
+  },
+  {
+    "inquiry_ID": "1020",
+    "inquiry_Image": "https://fakeimg.pl/300x200/",
+    "inquiry_Name": "Car Insurance",
+    "createdBy": "Olivia",
+    "DateOfCreation": "19-08-2023"
+  },
+  {
+    "inquiry_ID": "1021",
+    "inquiry_Image": "https://fakeimg.pl/250x100/",
+    "inquiry_Name": "Home Insurance",
+    "createdBy": "William",
+    "DateOfCreation": "20-08-2023"
+  },
+  {
+    "inquiry_ID": "1022",
+    "inquiry_Image": "https://fakeimg.pl/250x150/",
+    "inquiry_Name": "Life Insurance",
+    "createdBy": "Grace",
+    "DateOfCreation": "21-08-2023"
+  },
+  {
+    "inquiry_ID": "1023",
+    "inquiry_Image": "https://fakeimg.pl/200/",
+    "inquiry_Name": "Pet Insurance",
+    "createdBy": "James",
+    "DateOfCreation": "22-08-2023"
+  },
+  {
+    "inquiry_ID": "1024",
+    "inquiry_Image": "https://fakeimg.pl/200x150/",
+    "inquiry_Name": "Health Insurance",
+    "createdBy": "Isabella",
+    "DateOfCreation": "23-08-2023"
+  },
+  {
+    "inquiry_ID": "1025",
+    "inquiry_Image": "https://fakeimg.pl/300/",
+    "inquiry_Name": "Car Insurance",
+    "createdBy": "Ryan",
+    "DateOfCreation": "24-08-2023"
+  },
+  {
+    "inquiry_ID": "1026",
+    "inquiry_Image": "https://fakeimg.pl/300x200/",
+    "inquiry_Name": "Home Insurance",
+    "createdBy": "Noah",
+    "DateOfCreation": "25-08-2023"
+  },
+  {
+    "inquiry_ID": "1027",
+    "inquiry_Image": "https://fakeimg.pl/250x100/",
+    "inquiry_Name": "Travel Insurance",
+    "createdBy": "Sophia",
+    "DateOfCreation": "26-08-2023"
+  },
+  {
+    "inquiry_ID": "1028",
+    "inquiry_Image": "https://fakeimg.pl/250x150/",
+    "inquiry_Name": "Health Insurance",
+    "createdBy": "Liam",
+    "DateOfCreation": "27-08-2023"
+  },
+  {
+    "inquiry_ID": "1029",
+    "inquiry_Image": "https://fakeimg.pl/200/",
+    "inquiry_Name": "Life Insurance",
+    "createdBy": "Ava",
+    "DateOfCreation": "28-08-2023"
+  },
+  {
+    "inquiry_ID": "1030",
+    "inquiry_Image": "https://fakeimg.pl/200x150/",
+    "inquiry_Name": "Pet Insurance",
+    "createdBy": "Mia",
+    "DateOfCreation": "29-08-2023"
+  }
+]

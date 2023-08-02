@@ -86,12 +86,12 @@ const CustomForm = ({ companyLogo }) => {
           {companyLogo ? (
             <Image
               style={{
-                height: responsiveWidth(20),
                 width: responsiveWidth(20),
-                resizeMode: "cover",
+                height: responsiveWidth(20),
+                resizeMode: "contain",
               }}
               source={{ uri: companyLogo }}
-              resizeMethod="resize"
+              resizeMethod="scale"
             />
           ) : (
             <Text>

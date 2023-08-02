@@ -47,7 +47,7 @@ const ProfileScreen = () => {
   const tokenParts = accessToken?.split(".");
   const payload = tokenParts?.[1];
   const decodedPayload = payload ? base64?.decode(payload) : null;
-  
+
   useEffect(() => {
     try {
       const res_id = decodedPayload ? JSON?.parse(decodedPayload)?.id : null;
@@ -151,6 +151,9 @@ const ProfileScreen = () => {
       [field]: value,
     }));
   };
+  const handleToggleModal = () => {
+    setModalOpen(!modalOpen);
+  };
 
   return (
     <SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
@@ -158,6 +161,8 @@ const ProfileScreen = () => {
         heading="My Profile"
         isBackIcon={true}
         onPressBack={handleGoBack}
+        isSettingIcon={true}
+        onPress={handleToggleModal}
       />
       {loading ? (
         <View
@@ -175,16 +180,13 @@ const ProfileScreen = () => {
         <View>
           <View style={styles.profileContainer}>
             <Image
-              source={{ uri: userProfile?.image }}
+              source={{
+                uri:
+                  userProfile?.image ||
+                  "https://t4.ftcdn.net/jpg/04/00/24/31/360_F_400243185_BOxON3h9avMUX10RsDkt3pJ8iQx72kS3.jpg",
+              }}
               style={styles.profileImage}
             />
-            <TouchableOpacity onPress={() => setModalOpen(true)}>
-              <Feather
-                name="settings"
-                size={responsiveFontSize(3.5)}
-                color="#26CBED"
-              />
-            </TouchableOpacity>
           </View>
           <Modal
             visible={modalOpen}
@@ -313,7 +315,7 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     width: responsiveWidth(30),
-    height: responsiveHeight(15),
+    height: responsiveWidth(30),
     borderRadius: 50,
   },
   modalBackdrop: {

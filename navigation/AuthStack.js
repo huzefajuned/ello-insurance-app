@@ -7,6 +7,8 @@ import ChangePassword from "../screens/ChangePassword";
 import VideoPlayerScreen from "../screens/VideoPlayerScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import InquiryFormScreen from "../screens/InquiryFormScreen";
+import ViewUrlOrPdf from "../screens/ViewUrlOrPdf";
+import All_InquiryScreen from "../screens/All_InquiryScreen";
 
 const Stack = createStackNavigator();
 
@@ -62,6 +64,16 @@ const MainTabs = () => {
       <Stack.Screen
         name="VideoPlayerScreen"
         component={VideoPlayerScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ViewPdfOrUrl"
+        component={ViewUrlOrPdf}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AllInquiry"
+        component={All_InquiryScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

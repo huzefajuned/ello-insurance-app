@@ -17,6 +17,7 @@ import {
 import { openBrowserAsync } from "expo-web-browser";
 import { useNavigation } from "@react-navigation/native";
 import CustomModal from "./CustomModal";
+import { WebView } from "react-native-webview";
 
 const TrainingCard = ({ trainingData }) => {
   const navigation = useNavigation();
@@ -25,8 +26,11 @@ const TrainingCard = ({ trainingData }) => {
     const { id, asset_type, asset, title, description } = data;
     console.log(asset_type);
     if (asset_type == "Link") {
-      openBrowserAsync(asset);
+      // openBrowserAsync(asset);
+      navigation.navigate("ViewPdfOrUrl", { asset });
     } else if (asset_type === "Document") {
+      navigation.navigate("ViewPdfOrUrl", { asset });
+
       console.log(asset_type);
     } else if (asset_type === "Video") {
       navigation.navigate("VideoPlayerScreen", { asset });
@@ -74,7 +78,7 @@ const TrainingCard = ({ trainingData }) => {
                     <Text
                       style={{
                         color: "#000000",
-                        fontSize: 12,
+                        fontSize: responsiveFontSize(1.8),
                         fontWeight: 900,
                       }}
                     >
@@ -83,7 +87,8 @@ const TrainingCard = ({ trainingData }) => {
                     <Text
                       style={{
                         color: "#000000",
-                        fontSize: 12,
+                        fontSize: responsiveFontSize(1.5),
+                        width: responsiveWidth(70),
                         fontWeight: 300,
                       }}
                     >

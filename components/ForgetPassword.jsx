@@ -15,9 +15,60 @@ import {
 import CustomTextInput from "./CustomTextInput";
 import { moderateScale } from "react-native-size-matters";
 import { AntDesign } from "@expo/vector-icons";
+import axios from "axios";
+import Toast from "react-native-toast-message";
+import { useNavigation } from "@react-navigation/native";
 
 const ForgetPassword = ({ setIsModalVisible }) => {
+  const [isEmailBlank, setIsEmailBlank] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [forgetLoading, setForgetLoading] = useState(false);
+  const navigation = useNavigation();
+
+  async function forgetPasswordApi() {
+    setForgetLoading(true);
+    const url =
+      "https://0953-203-190-154-123.ngrok-free.app/api/v1/auth/user/forgot-password";
+    try {
+      const payload = {
+        email,
+      };
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const data = await axios.post(url, payload, config);
+      if (data?.response?.status === 200) {
+        Toast.show({
+          type: "error",
+          text1: data?.data?.msg,
+        });
+        await navigation.navigate("Login");
+      }
+      setForgetLoading(false);
+    } catch (error) {
+      if (error?.response?.status === 400) {
+        Toast.show({
+          type: "error",
+          text1: error?.response?.data?.msg?.email,
+          text2: "Please check your email again!",
+        });
+      }
+      setForgetLoading(false);
+    }
+  }
+
+  // forget api call
+  const onSubmit = () => {
+    if (email === null || email === "" || email === undefined) {
+      setIsEmailBlank(true);
+    } else {
+      forgetPasswordApi();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.containerHeader}>
@@ -46,11 +97,15 @@ const ForgetPassword = ({ setIsModalVisible }) => {
           label=""
           placeholder="Email"
           inputIcon={false}
-          // value={email}
-          // onChangeText={setEmail}
+          value={email}
+          onChangeText={setEmail}
           inlineStyles={styles.inlineCommonStyles}
           placeholderTextColor="#A8A196"
         />
+        {/*error messages for email  */}
+        {isEmailBlank && !email && (
+          <Text style={styles.requiredEmail}>Email id Required</Text>
+        )}
       </View>
 
       <View>
@@ -80,19 +135,33 @@ const ForgetPassword = ({ setIsModalVisible }) => {
                   flexDirection: "row",
                   justifyContent: "center",
                 }}
-                onPress={() => alert("Otp Sent")}
               >
-                <Text
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    alignSelf: "center",
-                    justifyContent: "center",
-                    fontSize: responsiveFontSize(2),
-                  }}
-                >
-                  Forget password
-                </Text>
+                {forgetLoading ? (
+                  <Text
+                    style={{
+                      color: "white",
+                      textAlign: "center",
+                      alignSelf: "center",
+                      justifyContent: "center",
+                      fontSize: responsiveFontSize(2),
+                    }}
+                  >
+                    Please wait...
+                  </Text>
+                ) : (
+                  <Text
+                    style={{
+                      color: "white",
+                      textAlign: "center",
+                      alignSelf: "center",
+                      justifyContent: "center",
+                      fontSize: responsiveFontSize(2),
+                    }}
+                    onPress={onSubmit}
+                  >
+                    Forget password
+                  </Text>
+                )}
               </TouchableOpacity>
             )}
           </View>
@@ -153,5 +222,11 @@ const styles = StyleSheet.create({
     paddingLeft: responsiveFontSize(2),
     borderRadius: 6,
     color: "#27374D",
+  },
+  requiredEmail: {
+    color: "red",
+    marginLeft: responsiveWidth(0.5),
+    position: "absolute",
+    top: responsiveWidth(15),
   },
 });

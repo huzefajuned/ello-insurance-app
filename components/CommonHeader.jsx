@@ -7,7 +7,13 @@ import {
   responsiveWidth,
 } from "react-native-responsive-dimensions";
 
-const InquiryHeader = ({ heading, isBackIcon, isCloseIcon }) => {
+const CommonHeader = ({
+  heading,
+  isBackIcon,
+  isCloseIcon,
+  isSettingIcon,
+  onPress,
+}) => {
   const navigation = useNavigation();
 
   const handleGoBack = () => {
@@ -38,6 +44,16 @@ const InquiryHeader = ({ heading, isBackIcon, isCloseIcon }) => {
       {isCloseIcon && (
         <TouchableOpacity onPress={handleClose} style={styles.iconContainer}>
           <Feather name="x" style={styles.backAndCloseIcon} />
+        </TouchableOpacity>
+      )}
+      {/* only for open/close side menu in profile screen--- */}
+      {isSettingIcon && (
+        <TouchableOpacity onPress={onPress}>
+          <Feather
+            name="settings"
+            size={responsiveFontSize(3.5)}
+            color="#26CBED"
+          />
         </TouchableOpacity>
       )}
     </View>
@@ -86,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InquiryHeader;
+export default CommonHeader;

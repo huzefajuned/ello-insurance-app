@@ -60,7 +60,7 @@ const Header = () => {
   useEffect(() => {
     handleProfile();
   }, []);
-  
+
   useEffect(() => {
     handleCompanyLogo();
   }, [userProfle]);
@@ -72,12 +72,15 @@ const Header = () => {
           {companyLogo || companyLogo.name ? (
             <>
               <Image
-                source={{ uri: companyLogo?.logo }}
                 style={{
                   width: responsiveWidth(12),
                   height: responsiveHeight(6),
                   marginTop: responsiveFontSize(1),
+                  resizeMode: "contain",
                 }}
+                source={{ uri: companyLogo?.logo }}
+                resizeMethod="scale"
+                
               />
               <Text
                 style={{
@@ -97,11 +100,15 @@ const Header = () => {
         <View style={styles.avatarContainer}>
           <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
             <Image
-              source={{ uri: userProfle?.image }}
+              source={{
+                uri:
+                  userProfle?.image ||
+                  "https://t4.ftcdn.net/jpg/04/00/24/31/360_F_400243185_BOxON3h9avMUX10RsDkt3pJ8iQx72kS3.jpg",
+              }}
               style={{
                 width: responsiveWidth(16),
                 height: responsiveHeight(8),
-                borderRadius: 25,
+                borderRadius: 50,
               }}
             />
           </TouchableOpacity>
