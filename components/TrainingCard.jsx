@@ -18,22 +18,26 @@ import { openBrowserAsync } from "expo-web-browser";
 import { useNavigation } from "@react-navigation/native";
 import CustomModal from "./CustomModal";
 import { WebView } from "react-native-webview";
+import * as WebBrowser from "expo-web-browser";
 
 const TrainingCard = ({ trainingData }) => {
+  const [result, setResult] = useState(null);
+
   const navigation = useNavigation();
 
-  const openTraining = (data) => {
+  const openTraining = async (data) => {
     const { id, asset_type, asset, title, description } = data;
-    console.log(asset_type);
-    if (asset_type == "Link") {
-      // openBrowserAsync(asset);
-      navigation.navigate("ViewPdfOrUrl", { asset });
+    if (asset_type === "Link") {
+      let result_ = await WebBrowser.openBrowserAsync(asset);
+      setResult(result_);
+      await navigation.navigate("ViewPdfOrUrl", { result });
     } else if (asset_type === "Document") {
-      navigation.navigate("ViewPdfOrUrl", { asset });
-
-      console.log(asset_type);
+      let result_ = await WebBrowser.openBrowserAsync(asset);
+      setResult(result_);
     } else if (asset_type === "Video") {
-      navigation.navigate("VideoPlayerScreen", { asset });
+      let result_ = await WebBrowser.openBrowserAsync(asset);
+      setResult(result_);
+      // navigation.navigate("VideoPlayerScreen", { asset }); // open in a
     } else {
       console.log(asset_type);
     }
@@ -61,7 +65,7 @@ const TrainingCard = ({ trainingData }) => {
       ) : (
         <ScrollView
           style={styles.trainingContainer}
-          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
         >
           <>
             {trainingData?.data?.map((data) => {
@@ -157,5 +161,12 @@ const styles = StyleSheet.create({
     borderColor: "#DDDDDD8F",
     borderWidth: 1,
     borderRadius: 11,
+  },
+  container: {
+    flex: 1,
+    height: responsiveHeight(70),
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "red",
   },
 });

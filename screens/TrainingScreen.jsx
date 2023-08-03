@@ -18,6 +18,8 @@ const TrainingScreen = () => {
   const insets = useSafeAreaInsets();
   const { accessToken } = useContext(AuthContext);
 
+
+
   useEffect(() => {
     const fetchTrainingData = async () => {
       const headers = { Authorization: `${accessToken}` };

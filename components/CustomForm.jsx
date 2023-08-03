@@ -42,7 +42,6 @@ const CustomForm = ({ companyLogo }) => {
       const data = await loginUserApi(email, password, (pos_agent = true)); // api function for loginUser is calling here----
       setLoading(false);
 
-      // console.log("data",data)
       if (data?.status === 200) {
         const token = data?.data["tokens"]["access_token"];
         AsyncStorage.setItem("access_token", token);

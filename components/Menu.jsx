@@ -43,6 +43,8 @@ const Menu = () => {
       navigation.navigate("AllInquiry");
     } else if (item.title === "Change Password") {
       navigation.navigate("ChangePassword");
+    } else if (item.title === "View Earnings") {
+      navigation.navigate("EarningScreen");
     } else {
       // nothing
     }

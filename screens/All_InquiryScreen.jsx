@@ -1,7 +1,10 @@
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { SafeAreaView } from "react-native";
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { responsiveHeight, responsiveWidth } from "react-native-responsive-dimensions";
+import {
+  responsiveHeight,
+  responsiveWidth,
+} from "react-native-responsive-dimensions";
 import CommonHeader from "../components/CommonHeader";
 import InquiryCard from "../components/InquiryCard";
 
@@ -23,7 +26,6 @@ const All_InquiryScreen = () => {
     >
       <CommonHeader heading="All Inquiry" isBackIcon={true} />
       <InquiryCard />
-      {/* <TrainingCard trainingData={trainingData} /> */}
     </SafeAreaView>
   );
 };

@@ -177,117 +177,133 @@ const ProfileScreen = () => {
           </Text>
         </View>
       ) : (
-        <View>
-          <View style={styles.profileContainer}>
-            <Image
-              source={{
-                uri:
-                  userProfile?.image ||
-                  "https://t4.ftcdn.net/jpg/04/00/24/31/360_F_400243185_BOxON3h9avMUX10RsDkt3pJ8iQx72kS3.jpg",
+        <>
+          {userProfile === {} || userProfile === undefined ? (
+            <View
+              style={{
+                height: responsiveHeight(100),
+                width: responsiveWidth(100),
+                justifyContent: "center",
               }}
-              style={styles.profileImage}
-            />
-          </View>
-          <Modal
-            visible={modalOpen}
-            transparent
-            animationType="fade"
-            onRequestClose={closeModal}
-          >
-            <TouchableOpacity
-              style={styles.modalBackdrop}
-              activeOpacity={1}
-              onPress={closeModal}
             >
-              <Animated.View
-                style={[
-                  styles.modal,
-                  {
-                    top: insets.top,
-                    transform: [
-                      {
-                        translateX: modalAnimation.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: [
-                            responsiveWidth(100),
-                            responsiveWidth(70),
-                          ],
-                        }),
-                      },
-                    ],
-                  },
-                ]}
+              <Text style={{ textAlign: "center" }}>
+                <ActivityIndicator size="large" color="#37CFEE" />
+              </Text>
+            </View>
+          ) : (
+            <View>
+              <View style={styles.profileContainer}>
+                <Image
+                  source={{
+                    uri:
+                      userProfile?.image ||
+                      "https://t4.ftcdn.net/jpg/04/00/24/31/360_F_400243185_BOxON3h9avMUX10RsDkt3pJ8iQx72kS3.jpg",
+                  }}
+                  style={styles.profileImage}
+                />
+              </View>
+              <Modal
+                visible={modalOpen}
+                transparent
+                animationType="fade"
+                onRequestClose={closeModal}
               >
-                <Menu />
-              </Animated.View>
-            </TouchableOpacity>
-          </Modal>
+                <TouchableOpacity
+                  style={styles.modalBackdrop}
+                  activeOpacity={1}
+                  onPress={closeModal}
+                >
+                  <Animated.View
+                    style={[
+                      styles.modal,
+                      {
+                        top: insets.top,
+                        transform: [
+                          {
+                            translateX: modalAnimation.interpolate({
+                              inputRange: [0, 1],
+                              outputRange: [
+                                responsiveWidth(100),
+                                responsiveWidth(70),
+                              ],
+                            }),
+                          },
+                        ],
+                      },
+                    ]}
+                  >
+                    <Menu />
+                  </Animated.View>
+                </TouchableOpacity>
+              </Modal>
 
-          <View style={styles.infoContainer}>
-            {infoRows.map((row, index) => (
-              <View style={styles.infoRow} key={index}>
-                <View style={styles.iconContainer}>
-                  <Feather
-                    name={row.icon}
-                    size={20}
-                    color={row.color}
-                    style={styles.icon}
-                  />
-                </View>
-                <View style={styles.textContainer}>
-                  {row.canEdit === "true" ? (
-                    row.title === "Gender" ? (
-                      <GenderDropdown
-                        selectedGender={selectedGender}
-                        setSelectedGender={setSelectedGender}
-                        options={["Male", "Female"]}
-                        selectedOption={selectedGender}
-                        onSelectOption={(option) =>
-                          handleChangeText(row.title, option)
-                        }
+              <View style={styles.infoContainer}>
+                {infoRows.map((row, index) => (
+                  <View style={styles.infoRow} key={index}>
+                    <View style={styles.iconContainer}>
+                      <Feather
+                        name={row.icon}
+                        size={20}
+                        color={row.color}
+                        style={styles.icon}
                       />
-                    ) : (
-                      <TextInput
-                        style={styles.modalInput}
-                        value={formValues[row.title] || row.text}
-                        onChangeText={(text) =>
-                          handleChangeText(row.title, text)
-                        }
-                      />
-                    )
-                  ) : (
-                    <>
-                      <Text style={styles.infoTitle}>{row.title}:</Text>
-                      <Text style={styles.infoText}>{row.text}</Text>
-                    </>
-                  )}
-                </View>
-                {row.canEdit === "true" && (
-                  <TouchableOpacity>
-                    <Feather
-                      name="edit"
-                      size={responsiveFontSize(2.1)}
-                      color="red"
-                      style={{ marginRight: responsiveFontSize(1) }}
-                    />
+                    </View>
+                    <View style={styles.textContainer}>
+                      {row.canEdit === "true" ? (
+                        row.title === "Gender" ? (
+                          <GenderDropdown
+                            selectedGender={selectedGender}
+                            setSelectedGender={setSelectedGender}
+                            options={["Male", "Female"]}
+                            selectedOption={selectedGender}
+                            onSelectOption={(option) =>
+                              handleChangeText(row.title, option)
+                            }
+                          />
+                        ) : (
+                          <TextInput
+                            style={styles.modalInput}
+                            value={formValues[row.title] || row.text}
+                            onChangeText={(text) =>
+                              handleChangeText(row.title, text)
+                            }
+                          />
+                        )
+                      ) : (
+                        <>
+                          <Text style={styles.infoTitle}>{row.title}:</Text>
+                          <Text style={styles.infoText}>{row.text}</Text>
+                        </>
+                      )}
+                    </View>
+                    {row.canEdit === "true" && (
+                      <TouchableOpacity>
+                        <Feather
+                          name="edit"
+                          size={responsiveFontSize(2.1)}
+                          color="red"
+                          style={{ marginRight: responsiveFontSize(1) }}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                ))}
+                {updateProfile ? (
+                  <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>Please Wait...</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleUpdateProfile}
+                  >
+                    <Text style={styles.buttonText}>Update Profile</Text>
                   </TouchableOpacity>
                 )}
               </View>
-            ))}
-            {updateProfile ? (
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Please Wait...</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={handleUpdateProfile}
-              >
-                <Text style={styles.buttonText}>Update Profile</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        </View>
+            </View>
+          )}
+        </>
       )}
     </SafeAreaView>
   );

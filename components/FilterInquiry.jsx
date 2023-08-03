@@ -20,7 +20,12 @@ const data2 = [
   { label: "Item 8", value: "8" },
 ];
 
-const FilterInquiry = ({ value, setValue }) => {
+const FilterInquiry = ({
+  value,
+  setValue,
+  inquiriesFromApi,
+  setInquiriesFromApi,
+}) => {
   const [inquiryNames, setInquiryNames] = useState([]);
 
   // Function to filter and get all  unique inquiry names
@@ -44,6 +49,23 @@ const FilterInquiry = ({ value, setValue }) => {
   const handleValueChange = (item) => {
     setValue(item.value);
   };
+
+  // Function to filter based on selection of inquiry_type
+  function filterByProduct_Type(value) {
+    const filtered_Data = inquiries.filter(
+      (item) => item.inquiry_Name.indexOf(value) !== -1
+    );
+    return filtered_Data;
+  }
+
+  useEffect(() => {
+    if (value !== "") {
+      const data = filterByProduct_Type(value);
+      console.log("filtered data", data);
+      setInquiriesFromApi(data);
+    }
+  }, [value]);
+
   return (
     <View style={styles.container}>
       <Dropdown

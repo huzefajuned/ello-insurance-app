@@ -1,0 +1,30 @@
+[
+  {
+    "card_id": "001",
+    "icon": "dollar-sign",
+    "heading": "Earning Details",
+    "dateBy": "jun 18-25",
+    "nextIcon": "arrow-right"
+  },
+  {
+    "card_id": "002",
+    "icon": "rotate-ccw",
+    "heading": "Recent Transactions",
+    "dateBy": "jun 18-25",
+    "nextIcon": "arrow-right"
+  },
+  {
+    "card_id": "003",
+    "icon": "gift",
+    "heading": "Promotions",
+    "dateBy": "jun 18-25",
+    "nextIcon": "arrow-right"
+  },
+  {
+    "card_id": "004",
+    "icon": "archive",
+    "heading": "Refer & Earn",
+    "dateBy": "jun 18-25",
+    "nextIcon": "arrow-right"
+  }
+]

@@ -68,16 +68,19 @@ const Home = () => {
   }, [inputText, dataFromApi]);
 
   return (
-      <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
-        <View style={{ marginBottom: responsiveFontSize(4) }}>
-          <Header />
-          <InsuranceServices
-            InsuranceServicesData={filteredInsuranceData} // Use the filtered data here
-            inputText={inputText}
-            setInputText={setInputText}
-          />
-        </View>
-      </ScrollView>
+    <ScrollView
+      style={[styles.container, { paddingTop: insets.top }]}
+      showsVerticalScrollIndicator={false}
+    >
+      <View style={{ marginBottom: responsiveFontSize(4) }}>
+        <Header />
+        <InsuranceServices
+          InsuranceServicesData={filteredInsuranceData} // Use the filtered data here
+          inputText={inputText}
+          setInputText={setInputText}
+        />
+      </View>
+    </ScrollView>
   );
 };
 

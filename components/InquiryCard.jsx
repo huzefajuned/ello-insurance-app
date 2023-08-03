@@ -1,5 +1,5 @@
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
-import React,{useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -7,46 +7,70 @@ import {
 } from "react-native-responsive-dimensions";
 import inquiries from "../dummyInquiry.json";
 import FilterInquiry from "./FilterInquiry";
+import { ActivityIndicator } from "react-native";
 
 const InquiryCard = () => {
+  const [value, setValue] = useState(""); // this state will accces in both component...
+  const [inquiriesFromApi, setInquiriesFromApi] = useState([]); // setFiltered data in this Array--
 
-  const [value, setValue] = useState(null); // this state will accces in both component...
+  useEffect(() => {
+    setInquiriesFromApi(inquiries);
+  }, []);
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       {/* Filter component */}
-      <FilterInquiry value={value} setValue={setValue} />
-      <View style={styles.container}>
-        {inquiries?.map((inquiry) => {
-          const {
-            inquiry_Name,
-            inquiry_Image,
-            createdBy,
-            DateOfCreation,
-            inquiry_ID,
-          } = inquiry;
-          return (
-            <View style={styles.card} key={inquiry_ID}>
-              <View style={styles.InsuranceType}>
-                <Image
-                  source={{
-                    uri: inquiry_Image,
-                  }}
-                  style={styles.imageStyle}
-                  resizeMethod="scale"
-                />
-                <View>
-                  <Text style={styles.inquiryStyle}>{inquiry_Name}</Text>
-                  <Text style={styles.inquiryCreatorStyle}>{createdBy}</Text>
+      <FilterInquiry
+        value={value}
+        setValue={setValue}
+        inquiriesFromApi={inquiriesFromApi}
+        setInquiriesFromApi={setInquiriesFromApi}
+      />
+      {inquiriesFromApi?.length <= 0 ? (
+        <View
+          style={{
+            height: responsiveHeight(100),
+            width: responsiveWidth(100),
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ textAlign: "center" }}>
+            <ActivityIndicator size="large" color="#37CFEE" />
+          </Text>
+        </View>
+      ) : (
+        <View style={styles.container}>
+          {inquiriesFromApi?.map((inquiry) => {
+            const {
+              inquiry_Name,
+              inquiry_Image,
+              createdBy,
+              DateOfCreation,
+              inquiry_ID,
+            } = inquiry;
+            return (
+              <View style={styles.card} key={inquiry_ID}>
+                <View style={styles.InsuranceType}>
+                  <Image
+                    source={{
+                      uri: inquiry_Image,
+                    }}
+                    style={styles.imageStyle}
+                    resizeMethod="scale"
+                  />
+                  <View>
+                    <Text style={styles.inquiryStyle}>{inquiry_Name}</Text>
+                    <Text style={styles.inquiryCreatorStyle}>{createdBy}</Text>
+                  </View>
+                </View>
+                <View style={styles.time}>
+                  <Text style={styles.dateStyle}>{DateOfCreation}</Text>
                 </View>
               </View>
-              <View style={styles.time}>
-                <Text style={styles.dateStyle}>{DateOfCreation}</Text>
-              </View>
-            </View>
-          );
-        })}
-      </View>
+            );
+          })}
+        </View>
+      )}
     </ScrollView>
   );
 };

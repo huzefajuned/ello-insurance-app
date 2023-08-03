@@ -104,7 +104,7 @@ const DynamicInquiryForm = () => {
         backgroundColor: "#F9F9F9",
       }}
     >
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <CommonHeader heading="Add inquiry" isBackIcon={true} />
         <CommonDescription
           description="To add a new Inquiry, enter the details of the Inquiry in the input field below."

@@ -9,6 +9,7 @@ import RegisterScreen from "../screens/RegisterScreen";
 import InquiryFormScreen from "../screens/InquiryFormScreen";
 import ViewUrlOrPdf from "../screens/ViewUrlOrPdf";
 import All_InquiryScreen from "../screens/All_InquiryScreen";
+import EarningScreen from "../screens/EarningScreen";
 
 const Stack = createStackNavigator();
 
@@ -74,6 +75,11 @@ const MainTabs = () => {
       <Stack.Screen
         name="AllInquiry"
         component={All_InquiryScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="EarningScreen"
+        component={EarningScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
