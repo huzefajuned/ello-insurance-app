@@ -21,12 +21,15 @@ const data2 = [
 ];
 
 const FilterInquiry = ({
-  value,
-  setValue,
+  selectedInquiryName,
+  setSelectedInquiryName,
+  selectedInquiryDate,
+  setSelectedInquiryDate,
   inquiriesFromApi,
   setInquiriesFromApi,
 }) => {
   const [inquiryNames, setInquiryNames] = useState([]);
+  const [inquiryDates, setInquiryDates] = useState([]);
 
   // Function to filter and get all  unique inquiry names
   const getUniqueInquiryNames = (inquiries) => {
@@ -40,14 +43,31 @@ const FilterInquiry = ({
     return uniqueNames;
   };
 
+  // Function to filter and get all  unique inquiry dates
+  const getUniqueInquiryDates = (inquiries) => {
+    const uniqueDates = [];
+    inquiries.forEach((inquiry) => {
+      const dates = inquiry.DateOfCreation;
+      if (!uniqueDates.find((obj) => obj.value === dates)) {
+        uniqueDates.push({ label: dates, value: dates });
+      }
+    });
+    return uniqueDates;
+  };
+
   useEffect(() => {
     // Fetch inquiriesData or use it directly if already available
     const uniqueNames = getUniqueInquiryNames(inquiries);
     setInquiryNames(uniqueNames);
+    const uniqueDates = getUniqueInquiryDates(inquiries);
+    setInquiryDates(uniqueDates);
   }, []);
 
-  const handleValueChange = (item) => {
-    setValue(item.value);
+  const handleProduct_TypeChange = (item) => {
+    setSelectedInquiryName(item.value);
+  };
+  const handleProduct_DateChange = (item) => {
+    setSelectedInquiryDate(item.value);
   };
 
   // Function to filter based on selection of inquiry_type
@@ -58,13 +78,27 @@ const FilterInquiry = ({
     return filtered_Data;
   }
 
+  // Function to filter based on selection of inquiry_Dates
+  function filterByProduct_Date(value) {
+    const filtered_Data = inquiries.filter(
+      (item) => item.DateOfCreation.indexOf(value) !== -1
+    );
+    return filtered_Data;
+  }
+
   useEffect(() => {
-    if (value !== "") {
-      const data = filterByProduct_Type(value);
-      console.log("filtered data", data);
+    if (selectedInquiryName !== "") {
+      const data = filterByProduct_Type(selectedInquiryName);
       setInquiriesFromApi(data);
     }
-  }, [value]);
+  }, [selectedInquiryName]);
+
+  useEffect(() => {
+    if (selectedInquiryDate !== "") {
+      const data = filterByProduct_Date(selectedInquiryDate);
+      setInquiriesFromApi(data);
+    }
+  }, [selectedInquiryDate]);
 
   return (
     <View style={styles.container}>
@@ -79,8 +113,8 @@ const FilterInquiry = ({
         labelField="label"
         valueField="value"
         placeholder="Insurance Type"
-        value={value}
-        onChange={handleValueChange}
+        value={selectedInquiryName}
+        onChange={handleProduct_TypeChange}
         backgroundColor="none"
         containerStyle={{
           borderBottomRightRadius: 10,
@@ -105,12 +139,12 @@ const FilterInquiry = ({
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
         iconColor="#37CFEE"
-        data={data2}
+        data={inquiryDates}
         labelField="label"
         valueField="value"
         placeholder="Insurance Date"
-        value={value}
-        onChange={handleValueChange}
+        value={selectedInquiryDate}
+        onChange={handleProduct_DateChange}
       />
     </View>
   );

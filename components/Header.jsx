@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { moderateScale } from "react-native-size-matters";
-import base64 from "react-native-base64";
 import {
   responsiveHeight,
   responsiveWidth,
@@ -12,6 +11,7 @@ import { AuthContext } from "../context/AuthContext";
 import { BACKEND_BASE_URL } from "../env";
 import axios from "axios";
 import { ActivityIndicator } from "react-native";
+import { extract_UserId } from "../services/apiServices";
 
 const Header = () => {
   const navigation = useNavigation();
@@ -19,20 +19,7 @@ const Header = () => {
   const [companyLogo, setCompnayLogo] = useState({});
 
   const { accessToken } = useContext(AuthContext);
-
-  const tokenParts = accessToken?.split(".");
-  const payload = tokenParts?.[1];
-  // Check if payload is available before attempting to decode
-  const decodedPayload = payload ? base64?.decode(payload) : null;
-
-  let id;
-  try {
-    // Check if decodedPayload is available before parsing
-    id = decodedPayload ? JSON?.parse(decodedPayload)?.id : null;
-  } catch (error) {
-    // Handle the error if parsing fails (invalid JSON payload)
-    console.error("Error parsing payload:", error);
-  }
+  const id = extract_UserId(accessToken); // extract user id
 
   const url = `${BACKEND_BASE_URL}pos/${id}`;
   const handleProfile = async () => {
@@ -80,7 +67,6 @@ const Header = () => {
                 }}
                 source={{ uri: companyLogo?.logo }}
                 resizeMethod="scale"
-                
               />
               <Text
                 style={{

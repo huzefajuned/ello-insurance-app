@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../env";
+import base64 from "react-native-base64";
 
 //1. company Logo only
 export async function companyLogoApi() {
@@ -8,7 +9,7 @@ export async function companyLogoApi() {
     const response = await axios.get(logo_url);
     return response?.data?.data?.logo;
   } catch (error) {
-    console.log("error in api of catch", error);
+    console.log("error in api of catch", error.response);
     // return error;
   }
 }
@@ -64,12 +65,19 @@ export async function getdynamicFormJsonApi() {
 }
 
 //5.Post an Inquiry
-export async function postInquiry(formValues) {
+export async function postInquiry(formValues, id) {
+  // id is sepecific to loggged innuser only--
   const url = `${BACKEND_BASE_URL}user/product/data`;
   try {
     // Create an empty payload object with insurance_details property
     const payload = {
       insurance_details: {},
+      source_ref: id,
+      source: "pos",
+      // sold_another: true,
+      // insurance_category: 3,
+      // product_type: 41,
+      // Add the id to the source_ref property
     };
 
     // Extract and add name, email, and contact to the payload directly
@@ -127,4 +135,36 @@ export async function updateProfileApi(headers, id, formValues) {
   } catch (error) {
     return console.log("error in api catch", error);
   }
+}
+//8. get all inquirys--
+
+export async function getAll_Inquiries() {
+  const url = "https://insurance.ellocentlabs.in/api/v1/user/product/data";
+  const payload = {};
+  const config = {};
+  try {
+    const data = await axios.get(url, payload, config);
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+
+//9.  // function  for extracting token to user  specific id
+
+export function extract_UserId(accessToken) {
+  const tokenParts = accessToken?.split(".");
+  const payload = tokenParts?.[1];
+  // Check if payload is available before attempting to decode
+  const decodedPayload = payload ? base64?.decode(payload) : null;
+
+  let id;
+  try {
+    // Check if decodedPayload is available before parsing
+    id = decodedPayload ? JSON?.parse(decodedPayload)?.id : null;
+  } catch (error) {
+    // Handle the error if parsing fails (invalid JSON payload)
+    console.error("Error parsing payload:", error);
+  }
+  return id;
 }

@@ -27,12 +27,16 @@ const Home = () => {
         const response = await axios.get(
           `${BACKEND_LIVE_URL}insurance-category/product-type`
         );
+        // console.log("response of", response.data.map(()));
 
         const insuranceCategories = response.data?.data.map((item) => ({
           formId: item?.formid?.id,
           name: item?.name,
           logo: item?.logo,
+          insurance_category: item.ins_category,
+          product_type: item.product_type,
         }));
+
         setDataFromApi(insuranceCategories);
       } catch (error) {
         // Handle the error

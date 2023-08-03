@@ -26,8 +26,13 @@ import { RegisterContext } from "../context/RegisterContext";
 import { DynamicFormDataContext } from "../context/DynamicFormDataContext";
 import { fixedInputsInForms } from "../CONSTANTS";
 import { useNavigation } from "@react-navigation/native";
-import { extractTextFromHTML, postInquiry } from "../services/apiServices";
+import {
+  extractTextFromHTML,
+  extract_UserId,
+  postInquiry,
+} from "../services/apiServices";
 import Toast from "react-native-toast-message";
+import { AuthContext } from "../context/AuthContext";
 
 const DynamicInquiryForm = () => {
   const { dy_formConfigurations } = useContext(DynamicFormDataContext);
@@ -40,6 +45,8 @@ const DynamicInquiryForm = () => {
   const navigation = useNavigation();
 
   const [formValues, setFormValues] = useState({});
+  const { accessToken } = useContext(AuthContext);
+  const id = extract_UserId(accessToken); // extract user id
   setTimeout(() => {
     setLoading(false);
   }, 1000);
@@ -48,7 +55,7 @@ const DynamicInquiryForm = () => {
     setFormValues({ ...formValues, [key]: value });
   };
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     if (
       formValues["name" || "email" || "contact"] === undefined ||
       "" ||
@@ -60,9 +67,9 @@ const DynamicInquiryForm = () => {
       setPleaseWait(true);
 
       //calling post api for sending inquiry data---
-      postInquiry(formValues)
+      await postInquiry(formValues, id)
         .then((res) => {
-          // console.log("respo", res.response.data.msg.name);
+          console.log("respo", res?.response);
           // here reposne message
           if (res.status === 200) {
             Toast.show({

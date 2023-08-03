@@ -34,6 +34,7 @@ const InsuranceServices = ({
   }
 
   const handleCardPress = (service) => {
+    console.log("service", service);
     const formId = service?.formId;
     getdynamicFormJsonApi()
       .then((data) => {

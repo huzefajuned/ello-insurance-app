@@ -1,5 +1,5 @@
 import { View, StyleSheet } from "react-native";
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomForm from "../components/CustomForm";
 import { companyLogoApi } from "../services/apiServices";

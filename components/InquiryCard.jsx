@@ -8,21 +8,29 @@ import {
 import inquiries from "../dummyInquiry.json";
 import FilterInquiry from "./FilterInquiry";
 import { ActivityIndicator } from "react-native";
-
+import getAll_Inquiries from "../services/apiServices";
 const InquiryCard = () => {
-  const [value, setValue] = useState(""); // this state will accces in both component...
+  const [selectedInquiryName, setSelectedInquiryName] = useState(""); // this state will accces in both component...
+  const [selectedInquiryDate, setSelectedInquiryDate] = useState("");
   const [inquiriesFromApi, setInquiriesFromApi] = useState([]); // setFiltered data in this Array--
 
   useEffect(() => {
     setInquiriesFromApi(inquiries);
   }, []);
 
+  // tetsing getAll_Inquiries api
+  useEffect(() => {
+    // getAll_Inquiries();
+  }, []);
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       {/* Filter component */}
       <FilterInquiry
-        value={value}
-        setValue={setValue}
+        selectedInquiryName={selectedInquiryName}
+        setSelectedInquiryName={setSelectedInquiryName}
+        selectedInquiryDate={selectedInquiryDate}
+        setSelectedInquiryDate={setSelectedInquiryDate}
         inquiriesFromApi={inquiriesFromApi}
         setInquiriesFromApi={setInquiriesFromApi}
       />
