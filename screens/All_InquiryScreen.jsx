@@ -19,7 +19,6 @@ const All_InquiryScreen = () => {
         flex: 1,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
         alignSelf: "center",
         backgroundColor: "#F9F9F9",
       }}

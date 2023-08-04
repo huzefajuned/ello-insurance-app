@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -18,6 +18,7 @@ import {
 import { ActivityIndicator } from "react-native";
 import { getdynamicFormJsonApi } from "../services/apiServices";
 import { DynamicFormDataContext } from "../context/DynamicFormDataContext";
+import CustomLoading from "../components/CustomLoading";
 
 const InsuranceServices = ({
   InsuranceServicesData,
@@ -77,11 +78,7 @@ const InsuranceServices = ({
       </View>
       <ScrollView contentContainerStyle={styles.servicesContainer}>
         {InsuranceServicesData?.length === 0 ? (
-          <View style={{}}>
-            <Text>
-              <ActivityIndicator size="large" color="#37CFEE" />
-            </Text>
-          </View>
+          <CustomLoading />
         ) : (
           <>
             {InsuranceServicesData?.map((service, index) => (

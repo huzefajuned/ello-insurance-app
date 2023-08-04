@@ -28,6 +28,7 @@ import Menu from "../components/Menu";
 import { moderateScale } from "react-native-size-matters";
 import GenderDropdown from "../components/GenderDropdown";
 import { updateProfileApi, userProfileApi } from "../services/apiServices";
+import CustomLoading from "../components/CustomLoading";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -164,17 +165,7 @@ const ProfileScreen = () => {
         onPress={handleToggleModal}
       />
       {loading ? (
-        <View
-          style={{
-            height: responsiveHeight(100),
-            width: responsiveWidth(100),
-            justifyContent: "center",
-          }}
-        >
-          <Text style={{ textAlign: "center" }}>
-            <ActivityIndicator size="large" color="#37CFEE" />
-          </Text>
-        </View>
+        <CustomLoading />
       ) : (
         <>
           {userProfile === {} || userProfile === undefined ? (

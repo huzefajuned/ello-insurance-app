@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   responsiveFontSize,
@@ -15,9 +15,26 @@ import {
 import CommonHeader from "../components/CommonHeader";
 import dummyEarningsCard from "../dummyEarningsCards.json";
 import { Feather } from "@expo/vector-icons";
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
 const EarningScreen = () => {
   const insets = useSafeAreaInsets();
+  const { accessToken } = useContext(AuthContext);
+  useEffect(() => {
+    const call_EarningApi = async () => {
+      const url = "https://insurance.ellocentlabs.in/api/v1/pos/earning";
+      const headers = { Authorization: `${accessToken}` };
+
+      try {
+        const data = await axios.get(url, { headers });
+        console.log("Earnings", data);
+      } catch (error) {
+        console.log("errros", error.response.data);
+      }
+    };
+    call_EarningApi();
+  }, []);
 
   return (
     <SafeAreaView

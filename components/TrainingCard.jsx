@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import CustomModal from "./CustomModal";
 import { WebView } from "react-native-webview";
 import * as WebBrowser from "expo-web-browser";
+import CustomLoading from "./CustomLoading";
 
 const TrainingCard = ({ trainingData }) => {
   const [result, setResult] = useState(null);
@@ -46,22 +47,7 @@ const TrainingCard = ({ trainingData }) => {
   return (
     <View style={styles.trainingContainer}>
       {trainingData?.length === 0 ? (
-        <View
-          style={{
-            height: responsiveHeight(100),
-            width: responsiveWidth(90),
-          }}
-        >
-          <Text
-            style={{
-              textAlign: "center",
-              justifyContent: "center",
-              marginTop: responsiveHeight(40),
-            }}
-          >
-            <ActivityIndicator size="large" color="#37CFEE" />
-          </Text>
-        </View>
+        <CustomLoading />
       ) : (
         <ScrollView
           style={styles.trainingContainer}

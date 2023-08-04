@@ -65,7 +65,11 @@ const Header = () => {
                   marginTop: responsiveFontSize(1),
                   resizeMode: "contain",
                 }}
-                source={{ uri: companyLogo?.logo }}
+                source={{
+                  uri:
+                    companyLogo?.logo ||
+                    "https://cdn-icons-png.flaticon.com/512/16/16096.png",
+                }}
                 resizeMethod="scale"
               />
               <Text

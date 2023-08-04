@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 import InsuranceServices from "../components/InsuranceServices";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -10,8 +10,10 @@ import {
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
 import { BACKEND_LIVE_URL } from "../LOCALS";
+// import { AuthContext } from "../context/AuthContext";
 
 const Home = () => {
+  // const { removeToken } = useContext(AuthContext);
   const insets = useSafeAreaInsets();
   const [updateNewData, setUpdateNewData] = useState(true);
   const [inputText, setInputText] = useState(null);
@@ -20,6 +22,7 @@ const Home = () => {
   const [dataFromApi, setDataFromApi] = useState([]);
   const [filteredInsuranceData, setFilteredInsuranceData] = useState([]);
 
+  // removeToken();
   useEffect(() => {
     const fetchData = async () => {
       try {
