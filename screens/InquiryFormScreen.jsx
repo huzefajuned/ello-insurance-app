@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import React from "react";
 import DynamicInquiryForm from "../components/DynamicInquiryForm";
 
 const InquiryFormScreen = ({ navigation, route }) => {
   // const dy_formConfigurations = route?.params?.dy_formConfigurations;
-  return <DynamicInquiryForm  />;
+  return <DynamicInquiryForm />;
 };
 export default InquiryFormScreen;

@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { moderateScale } from "react-native-size-matters";
 import TrainingCard from "../components/TrainingCard";
 import { AuthContext } from "../context/AuthContext";
-import { BACKEND_BASE_URL } from "../env";
+import { BACKEND_BASE_URL } from "../LOCALS";
 import axios from "axios";
 import {
   responsiveHeight,
@@ -17,8 +17,6 @@ const TrainingScreen = () => {
   const [loading, setLoading] = useState(true);
   const insets = useSafeAreaInsets();
   const { accessToken } = useContext(AuthContext);
-
-
 
   useEffect(() => {
     const fetchTrainingData = async () => {

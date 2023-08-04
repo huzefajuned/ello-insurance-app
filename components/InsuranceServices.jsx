@@ -26,21 +26,25 @@ const InsuranceServices = ({
 }) => {
   const navigation = useNavigation();
   const [clicked, setClicked] = useState(false);
-  const { dy_formConfigurations, setDy_formConfigurations, setLoading } =
-    useContext(DynamicFormDataContext);
+  const {
+    dy_formConfigurations,
+    setDy_formConfigurations,
+    requiredFields,
+    setRequiredFields,
+  } = useContext(DynamicFormDataContext);
 
   function getObjectById(data, specifiedId) {
     return data.find((obj) => obj.id === specifiedId);
   }
 
   const handleCardPress = (service) => {
-    console.log("service", service);
     const formId = service?.formId;
     getdynamicFormJsonApi()
       .then((data) => {
         const specificObject = getObjectById(data?.data?.data, formId);
         if (specificObject) {
           setDy_formConfigurations(specificObject);
+          setRequiredFields([service?.insurance_category?.id]);
         } else {
           console.log("Object with ID", formId, "not found.");
         }

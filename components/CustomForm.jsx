@@ -14,7 +14,7 @@ import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomTextInput from "./CustomTextInput";
 import { AuthContext } from "../context/AuthContext";
-import { BACKEND_BASE_URL } from "../env";
+import { BACKEND_BASE_URL } from "../LOCALS";
 import {
   responsiveFontSize,
   responsiveHeight,

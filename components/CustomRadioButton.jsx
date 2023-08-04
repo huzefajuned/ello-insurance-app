@@ -5,13 +5,7 @@ import {
   responsiveWidth,
 } from "react-native-responsive-dimensions";
 
-const CustomRadioButton = ({
-  service_FormId,
-  onValueChange,
-  data,
-  label,
-  inlineStyles,
-}) => {
+const CustomRadioButton = ({ onValueChange, data, label, inlineStyles }) => {
   const [selectedRadio, setSelectedRadio] = useState();
   const handleRadioClick = (radioTitle, radioKey) => {
     // for debugging---
@@ -103,7 +97,7 @@ const styles = StyleSheet.create({
   },
   labelStyles: {
     fontSize: responsiveFontSize(2),
-    marginTop:responsiveFontSize(1),
+    marginTop: responsiveFontSize(1),
     // backgroundColor:'red'
   },
 });

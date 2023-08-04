@@ -17,8 +17,7 @@ import CommonHeader from "../components/CommonHeader";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AuthContext } from "../context/AuthContext";
 import base64 from "react-native-base64";
-import { BACKEND_BASE_URL } from "../env";
-import axios from "axios";
+import { BACKEND_BASE_URL } from "../LOCALS";
 import Toast from "react-native-toast-message";
 import {
   responsiveFontSize,

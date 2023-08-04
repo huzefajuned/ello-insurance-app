@@ -4,13 +4,12 @@ import InsuranceServices from "../components/InsuranceServices";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import axios from "axios";
-import { BACKEND_BASE_URL } from "../CONSTANTS";
 import {
   responsiveHeight,
   responsiveWidth,
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
-import { BACKEND_LIVE_URL } from "../env";
+import { BACKEND_LIVE_URL } from "../LOCALS";
 
 const Home = () => {
   const insets = useSafeAreaInsets();
@@ -27,8 +26,6 @@ const Home = () => {
         const response = await axios.get(
           `${BACKEND_LIVE_URL}insurance-category/product-type`
         );
-        // console.log("response of", response.data.map(()));
-
         const insuranceCategories = response.data?.data.map((item) => ({
           formId: item?.formid?.id,
           name: item?.name,

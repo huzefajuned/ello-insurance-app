@@ -35,7 +35,9 @@ import Toast from "react-native-toast-message";
 import { AuthContext } from "../context/AuthContext";
 
 const DynamicInquiryForm = () => {
-  const { dy_formConfigurations } = useContext(DynamicFormDataContext);
+  const { dy_formConfigurations, requiredFields } = useContext(
+    DynamicFormDataContext
+  );
   const [loading, setLoading] = useState(true);
   const [pleaseWait, setPleaseWait] = useState(false);
   const { setIsBlank } = useContext(RegisterContext);
@@ -67,11 +69,11 @@ const DynamicInquiryForm = () => {
       setPleaseWait(true);
 
       //calling post api for sending inquiry data---
-      await postInquiry(formValues, id)
+      await postInquiry(formValues, id, requiredFields)
         .then((res) => {
-          console.log("respo", res?.response);
+          console.log("res", res.data);
           // here reposne message
-          if (res.status === 200) {
+          if (res?.status === 200) {
             Toast.show({
               type: "success",
               text1: res?.data?.msg,
@@ -93,6 +95,7 @@ const DynamicInquiryForm = () => {
           }
         })
         .catch((err) => {
+          console.log("err", err.data);
           setPleaseWait(false);
           // fields like name, email, contact are required, and it should be validate in front-end only---
           Toast.show({

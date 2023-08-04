@@ -1,7 +1,6 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React, { useContext } from "react";
 import Modal from "react-native-modal";
-import ForgetPassword from "./ForgetPassword";
 import { responsiveHeight } from "react-native-responsive-dimensions";
 import { CustomModalContext } from "../context/CustomModalContext";
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BACKEND_BASE_URL } from "../env";
+import { BACKEND_BASE_URL } from "../LOCALS";
 import base64 from "react-native-base64";
 
 //1. company Logo only
@@ -65,7 +65,7 @@ export async function getdynamicFormJsonApi() {
 }
 
 //5.Post an Inquiry
-export async function postInquiry(formValues, id) {
+export async function postInquiry(formValues, id, requiredFields) {
   // id is sepecific to loggged innuser only--
   const url = `${BACKEND_BASE_URL}user/product/data`;
   try {
@@ -73,6 +73,7 @@ export async function postInquiry(formValues, id) {
     const payload = {
       insurance_details: {},
       source_ref: id,
+      insurance_category: requiredFields[0],
       source: "pos",
       // sold_another: true,
       // insurance_category: 3,
@@ -105,8 +106,8 @@ export async function postInquiry(formValues, id) {
     const data = await axios.post(url, payload, config);
     return data;
   } catch (error) {
-    return error;
-    // console.log("error", error);
+    // return error;
+    console.log("error", error);
   }
 }
 
@@ -138,15 +139,14 @@ export async function updateProfileApi(headers, id, formValues) {
 }
 //8. get all inquirys--
 
-export async function getAll_Inquiries() {
-  const url = "https://insurance.ellocentlabs.in/api/v1/user/product/data";
-  const payload = {};
-  const config = {};
+export async function getAll_Inquiries(id) {
+  const url = `${BACKEND_BASE_URL}user/product/data?pos_id=${id}`;
   try {
-    const data = await axios.get(url, payload, config);
+    const data = await axios.get(url);
     return data;
   } catch (error) {
-    return error;
+    console.log("error inside api", error);
+    // return error;
   }
 }
 
@@ -167,4 +167,24 @@ export function extract_UserId(accessToken) {
     console.error("Error parsing payload:", error);
   }
   return id;
+}
+
+//10. format date in format ( dd-mm-yyyy)
+export function formatDate(inputDate) {
+  // Convert the input string to a Date object
+  const date = new Date(inputDate);
+
+  // Extract day, month, and year from the Date object
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Adding 1 because months are zero-based (0 = January)
+  const year = date.getFullYear();
+
+  // Pad day and month with leading zeros if needed
+  const formattedDay = day < 10 ? `0${day}` : day;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+
+  // Combine the formatted date parts into the desired format "dd-mm-yyyy"
+  const formattedDate = `${formattedDay}-${formattedMonth}-${year}`;
+
+  return formattedDate;
 }

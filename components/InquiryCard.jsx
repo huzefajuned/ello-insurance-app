@@ -1,5 +1,5 @@
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -8,19 +8,35 @@ import {
 import inquiries from "../dummyInquiry.json";
 import FilterInquiry from "./FilterInquiry";
 import { ActivityIndicator } from "react-native";
-import getAll_Inquiries from "../services/apiServices";
+import {
+  getAll_Inquiries,
+  extract_UserId,
+  formatDate,
+} from "../services/apiServices";
+import { AuthContext } from "../context/AuthContext";
 const InquiryCard = () => {
   const [selectedInquiryName, setSelectedInquiryName] = useState(""); // this state will accces in both component...
   const [selectedInquiryDate, setSelectedInquiryDate] = useState("");
   const [inquiriesFromApi, setInquiriesFromApi] = useState([]); // setFiltered data in this Array--
-
+  const [original_Api_Inquiry, setOriginal_Api_Inquiry] = useState([]);
   useEffect(() => {
     setInquiriesFromApi(inquiries);
   }, []);
 
+  const { accessToken } = useContext(AuthContext);
+  const id = extract_UserId(accessToken); // extract user id
   // tetsing getAll_Inquiries api
+  const call_getAll_InquiriesApi = async (id) => {
+    try {
+      const data = await getAll_Inquiries(id);
+      await setOriginal_Api_Inquiry(data?.data?.data);
+    } catch (error) {
+      console.log("error", error.response);
+    }
+  };
+
   useEffect(() => {
-    // getAll_Inquiries();
+    call_getAll_InquiriesApi(id);
   }, []);
 
   return (
@@ -34,7 +50,7 @@ const InquiryCard = () => {
         inquiriesFromApi={inquiriesFromApi}
         setInquiriesFromApi={setInquiriesFromApi}
       />
-      {inquiriesFromApi?.length <= 0 ? (
+      {original_Api_Inquiry?.length <= 0 ? (
         <View
           style={{
             height: responsiveHeight(100),
@@ -48,31 +64,50 @@ const InquiryCard = () => {
         </View>
       ) : (
         <View style={styles.container}>
-          {inquiriesFromApi?.map((inquiry) => {
+          {original_Api_Inquiry?.map((inquiry) => {
+            var ins_Name = inquiry["insurance_category"]
+              ? inquiry["insurance_category"]["name"]
+              : null;
+
+            var ins_Id = inquiry["id"] ? inquiry["id"] : null;
+            var ins_Creator = inquiry["source_ref"]
+              ? inquiry["source_ref"]["name"]
+              : null;
+
+            var ins_DateOfCreation = inquiry["created"]
+              ? inquiry["created"]
+              : null;
+
             const {
-              inquiry_Name,
-              inquiry_Image,
-              createdBy,
-              DateOfCreation,
-              inquiry_ID,
+              inquiry_Name = ins_Name,
+              inquiry_Image, // not available
+              createdBy = ins_Creator,
+              DateOfCreation = ins_DateOfCreation,
+              inquiry_ID = ins_Id,
             } = inquiry;
             return (
               <View style={styles.card} key={inquiry_ID}>
                 <View style={styles.InsuranceType}>
                   <Image
                     source={{
-                      uri: inquiry_Image,
+                      uri:
+                        inquiry_Image ||
+                        "https://previews.123rf.com/images/urfandadashov/urfandadashov1805/urfandadashov180500070/100957966-photo-not-available-icon-isolated-on-white-background-vector-illustration.jpg",
                     }}
                     style={styles.imageStyle}
                     resizeMethod="scale"
                   />
                   <View>
-                    <Text style={styles.inquiryStyle}>{inquiry_Name}</Text>
+                    <Text style={styles.inquiryStyle}>
+                      {inquiry_Name || "Not Available"}
+                    </Text>
                     <Text style={styles.inquiryCreatorStyle}>{createdBy}</Text>
                   </View>
                 </View>
                 <View style={styles.time}>
-                  <Text style={styles.dateStyle}>{DateOfCreation}</Text>
+                  <Text style={styles.dateStyle}>
+                    {formatDate(DateOfCreation)}
+                  </Text>
                 </View>
               </View>
             );

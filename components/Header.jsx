@@ -8,7 +8,7 @@ import {
 } from "react-native-responsive-dimensions";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
-import { BACKEND_BASE_URL } from "../env";
+import { BACKEND_BASE_URL } from "../LOCALS";
 import axios from "axios";
 import { ActivityIndicator } from "react-native";
 import { extract_UserId } from "../services/apiServices";

@@ -5,9 +5,8 @@ import {
   responsiveHeight,
   responsiveWidth,
 } from "react-native-responsive-dimensions";
-// import DocumentPicker from "react-native-document-picker";
 import * as DocumentPicker from "expo-document-picker";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { RegisterContext } from "../context/RegisterContext";
 
 const CustomUpload = ({

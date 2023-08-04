@@ -16,7 +16,7 @@ import { AuthContext } from "../context/AuthContext";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import { BACKEND_BASE_URL } from "../env";
+import { BACKEND_BASE_URL } from "../LOCALS";
 import {
   responsiveFontSize,
   responsiveWidth,
@@ -61,7 +61,7 @@ const ChangePassword = () => {
         Toast.show({
           type: "success",
           text1: response?.data?.msg,
-          text2:"Login to continue..."
+          text2: "Login to continue...",
         });
         await removeToken();
       } else {
