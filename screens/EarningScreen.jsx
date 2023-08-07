@@ -17,20 +17,20 @@ import dummyEarningsCard from "../dummyEarningsCards.json";
 import { Feather } from "@expo/vector-icons";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
-
+import BACKEND_BASE_URL from "../LOCALS";
 const EarningScreen = () => {
   const insets = useSafeAreaInsets();
   const { accessToken } = useContext(AuthContext);
   useEffect(() => {
     const call_EarningApi = async () => {
-      const url = "https://insurance.ellocentlabs.in/api/v1/pos/earning";
+      const url = `${BACKEND_BASE_URL}pos/earning`;
       const headers = { Authorization: `${accessToken}` };
 
       try {
         const data = await axios.get(url, { headers });
-        console.log("Earnings", data);
+        console.log("Earnings");
       } catch (error) {
-        console.log("errros", error.response.data);
+        console.log("errros", error.status);
       }
     };
     call_EarningApi();

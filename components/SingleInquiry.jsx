@@ -7,11 +7,11 @@ import {
 } from "react-native-responsive-dimensions";
 import { formatDate } from "../services/apiServices";
 
-const SingleInquiry = ({ original_Api_Inquiry }) => {
+const SingleInquiry = ({ inquiries_show }) => {
   return (
     <>
       <View style={styles.container}>
-        {original_Api_Inquiry?.map((inquiry) => {
+        {inquiries_show?.map((inquiry) => {
           var ins_Name = inquiry["insurance_category"]
             ? inquiry["insurance_category"]["name"]
             : null;
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   container: {
     gap: responsiveHeight(1),
-    height: responsiveHeight(70),
+    height: responsiveHeight(73),
     overflow: "hidden",
   },
   card: {
