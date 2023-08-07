@@ -68,41 +68,75 @@ const DynamicInquiryForm = () => {
     } else {
       setPleaseWait(true);
 
-      //calling post api for sending inquiry data---
-      await postInquiry(formValues, id, requiredFields)
-        .then((res) => {
-          console.log("res", res.data);
-          // here reposne message
-          if (res?.status === 200) {
-            Toast.show({
-              type: "success",
-              text1: res?.data?.msg,
-              text2: `We will Back to you ${formValues["name"]}`,
-            });
-            setPleaseWait(false);
-            setTimeout(() => {
-              navigation.navigate("Tabs");
-            }, 1000);
-          }
-          setPleaseWait(false);
+      try {
+        const res = await postInquiry(formValues, id, requiredFields);
+        console.log("res", res.response);
+        setPleaseWait(false);
 
-          if (res.status === 400) {
-            Toast.show({
-              type: "error",
-              text1: res.response.data.msg.name,
-            });
-            setPleaseWait(false);
-          }
-        })
-        .catch((err) => {
-          console.log("err", err.data);
+        if (res?.status === 200) {
+          Toast.show({
+            type: "success",
+            text1: res?.data?.msg,
+            text2: `We will get back to you ${formValues["name"]}`,
+          });
           setPleaseWait(false);
-          // fields like name, email, contact are required, and it should be validate in front-end only---
+          setTimeout(() => {
+            navigation.navigate("Tabs");
+          }, 1000);
+        }
+
+        if (res?.status === 400) {
           Toast.show({
             type: "error",
-            text1: err?.response?.data?.msg?.name || "Invalid Request",
+            text1: res.response.data.msg.name,
           });
+          setPleaseWait(false);
+        }
+      } catch (err) {
+        console.log("err in call", err.response?.data);
+        setPleaseWait(false);
+
+        Toast.show({
+          type: "error",
+          text1: err?.response?.data?.msg?.name || "Invalid Request",
         });
+      }
+
+      // //calling post api for sending inquiry data---
+      // await postInquiry(formValues, id, requiredFields)
+      //   .then((res) => {
+      //     console.log("res", res.data);
+      //     // here reposne message
+      //     if (res?.status === 200) {
+      //       Toast.show({
+      //         type: "success",
+      //         text1: res?.data?.msg,
+      //         text2: `We will Back to you ${formValues["name"]}`,
+      //       });
+      //       setPleaseWait(false);
+      //       setTimeout(() => {
+      //         navigation.navigate("Tabs");
+      //       }, 1000);
+      //     }
+      //     setPleaseWait(false);
+
+      //     if (res.status === 400) {
+      //       Toast.show({
+      //         type: "error",
+      //         text1: res.response.data.msg.name,
+      //       });
+      //       setPleaseWait(false);
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log("err", err.data);
+      //     setPleaseWait(false);
+      //     // fields like name, email, contact are required, and it should be validate in front-end only---
+      //     Toast.show({
+      //       type: "error",
+      //       text1: err?.response?.data?.msg?.name || "Invalid Request",
+      //     });
+      //   });
     }
   };
   return (

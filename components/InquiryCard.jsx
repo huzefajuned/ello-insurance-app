@@ -56,12 +56,13 @@ const InquiryCard = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <FilterInquiry
+      {/* working on this componenet.... */}
+      {/* <FilterInquiry
         selectedInquiryName={selectedInquiryName}
         setSelectedInquiryName={setSelectedInquiryName}
         selectedInquiryDate={selectedInquiryDate}
         setSelectedInquiryDate={setSelectedInquiryDate}
-      />
+      /> */}
       {inquiries_show?.length <= 0 ? (
         <CustomLoading />
       ) : (

@@ -27,12 +27,8 @@ const InsuranceServices = ({
 }) => {
   const navigation = useNavigation();
   const [clicked, setClicked] = useState(false);
-  const {
-    dy_formConfigurations,
-    setDy_formConfigurations,
-    requiredFields,
-    setRequiredFields,
-  } = useContext(DynamicFormDataContext);
+  const { dy_formConfigurations, setDy_formConfigurations, requiredFields } =
+    useContext(DynamicFormDataContext);
 
   function getObjectById(data, specifiedId) {
     return data.find((obj) => obj.id === specifiedId);
@@ -45,9 +41,11 @@ const InsuranceServices = ({
         const specificObject = getObjectById(data?.data?.data, formId);
         if (specificObject) {
           setDy_formConfigurations(specificObject);
-          setRequiredFields([service?.insurance_category?.id]);
+          requiredFields.push(service?.insurance_category?.id);
+          requiredFields.push(service?.product_type);
+          // console.log("Object with ID", formId, "found.");
         } else {
-          console.log("Object with ID", formId, "not found.");
+          // console.log("Object with ID", formId, "not found.");
         }
       })
       .catch((error) => {

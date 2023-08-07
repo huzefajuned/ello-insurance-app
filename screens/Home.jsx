@@ -21,7 +21,6 @@ const Home = () => {
   const [InsuranceServicesData, setInsuranceServicesData] = useState([]);
   const [dataFromApi, setDataFromApi] = useState([]);
   const [filteredInsuranceData, setFilteredInsuranceData] = useState([]);
-
   // removeToken();
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +33,7 @@ const Home = () => {
           name: item?.name,
           logo: item?.logo,
           insurance_category: item.ins_category,
-          product_type: item.product_type,
+          product_type: item.id,
         }));
 
         setDataFromApi(insuranceCategories);

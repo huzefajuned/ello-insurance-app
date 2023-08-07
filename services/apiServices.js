@@ -75,10 +75,7 @@ export async function postInquiry(formValues, id, requiredFields) {
       source_ref: id,
       insurance_category: requiredFields[0],
       source: "pos",
-      // sold_another: true,
-      // insurance_category: 3,
-      // product_type: 41,
-      // Add the id to the source_ref property
+      product_type: requiredFields[1], // it is undefined by the api response....
     };
 
     // Extract and add name, email, and contact to the payload directly
@@ -103,11 +100,11 @@ export async function postInquiry(formValues, id, requiredFields) {
         "Content-Type": "application/json",
       },
     };
+    console.log("payload", payload);
     const data = await axios.post(url, payload, config);
     return data;
   } catch (error) {
-    // return error;
-    console.log("error", error);
+    return error;
   }
 }
 

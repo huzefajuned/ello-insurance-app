@@ -14,6 +14,8 @@ const FilterInquiry = ({
   setSelectedInquiryName,
   selectedInquiryDate,
   setSelectedInquiryDate,
+  inquiriesFromApi,
+  setInquiriesFromApi,
 }) => {
   const [inquiryNames, setInquiryNames] = useState([]);
   const [inquiryDates, setInquiryDates] = useState([]);
